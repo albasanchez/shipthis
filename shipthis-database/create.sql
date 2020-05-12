@@ -65,6 +65,7 @@ CREATE TABLE item_type(
 
     CONSTRAINT pk_item_type PRIMARY KEY (item_type_id),
     CONSTRAINT validate_status_item CHECK (item_type_status IN ('active','block')),
+    
     CONSTRAINT item_type_fk_category FOREIGN KEY (category_fk) REFERENCES category (category_id) ON DELETE CASCADE
 );
 
