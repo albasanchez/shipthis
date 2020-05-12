@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar
+    <v-app-bar id="Navbar"
       absolute class="navbar-color " style="position: sticky"
       elevate-on-scroll scroll-target="#scrolling-techniques-7"
     >
@@ -8,8 +8,6 @@
       <v-spacer></v-spacer>
       
       <SectionsList class="d-none d-md-flex "></SectionsList>
-      <a href="#" class="navbar-sections__item">
-              <v-icon class="icon mr-2 pb-1">fas fa-sign-in-alt</v-icon>{{ signin }}</a>
 
       <v-menu >
       <template v-slot:activator="{ on, attrs }" >
@@ -27,21 +25,23 @@
         </v-list-item>
       </v-list>
     </v-menu>
-
-      
+    
     </v-app-bar>
+    
+    
 </template>
-
+<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 <script>
 import SectionsList from "./SectionsList.vue";
 
 export default {
     name: "Navbar",
     components: {
-        SectionsList,
+        SectionsList        
     },
     data: () => ({     
-        signin: 'Acceder',
+        login: 'Acceder',
+        activeLogin: false,
         languages: [
           { id: "1", lang: "ES" },
           { id: "2", lang: "EN" },
