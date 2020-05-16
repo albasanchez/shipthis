@@ -38,7 +38,7 @@
                     <v-col cols="4" md="4" class="primary accent-3 center-img" justify="center" align="center" >
                       <img class="login-logo" src="../assets/home/logo.png" alt="" />
                       <div class="text-center my-6">
-                        <v-btn rounded color="success accent-3 accent--text" outlined="">{{ signinBtn }}</v-btn>
+                        <v-btn rounded @click="goRegistry" color="success accent-3 accent--text" outlined="">{{ signinBtn }}</v-btn>
                       </div>
                     </v-col>
                   </v-row>
@@ -92,6 +92,9 @@ export default {
             this.submitStatus = 'OK'
           }, 500)
         }
+      },
+      goRegistry() {
+        this.$router.push('/Registry');
       }
     }
 }
