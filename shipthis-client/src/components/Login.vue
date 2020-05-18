@@ -27,7 +27,7 @@
                         
                         
                       <div class="text-center my-3">
-                        <v-btn rounded type="submit" :disabled="submitStatus === 'PENDING'" color="success accent-3 accent--text" dark>{{ loginBtn }}</v-btn>
+                        <v-btn @click="submitLogin" rounded type="submit" :disabled="submitStatus === 'PENDING'" color="success accent-3 accent--text" dark>{{ loginBtn }}</v-btn>
                       </div>
                       <p class="text-center" v-if="submitStatus === 'ERROR'">{{ submitMsg.error }}</p>
                       <p class="text-center" v-if="submitStatus === 'OK'">{{ submitMsg.ok }}</p>
@@ -129,7 +129,7 @@ export default {
       }
     },
     methods: {
-      submit() {
+      submitLogin() {
         console.log('submit!')
         this.$v.$touch()
         if (this.$v.$invalid) {
@@ -140,13 +140,15 @@ export default {
           setTimeout(() => {
             this.submitStatus = 'OK'
           }, 500)
+        };
+        this.$router.push('/HomeUser');
+        },
+        goRegistry() {
+          this.$router.push('/Registry');
         }
       },
-      goRegistry() {
-        this.$router.push('/Registry');
-      }
+      
     }
-}
 </script>
 
 <style lang="scss">

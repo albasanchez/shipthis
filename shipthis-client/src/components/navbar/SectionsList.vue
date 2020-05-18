@@ -4,12 +4,19 @@
       <v-list-item 
       v-for="section in sections" :key="section.id">
         <div v-if="section.activateLogin">
-          <a class="sections-list__item"  @click="activeLogin = true">
-            <!-- <v-icon class="icon mr-2 pb-1">fas fa-sign-in-alt</v-icon>  -->
+          <div v-if="loggedIn">
+            <a class="sections-list__item d-none"  @click="activeLogin = true">
             {{ section.name }} </a>
+            <a class="sections-list__item"  @click="goRoute(section.link)">
+            {{ section.alter }} </a>
+          </div>
+          <div v-else>
+            <a class="sections-list__item"  @click="activeLogin = true">
+            {{ section.name }} </a>
+          </div>
         </div>
         <div v-else>
-          <a class="sections-list__item" :href="section.link" >{{ section.name }}</a>
+          <a class="sections-list__item" @click="goRoute('')" :href="section.link" >{{ section.name }}</a>
         </div>
         
       </v-list-item>
@@ -33,12 +40,24 @@ export default {
       { id: "3", name: 'Rastreo', link: '#TrackSec', activateLogin: false },
       { id: "4", name: 'Servicios', link: '#Services', activateLogin: false },
       { id: "5", name: 'Contacto', link: '#Contact', activateLogin: false },
-      { id: "6", name: 'Acceder', link: '' , activateLogin: true}
+      { id: "6", name: 'Acceder', alter:'Escritorio', link: 'HomeUser' , activateLogin: true }
     ],
-    activeColor: ''
+    activeColor: '',
+    loggedIn: false,
   }),
   components: {
     LoginForm
+  },
+  props: {
+    loggedIn: {
+      type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    goRoute(route) {
+      this.$router.push('/'+route);
+    }
   }
 };
 </script>

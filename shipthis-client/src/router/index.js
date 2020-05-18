@@ -4,6 +4,7 @@ import Home from "../views/Home.vue";
 import Registry from "../views/Registry.vue";
 import Navbar from "../components/navbar/Navbar.vue";
 import Footer from "../components/Footer.vue";
+import HomeUser from "../views/HomeUser.vue";
 
 Vue.use(VueRouter);
 
@@ -18,14 +19,21 @@ const routes = [
     }
   },
   {
-    path: "/Registry",
+    path: "/HomeUser",
+    name: "HomeUser",
+    components: {
+      default: HomeUser
+    }
+  },
+  {
+      path: "/Registry",
       name: "Registry",
       components: {
-        default: Registry,
-        "Navbar": Navbar,
-        "Footer": Footer,
+        default: Registry
       }
   }
+    
+
 ];
 
 const router = new VueRouter({

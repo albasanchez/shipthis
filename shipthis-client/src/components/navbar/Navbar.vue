@@ -3,11 +3,10 @@
       absolute class="navbar-color " style="position: sticky"
       elevate-on-scroll scroll-target="#scrolling-techniques-7"
     >
-      <v-img src="../../assets/home/logoNav.png" id="imgNavbar" href="#" style="width:100px"></v-img>
+      <v-img src="../../assets/home/logoNav.png" id="imgNavbar" @click="goRoute(linkToHome)" style="width:100px"></v-img>
 
       <v-spacer></v-spacer>
-      
-      <SectionsList class="d-none d-md-flex "></SectionsList>
+      <SectionsList class="d-none d-md-flex" :loggedIn="loggedIn"></SectionsList>
 
       <v-menu >
       <template v-slot:activator="{ on, attrs }" >
@@ -46,8 +45,20 @@ export default {
           { id: "1", lang: "ES" },
           { id: "2", lang: "EN" },
           { id: "3", lang: "FR" }
-        ]       
-    })
+        ],
+        linkToHome: '#'       
+    }),
+    props: {
+      loggedIn: {
+        type: Boolean,
+        default: false
+      }
+    },
+    methods: {
+      goRoute(route) {
+      this.$router.push('/'+route);
+    }
+    }
 };
 </script>
 
