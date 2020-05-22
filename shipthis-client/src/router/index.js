@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Registry from "../views/Registry.vue";
+import UserProfile from "../views/UserProfile.vue";
 import Navbar from "../components/navbar/Navbar.vue";
 import Footer from "../components/Footer.vue";
 import HomeUser from "../views/HomeUser.vue";
@@ -31,7 +32,14 @@ const routes = [
       components: {
         default: Registry
       }
-  }
+  },
+  {
+    path: "/UserProfile",
+    name: "UserProfile",
+    components: {
+      default: UserProfile
+    }
+}
     
 
 ];

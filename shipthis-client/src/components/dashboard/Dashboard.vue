@@ -5,7 +5,7 @@
       </v-col>
       <v-col cols="12" class="dashboard-list">
           <div v-for="dashboard in dashItems" :key="dashboard.id" class="dashboard-item ma-0">
-            <DashboardCard :name="dashboard.name" 
+            <DashboardCard :name="dashboard.name" :route="dashboard.route"
             :description="dashboard.desc" :icon="dashboard.img" class="text-center py-4"></DashboardCard>
           </div>
       </v-col>
@@ -23,9 +23,9 @@ export default {
     data: () => ({
         username: "David",
         dashItems: [
-            { id: 1, name: "Mi perfil", desc: "Configuración de mi cuenta y datos personales.", img: "dash-user.png" },
-            { id: 2, name: "Historial de envíos", desc: "Consultar mis órdenes anteriores.", img: "dash-historial.png" },
-            { id: 3, name: "Generar una nueva orden", desc: "¡Quiero hacer un envío!", img: "dash-order.png" }
+            { id: 1, name: "Mi perfil", desc: "Configuración de mi cuenta y datos personales.", img: "dash-user.png", route: 'UserProfile' },
+            { id: 2, name: "Historial de envíos", desc: "Consultar mis órdenes anteriores.", img: "dash-historial.png", route: '' },
+            { id: 3, name: "Generar una nueva orden", desc: "¡Quiero hacer un envío!", img: "dash-order.png", route: '' }
         ]
     })
 }

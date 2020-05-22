@@ -1,13 +1,13 @@
 <template>
     <v-row id="RegistryForm" class="success" justify="center" align="center" align-self="center">
         <v-card class="registry-form">
-                <v-form
+        <v-form
             ref="form"
             v-model="valid"
             lazy-validation
         >
 
-            <h1 class="text-center secondary--text">{{ registryMessage }}</h1>
+        <h1 class="text-center secondary--text">{{ registryMessage }}</h1>
 
         <v-row>
             <v-col md="3" cols="12">
@@ -265,11 +265,10 @@
         'J',
         'E'
       ],
-      def_language: 'V',
+      def_language: 'Español',
       def_language_items: [
         'Español',
-        'Inglés',
-        'Francés'
+        'Inglés'
       ],
       checkbox_terms: false,
       

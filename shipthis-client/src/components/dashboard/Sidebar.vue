@@ -26,7 +26,7 @@
         <v-list-item class="sidebar-item"
           v-for="item in items"
           :key="item.title"
-          link
+          link @click="goRoute(item.route)"
         >
           <v-list-item-icon>
             <v-icon class="white--text sidebar-item-icon">{{ item.icon }}</v-icon>
@@ -47,17 +47,22 @@
       return {
         drawer: true,
         items: [
-          { title: 'Escritorio', icon: 'dashboard' },
-          { title: 'Mi Perfil', icon: 'mdi-account' },
-          { title: 'Historial', icon: 'mdi-history' },
-          { title: 'Nuevo envío', icon: 'local_shipping' },
-          { title: 'Cerrar sesión', icon: 'cancel' }
+          { title: 'Escritorio', icon: 'dashboard', route:'HomeUser' },
+          { title: 'Mi Perfil', icon: 'mdi-account', route:'UserProfile' },
+          { title: 'Historial', icon: 'mdi-history', route:'' },
+          { title: 'Nuevo envío', icon: 'local_shipping', route:'' },
+          { title: 'Cerrar sesión', icon: 'cancel', route:'' }
         ],
         mini: true,
         right: true,
         expandOnHover: true
       }
     },
+    methods: {
+      goRoute(route) {
+        this.$router.push('/'+route);
+      }
+    }
   }
 </script>
 <style lang="scss">
