@@ -1,5 +1,5 @@
 /* ARCHIVO DE INSERTS*/
 
 /*Insert de Roles*/
-INSERT INTO "Rol" (rol_name) VALUES ('Client');
-INSERT INTO "Rol" (rol_name) VALUES ('Admin');
+INSERT INTO rol (rol_name) VALUES ('CLIENT');
+INSERT INTO rol (rol_name) VALUES ('ADMIN');

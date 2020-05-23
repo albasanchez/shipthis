@@ -1,0 +1,6 @@
+export enum OrdersheetStatus {
+  TRANSIT = 'TRANSIT',
+  DELIVERY = 'DELIVERY',
+  DELIVERED = 'DELIVERED',
+  GENERATED = 'GENERATED',
+}

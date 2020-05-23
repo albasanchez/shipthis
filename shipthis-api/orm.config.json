@@ -1,0 +1,13 @@
+{
+  "type": "postgres",
+  "username": "shipthis_client",
+  "password": "shipthis123456",
+  "host": "localhost",
+  "port": 5432,
+  "database": "shipthisdb",
+  "entities": ["src/**/**/*.entity{.ts,.js}"],
+  "migrations": ["src/database/migrations/*{.ts,.js}"],
+  "cli": {
+    "migrationsDir": "src/database/migrations"
+  }
+}
