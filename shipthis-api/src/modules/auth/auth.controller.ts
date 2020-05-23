@@ -10,8 +10,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
-import { SignupDto } from './dto';
-import { AppLoggerService } from 'src/log/applogger.service';
+import { SignupDto, LoginDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
@@ -34,5 +33,11 @@ export class AuthController {
   @UsePipes(ValidationPipe)
   noferedatedRegidstration(@Body() user: SignupDto): Promise<any> {
     return this._authService.regularSignup(user);
+  }
+
+  @Post('regularlogin')
+  @UsePipes(ValidationPipe)
+  nofederatedLogin(@Body() credentials: LoginDto): Promise<any> {
+    return this._authService.regularLogin(credentials);
   }
 }
