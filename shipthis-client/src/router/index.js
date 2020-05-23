@@ -15,8 +15,8 @@ const routes = [
     name: "Home",
     components: {
       default: Home,
-      "Navbar": Navbar,
-      "Footer": Footer,
+      Navbar: Navbar,
+      Footer: Footer
     }
   },
   {
@@ -27,11 +27,11 @@ const routes = [
     }
   },
   {
-      path: "/Registry",
-      name: "Registry",
-      components: {
-        default: Registry
-      }
+    path: "/Registry",
+    name: "Registry",
+    components: {
+      default: Registry
+    }
   },
   {
     path: "/UserProfile",
@@ -39,9 +39,7 @@ const routes = [
     components: {
       default: UserProfile
     }
-}
-    
-
+  }
 ];
 
 const router = new VueRouter({

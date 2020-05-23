@@ -1,9 +1,9 @@
 <template>
   <v-card class="pa-4 ma-0 service-card__item">
-    <img :src="resolve_img_url(icon)" class="service-card__image" alt="icono"/>
+    <img :src="resolve_img_url(serviceIcon)" class="service-card__image" alt="icono"/>
     <div class="service-card__info text-center">
-        <h4 class="service-card__info-title">{{ name }}</h4>
-        <p class="service-card__info-text">{{ description }}</p>
+        <h4 class="service-card__info-title">{{ serviceName }}</h4>
+        <p class="service-card__info-text">{{ serviceDescription }}</p>
     </div>  
   </v-card>
 </template>
@@ -13,9 +13,9 @@
 export default {
     name: "ServiceCard",
     props: {
-            name: String,
-            description: String,
-            icon: String         
+            serviceName: String,
+            serviceDescription: String,
+            serviceIcon: String         
         },
     methods: {
     resolve_img_url: function (path) {

@@ -1,7 +1,7 @@
 <template>
   <div class="idTracking-box">
-        <v-text-field label="ID Tracking" id="idTracking" class="pr-4"></v-text-field>
-        <v-btn class="success accent--text">{{ button }}</v-btn>
+        <v-text-field :label="idTracking" id="idTracking" class="pr-4"></v-text-field>
+        <v-btn class="success accent--text">{{ searchBtn }}</v-btn>
   </div>
 </template>
 
@@ -9,7 +9,8 @@
 export default {
   name: "TrackingBox",
   data: () => ({
-    button: "Buscar"
+    searchBtn: "Buscar",
+    idTracking: 'ID Tracking'
   }),
 }
 </script>

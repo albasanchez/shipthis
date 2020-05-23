@@ -7,23 +7,21 @@
             lazy-validation
         >
 
-        <h1 class="text-center secondary--text">{{ registryMessage }}</h1>
+        <h1 class="text-center secondary--text">{{ registryTitle }}</h1>
 
         <v-row>
             <v-col md="3" cols="12">
                 <v-text-field
                     v-model="first_name"
                     :rules="firstNameRules"
-                    label="Primer nombre"
+                    :label="firstName"
                     required
                     ></v-text-field>
             </v-col>
             <v-col md="3" cols="12">
                 <v-text-field 
-                    v-model="middle_name"
-                    
-                    label="Segundo nombre"
-                    
+                    v-model="middle_name"                   
+                    :label="middleName"                   
                 ></v-text-field>
             </v-col>
 
@@ -31,16 +29,14 @@
                 <v-text-field
                     v-model="last_name"
                     :rules="lastNameRules"
-                    label="Primer apellido"
+                    :label="lastName"
                     required
                     ></v-text-field>
             </v-col>
             <v-col md="3" cols="12">
                 <v-text-field 
-                    v-model="middle_last_name"
-                    
-                    label="Segundo apellido"
-                    
+                    v-model="middle_last_name"                  
+                    :label="middleLastName"                 
                 ></v-text-field>
             </v-col>
         </v-row>
@@ -51,7 +47,7 @@
                 v-model="nationality_type"
                 :items="identification_type_items"
                 :rules="[v => !!v || 'El tipo es obligatorio.']"
-                label="Nac." 
+                :label="idType" 
                 required
             ></v-select>
             </v-col>
@@ -59,15 +55,15 @@
                 <v-text-field cols="2"
                     v-model="identification"
                     :rules="identificationRules"
-                    label="Documento de Identidad"
+                    :label="idNumber"
                     required
                     ></v-text-field>
             </v-col>
             <v-col md="6">
                 <v-text-field cols="2"
-                    v-model="email"
+                    v-model="user_email"
                     :rules="emailRules"
-                    label="Correo electrónico"
+                    :label="email"
                     required
                     ></v-text-field>
             </v-col>
@@ -76,12 +72,12 @@
         <v-row>
             <v-col md="6" sm="12">
                 <v-text-field
-                    v-model="password"
+                    v-model="user_password"
                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                     :rules="[rules.required, rules.min]"
                     :type="show1 ? 'text' : 'password'"
                     name="password"
-                    label="Contraseña"
+                    :label="password"
                     hint="Al menos 6 caracteres"
                     counter
                     @click:append="show1 = !show1"
@@ -94,7 +90,7 @@
                     :rules="[rules.required, rules.min]"
                     :type="show1 ? 'text' : 'password'"
                     name="repeat_password"
-                    label="Confirme su contraseña"
+                    :label="confirmPassword"
                     hint="Al menos 6 caracteres"
                     counter
                     @click:append="show1 = !show1"
@@ -107,20 +103,20 @@
                 <v-text-field
                     v-model="phone_code"
                     :rules="phoneCodeRules"
-                    label="Código de área"
-                    
+                    :label="areaCode"                   
                     ></v-text-field>
             </v-col>
             <v-col md="4" cols="10">
                 <v-text-field 
                     v-model="phone_number"
                     :rules="phoneNumberRules"
-                    label="Número telefónico"
+                    :label="phoneNumber"
                     
                 ></v-text-field>
             </v-col>
 
             <v-col md="6" cols="12">
+                <!-- Modal para la fecha -->
                 <v-menu
                     ref="menu1"
                     v-model="menu1"
@@ -130,30 +126,28 @@
                     max-width="290px"
                     min-width="290px"
                     >
-          <template v-slot:activator="{ on }">
-              <v-text-field
-                v-model="date_of_birth"
-                label="Fecha de nacimiento"
-                hint="MM/DD/AAAA"
-                persistent-hint
-                prepend-icon="event"
-                @blur="date = parseDate(date_of_birth)"
-                v-on="on"
-                ></v-text-field>
-            
-          </template>
-          <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
+                  <template v-slot:activator="{ on }">
+                      <v-text-field
+                        v-model="date_of_birth"
+                        :label="birthDate"
+                        :hint="dateFormat"
+                        persistent-hint
+                        prepend-icon="event"
+                        @blur="date = parseDate(date_of_birth)"
+                        v-on="on"
+                        ></v-text-field>                   
+                  </template>
+                  <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
                 </v-menu>
             </v-col>
-
         </v-row>
         <v-row>
             <v-col md="6" cols="12">
-                <label for="genre">Género</label>
+                <label for="genre">{{ genre }}</label>
                 <v-radio-group v-model="row" row name="genre">
-                    <v-radio label="Masculino" value="M"></v-radio>
-                    <v-radio label="Femenino" value="F"></v-radio>
-                    <v-radio label="Otro" value="O"></v-radio>
+                    <v-radio :label="male" value="M"></v-radio>
+                    <v-radio :label="female" value="F"></v-radio>
+                    <v-radio :label="other" value="O"></v-radio>
                 </v-radio-group>
             </v-col>
 
@@ -162,7 +156,7 @@
                     v-model="def_language"
                     :items="def_language_items"
                     :rules="[v => !!v || 'Selecciona un lenguaje por defecto.']"
-                    label="Lenguaje por defecto" 
+                    :label="defaultLanguage" 
                     required
                 ></v-select>
             </v-col>
@@ -172,8 +166,8 @@
             <v-col md="6" cols="12">
                 <v-checkbox
                     v-model="checkbox_terms"
-                    :rules="[v => !!v || 'Debes estar de acuerdo.']"
-                    label="Estoy de acuerdo con los Términos y Condiciones."
+                    :rules="[v => !!v || mustAgree ]"
+                    :label="iAgree"
                     required 
                     ></v-checkbox>
             </v-col>
@@ -181,51 +175,46 @@
             <v-col md="6" cols="12">
                 <v-checkbox
                     v-model="checkbox_notifications"
-                    label="Quiero recibir notificaciones en mi correo."
-                    
+                    :label="receiveNotifications"                  
                     ></v-checkbox>
             </v-col>
         </v-row>
             
             <div class="registry-buttons">
                 <v-btn
-            :disabled="!valid"
-            color="success secondary--text"
-            class="mr-4"
-            @click="validate"
-            >
-            Validar y enviar
-            </v-btn>
+                  :disabled="!valid"
+                  color="success secondary--text"
+                  class="mr-4"
+                  @click="validate"
+                  >
+                  {{ validateAndSend }}
+                  </v-btn>
 
             <v-btn
             color="error"
             class="mr-4"
             @click="reset"
             >
-            Resetear campos
+            {{ resetFields }}
             </v-btn>
-            </div>
-            
+            </div>           
         </v-form>
-
     </v-card>
-    </v-row>
-    
-  
+    </v-row>  
 </template>
 
 <script>
   export default {
       name: 'RegistryLogin',
       data: vm => ({
-      registryMessage: '¡Regístrate ahora!',
+      registryTitle: '¡Regístrate ahora!',
       valid: true,
       first_name: '',
       firstNameRules: [
         v => !!v || 'El nombre es obligatorio',
       ],
       middle_name: '',
-      email: '',
+      user_email: '',
       emailRules: [
         v => !!v || 'El E-mail es obligatorio',
         v => /.+@.+\..+/.test(v) || 'El E-mail debe ser válido',
@@ -246,7 +235,7 @@
       date_of_birth: '',
       receive_notifications: '',
       show1: false,
-      password: '',
+      user_password: '',
         rules: {
           required: value => !!value || 'La contraseña es obligatoria.',
           min: v => v.length >= 6 || 'Al menos 6 caracteres',
@@ -274,8 +263,32 @@
       
       checkbox_notifications: false,
       date: new Date().toISOString().substr(0, 10),
-        dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
-        menu1: false
+      dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
+      menu1: false,
+
+      // Strings
+      firstName: 'Primer nombre',
+      middleName: 'Segundo nombre',
+      lastName: 'Primer apellido',
+      middleLastName: 'Segundo apellido',
+      idType: 'Nac.',
+      idNumber: 'Número de identificación',
+      email: 'Correo electónico',
+      password: 'Contraseña',
+      confirmPassword: 'Confirme su contraseña',
+      areaCode: 'Código de área',
+      phoneNumber: 'Número telefónico',
+      birthDate: 'Fecha de nacimiento',
+      gengre: 'Género',
+      male: 'Masculino',
+      female: 'Femenino',
+      other: 'Otro',
+      defaultLanguage: 'Idioma por defecto',
+      iAgree: 'Estoy de acuerdo con los términos y condiciones.',
+      mustAgree: 'Debes estar de acuerdo',
+      receiveNotifications: 'Quiero recibir notificaciones a mi correo.',
+      validateAndSend: 'Validar y enviar',
+      resetFields: 'Resetear campos'
     }),
 
 

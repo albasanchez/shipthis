@@ -1,9 +1,9 @@
 <template>
   <v-row id="Banner">
         <v-col cols="12" align="center" align-self="center">
-          <h2 class="font-weight-medium">{{ message1 }}</h2>
-          <h1 class="font-weight-bold">{{ message2 }}</h1>
-          <h2 class="font-weight-medium">{{ message3 }}</h2>
+          <h2 class="font-weight-medium">{{ bannerMessage1 }}</h2>
+          <h1 class="font-weight-bold">{{ bannerMessage2 }}</h1>
+          <h2 class="font-weight-medium">{{ bannerMessage3 }}</h2>
         </v-col>
       </v-row>
 </template>
@@ -12,9 +12,11 @@
 export default {
 name: "Banner",
   data: () => ({
-    message1: "Los mejores en",
-    message2: "recolección y entrega",
-    message3: "de paquetes"
+
+    // Strings
+    bannerMessage1: "Los mejores en",
+    bannerMessage2: "recolección y entrega",
+    bannerMessage3: "de paquetes"
   }),
 };
 </script>

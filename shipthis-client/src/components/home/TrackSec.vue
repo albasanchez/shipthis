@@ -1,6 +1,7 @@
 <template>
   <v-row id="TrackSec">
         <v-col align-self="center" align="center">
+          <!-- Componente de input para buscar según ID Tracking -->
           <TrackingBox></TrackingBox>
         </v-col>
       </v-row>

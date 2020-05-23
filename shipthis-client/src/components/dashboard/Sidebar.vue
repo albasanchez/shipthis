@@ -16,7 +16,7 @@
           icon
           @click.stop="mini = !mini"
         >
-          <v-icon class="white--text">mdi-chevron-left</v-icon>
+          <v-icon class="white--text"> {{ minimizeIcon }} </v-icon>
         </v-btn>
       </v-list-item>
 
@@ -24,7 +24,7 @@
 
       <v-list dense>
         <v-list-item class="sidebar-item"
-          v-for="item in items"
+          v-for="item in sidebarItems"
           :key="item.title"
           link @click="goRoute(item.route)"
         >
@@ -46,7 +46,7 @@
     data () {
       return {
         drawer: true,
-        items: [
+        sidebarItems: [
           { title: 'Escritorio', icon: 'dashboard', route:'HomeUser' },
           { title: 'Mi Perfil', icon: 'mdi-account', route:'UserProfile' },
           { title: 'Historial', icon: 'mdi-history', route:'' },
@@ -55,7 +55,8 @@
         ],
         mini: true,
         right: true,
-        expandOnHover: true
+        expandOnHover: true,
+        minimizeIcon: 'mdi-chevron-left'
       }
     },
     methods: {
