@@ -5,8 +5,9 @@ import { Rol } from '../rol/rol.entity';
 import { UserdataStatus } from '../userdata/constants/user-status.enum';
 import { RolNotFoundException } from '../../common/exceptions/rol-not-found.exception';
 import { Person } from '../person/person.entity';
-import { genSalt, hash } from 'bcryptjs';
+import { genSalt, hash, compare } from 'bcryptjs';
 import { UserdataRegistrationType } from '../userdata/constants/user-registration.enum';
+import { emit } from 'cluster';
 
 @EntityRepository(Userdata)
 export class AuthRepository extends Repository<Userdata> {
@@ -15,7 +16,13 @@ export class AuthRepository extends Repository<Userdata> {
     reg_type: string,
     rol_name: string,
   ): Promise<Userdata> {
-    const { useremail, username, password, ...detail } = signupDto;
+    const {
+      useremail,
+      username,
+      password,
+      date_of_birth,
+      ...detail
+    } = signupDto;
     //Creating Userdata structure
     const user = new Userdata();
     user.email = useremail;
@@ -42,9 +49,21 @@ export class AuthRepository extends Repository<Userdata> {
     user.rol = defaulRol;
     //creating person structure
     const profile: Person = detail as Person;
+    try {
+      profile.date_of_birth = new Date(date_of_birth);
+    } catch (error) {}
     //assigning person profile to user
     user.person = profile;
     //saving user on DB
     return this.save(user);
+  }
+
+  async validateUser(email: string, password: string): Promise<any> {
+    const user: Userdata = await this.findOne({ where: { email: email } });
+    if (user) {
+      const isMatch = await compare(password, user.password);
+      if (isMatch) return user;
+    }
+    return null;
   }
 }

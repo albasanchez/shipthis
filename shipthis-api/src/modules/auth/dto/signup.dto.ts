@@ -5,8 +5,8 @@ import {
   IsIn,
   IsEmail,
   IsDecimal,
-  IsDate,
   IsBoolean,
+  IsDateString,
 } from 'class-validator';
 import { Person } from '../../person/person.entity';
 export class SignupDto {
@@ -17,7 +17,6 @@ export class SignupDto {
 
   @IsOptional()
   @IsString()
-  @IsEmail()
   username: string;
 
   @IsNotEmpty()
@@ -33,7 +32,6 @@ export class SignupDto {
   first_name: string;
 
   @IsOptional()
-  @IsNotEmpty()
   @IsString()
   middle_name: string;
 
@@ -42,7 +40,6 @@ export class SignupDto {
   last_name: string;
 
   @IsOptional()
-  @IsNotEmpty()
   @IsString()
   second_last_name: string;
 
@@ -63,9 +60,9 @@ export class SignupDto {
   @IsDecimal()
   phone_number: string;
 
-  @IsDate()
+  @IsString()
   @IsNotEmpty()
-  date_of_birth: Date;
+  date_of_birth: string;
 
   @IsNotEmpty()
   @IsString()

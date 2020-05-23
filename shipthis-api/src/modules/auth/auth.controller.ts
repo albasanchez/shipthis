@@ -1,4 +1,13 @@
-import { Controller, Get, UseGuards, Req, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  UseGuards,
+  Req,
+  Body,
+  Post,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { SignupDto } from './dto';
@@ -19,5 +28,11 @@ export class AuthController {
       req.user,
     );
     return this._authService.googleLogin(signupData);
+  }
+
+  @Post('registration')
+  @UsePipes(ValidationPipe)
+  noferedatedRegidstration(@Body() user: SignupDto): Promise<any> {
+    return this._authService.regularSignup(user);
   }
 }

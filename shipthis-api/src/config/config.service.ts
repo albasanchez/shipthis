@@ -1,7 +1,6 @@
 import * as fs from 'fs';
 import { parse } from 'dotenv';
 import { AppLoggerService } from 'src/log/applogger.service';
-import { throws } from 'assert';
 
 export class ConfigService {
   private readonly envConfig: { [key: string]: string };

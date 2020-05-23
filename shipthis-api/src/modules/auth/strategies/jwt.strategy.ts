@@ -5,7 +5,7 @@ import { ConfigService } from 'src/config/config.service';
 import { Configuration } from 'src/config/config.keys';
 import { AuthRepository } from '../auth.repository';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IJwtPayload } from '../jwt-payload.interace';
+import { IJwtPayload } from '../payloads/jwt-payload.interace';
 import { UserdataStatus } from 'src/modules/userdata/constants/user-status.enum';
 
 @Injectable()

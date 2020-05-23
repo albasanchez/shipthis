@@ -10,6 +10,7 @@ import { ShipthisException } from '../exceptions/abstract.exception';
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
+    console.log('exception :>> ', exception);
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();
@@ -24,9 +25,13 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? exception.getErrorMessage()
         : 'Unknown Error';
 
+    const msg =
+      exception instanceof Error ? exception.message : 'Unknown Error';
+
     response.status(status).json({
       statusCode: status,
-      errorMesagge: message,
+      shipthisMesagge: message,
+      message: msg,
       timestamp: new Date().toISOString(),
       path: request.url,
     });

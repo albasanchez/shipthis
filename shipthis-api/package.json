@@ -34,6 +34,7 @@
     "@types/dotenv": "^8.2.0",
     "bcrypt": "^4.0.1",
     "bcryptjs": "^2.4.3",
+    "class-transformer": "^0.2.3",
     "class-validator": "^0.12.2",
     "dotenv": "^8.2.0",
     "helmet": "^3.22.0",

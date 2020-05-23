@@ -1,4 +1,4 @@
-import { RolName } from '../rol/constants/rol-name.enum';
+import { RolName } from '../../rol/constants/rol-name.enum';
 
 export interface IJwtPayload {
   id: number;

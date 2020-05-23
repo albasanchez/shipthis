@@ -5,10 +5,11 @@ import { JwtService } from '@nestjs/jwt';
 import { SignupDto } from './dto';
 import { UserdataRegistrationType } from '../userdata/constants/user-registration.enum';
 import { RolName } from '../rol/constants/rol-name.enum';
-import { IJwtPayload } from './jwt-payload.interace';
+import { IJwtPayload } from './payloads/jwt-payload.interace';
 import { Userdata } from '../userdata/userdata.entity';
 import { GenderType } from '../person/constants/gender.enum';
 import { AppLoggerService } from 'src/log/applogger.service';
+import { UserAlreadyRegisteredException } from 'src/common/exceptions/user-already-registered.exception';
 
 @Injectable()
 export class AuthService {
@@ -45,6 +46,45 @@ export class AuthService {
       user = posibleUser;
     }
 
+    const payload: IJwtPayload = {
+      id: user.user_id,
+      email: user.email,
+      username: user.username,
+      rol: user.rol.name as RolName,
+    };
+    const token = await this._jwtService.sign(payload);
+    const { password, ...userdata } = user;
+    return { token, userdata };
+  }
+
+  async regularSignup(
+    signup: SignupDto,
+  ): Promise<{ token: string; userdata: any }> {
+    this._appLogger.log(
+      'No federated registration: User trying to sign up with form registration',
+    );
+    //validating email no registeres
+    const { useremail } = signup;
+
+    const posibleUser = await this._authRepository.findOne({
+      where: { email: useremail },
+    });
+
+    let user: Userdata;
+
+    if (posibleUser) {
+      this._appLogger.log('Registered email trying to register again');
+      throw new UserAlreadyRegisteredException();
+    }
+
+    this._appLogger.log('Registering new user. Registration type : REGULAR');
+    user = await this._authRepository.signup(
+      signup,
+      UserdataRegistrationType.REGULAR,
+      RolName.CLIENT,
+    );
+
+    this._appLogger.log('NEW USER regitered successfully');
     const payload: IJwtPayload = {
       id: user.user_id,
       email: user.email,
