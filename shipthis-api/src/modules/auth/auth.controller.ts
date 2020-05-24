@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
-import { SignupDto, LoginDto } from './dto';
+import { SignupDto, LoginDto, RecoverUserDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
@@ -39,5 +39,11 @@ export class AuthController {
   @UsePipes(ValidationPipe)
   nofederatedLogin(@Body() credentials: LoginDto): Promise<any> {
     return this._authService.regularLogin(credentials);
+  }
+
+  @Post('recoveruser')
+  @UsePipes(ValidationPipe)
+  recoverUser(@Body() recoverData: RecoverUserDto) {
+    return this._authService.recoverUser(recoverData);
   }
 }

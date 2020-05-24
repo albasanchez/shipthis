@@ -2,17 +2,21 @@ import { Injectable } from '@nestjs/common';
 import { AuthRepository } from './auth.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { SignupDto, LoginDto } from './dto';
+import { SignupDto, LoginDto, RecoverUserDto } from './dto';
 import { UserdataRegistrationType } from '../userdata/constants/user-registration.enum';
 import { RolName } from '../rol/constants/rol-name.enum';
 import { IJwtPayload } from './payloads/jwt-payload.interace';
 import { Userdata } from '../userdata/userdata.entity';
 import { GenderType } from '../person/constants/gender.enum';
 import { AppLoggerService } from 'src/log/applogger.service';
-import { UserAlreadyRegisteredException } from 'src/common/exceptions/user-already-registered.exception';
-import { WrongCredentialsException } from 'src/common/exceptions/wrong-credentials.exception';
-import { UserNotFoundException } from 'src/common/exceptions/user-not-found.exception';
-import { compare } from 'bcryptjs';
+import { compare, genSalt, hash } from 'bcryptjs';
+import { UserdataStatus } from '../userdata/constants/user-status.enum';
+import { UserAlreadyRegisteredException } from 'src/common/exceptions';
+import { WrongCredentialsException } from 'src/common/exceptions';
+import { UserNotFoundException } from 'src/common/exceptions';
+import { UserFederatedException } from 'src/common/exceptions';
+import { WrongRecoveryCredentialsException } from 'src/common/exceptions';
+import { BlockedUserException } from 'src/common/exceptions';
 
 @Injectable()
 export class AuthService {
@@ -108,6 +112,55 @@ export class AuthService {
 
     this._appLogger.log('User logged in successfully');
     return this.returnUser(user);
+  }
+
+  async recoverUser(recoverData: RecoverUserDto): Promise<any> {
+    const { useremail, document } = recoverData;
+
+    const user: Userdata = await this._authRepository.findOne({
+      where: { email: useremail },
+    });
+
+    if (!user) {
+      this._appLogger.log('User not found');
+      throw new UserNotFoundException();
+    }
+
+    if (user.status === UserdataStatus.BLOCKED) {
+      this._appLogger.log('Impossible to recover blocked rated users');
+      throw new BlockedUserException();
+    }
+
+    if (user.registration_type !== UserdataRegistrationType.REGULAR) {
+      this._appLogger.log('Impossible to recover federated users');
+      throw new UserFederatedException();
+    }
+
+    if (user.person.document !== document) {
+      this._appLogger.log('Wrong identity document provided');
+      throw new WrongRecoveryCredentialsException();
+    }
+
+    const newPassword = Math.random()
+      .toString(36)
+      .slice(-10);
+    console.log('newPassword :>> ', newPassword);
+    const salt = await genSalt(10);
+    const saltedPassword = await hash(newPassword, salt);
+
+    await this._authRepository
+      .createQueryBuilder()
+      .update()
+      .set({ password: saltedPassword, status: UserdataStatus.RESETED })
+      .where('email = :email', { email: useremail })
+      .execute();
+
+    /*******
+    Send email with new password
+    Insert code here
+    ********/
+
+    return { response: 'New password set on user successfully' };
   }
 
   async returnUser(user: Userdata): Promise<{ token: string; userdata: any }> {
