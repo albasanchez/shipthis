@@ -3,9 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommentBoxRepository } from './comment-box.repository';
 import { CommentBoxController } from './comment-box.controller';
 import { CommentBoxService } from './comment-box.service';
+import { AppLoggerModule } from 'src/log/applogger.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CommentBoxRepository])],
+  imports: [TypeOrmModule.forFeature([CommentBoxRepository]), AppLoggerModule],
   controllers: [CommentBoxController],
   providers: [CommentBoxService],
 })

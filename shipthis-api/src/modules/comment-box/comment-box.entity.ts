@@ -11,8 +11,8 @@ export class CommentBox extends BaseEntity {
   @PrimaryGeneratedColumn()
   comment_id: number;
 
-  @Column({ type: 'timestamp', nullable: false, name: 'time_mark' })
-  time_mark: Timestamp;
+  @Column({ type: 'date', nullable: false, name: 'time_mark' })
+  time_mark: Date;
 
   @Column({
     type: 'varchar',

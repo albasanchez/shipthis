@@ -10,7 +10,7 @@ import {
 import { Trajectory } from '../trajectory/trajectory.entity';
 import { Place } from '../place/place.entity';
 
-@Entity('check_box')
+@Entity('check_point')
 export class CheckPoint extends BaseEntity {
   @PrimaryGeneratedColumn()
   check_point_id: number;

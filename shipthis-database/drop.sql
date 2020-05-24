@@ -10,6 +10,6 @@ DROP TABLE item_price_hist;
 DROP TABLE item_type;
 DROP TABLE category;
 DROP TABLE place;
-DROP TABLE person;
 DROP TABLE userdata;
+DROP TABLE person;
 DROP TABLE rol;
