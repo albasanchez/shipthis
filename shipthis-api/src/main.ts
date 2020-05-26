@@ -21,6 +21,7 @@ async function bootstrap() {
   app.useLogger(new AppLoggerService());
 
   app.use(helmet());
+  app.enableCors();
 
   app.setGlobalPrefix('shipthisapi/v1');
 
