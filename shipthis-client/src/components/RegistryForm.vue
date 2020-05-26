@@ -144,7 +144,7 @@
         <v-row>
             <v-col md="6" cols="12">
                 <label for="genre">{{ genre }}</label>
-                <v-radio-group v-model="row" row name="genre">
+                <v-radio-group v-model="user_genre" row name="genre">
                     <v-radio :label="male" value="M"></v-radio>
                     <v-radio :label="female" value="F"></v-radio>
                     <v-radio :label="other" value="O"></v-radio>
@@ -248,6 +248,7 @@
       identificationRules: [
         v => !!v || 'El documento de identidad es obligatorio',
       ],
+      user_genre: "",
       identification_type: 'V',
       identification_type_items: [
         'V',

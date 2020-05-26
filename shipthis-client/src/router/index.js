@@ -6,6 +6,7 @@ import UserProfile from "../views/UserProfile.vue";
 import Navbar from "../components/navbar/Navbar.vue";
 import Footer from "../components/Footer.vue";
 import HomeUser from "../views/HomeUser.vue";
+import NewOrder from "../views/NewOrder.vue";
 
 Vue.use(VueRouter);
 
@@ -38,6 +39,13 @@ const routes = [
     name: "UserProfile",
     components: {
       default: UserProfile
+    }
+  },
+  {
+    path: "/NewOrder",
+    name: "NewOrder",
+    components: {
+      default: NewOrder
     }
   }
 ];

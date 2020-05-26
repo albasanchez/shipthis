@@ -16,6 +16,7 @@
 
 <script>
 import DashboardCard from './DashboardCard.vue';
+// import axios from 'axios';
 
 export default {
     name: "Dashboard",
@@ -24,13 +25,13 @@ export default {
     },
     data: () => ({
         helloMessage: 'Hola,',
-        username: 'David',
+        username: "David",
         dashItems: [
             { id: 1, name: "Mi perfil", desc: "Configuración de mi cuenta y datos personales.", img: "dash-user.png", route: 'UserProfile' },
             { id: 2, name: "Historial de envíos", desc: "Consultar mis órdenes anteriores.", img: "dash-historial.png", route: '' },
-            { id: 3, name: "Generar una nueva orden", desc: "¡Quiero hacer un envío!", img: "dash-order.png", route: '' }
+            { id: 3, name: "Generar una nueva orden", desc: "¡Quiero hacer un envío!", img: "dash-order.png", route: 'NewOrder' }
         ]
-    })
+    }),
 }
 </script>
 

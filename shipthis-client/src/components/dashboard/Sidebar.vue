@@ -50,7 +50,7 @@
           { title: 'Escritorio', icon: 'dashboard', route:'HomeUser' },
           { title: 'Mi Perfil', icon: 'mdi-account', route:'UserProfile' },
           { title: 'Historial', icon: 'mdi-history', route:'' },
-          { title: 'Nuevo envío', icon: 'local_shipping', route:'' },
+          { title: 'Nuevo envío', icon: 'local_shipping', route:'NewOrder' },
           { title: 'Cerrar sesión', icon: 'cancel', route:'' }
         ],
         mini: true,
