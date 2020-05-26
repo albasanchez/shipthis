@@ -9,14 +9,18 @@ import { IJwtPayload } from './payloads/jwt-payload.interace';
 import { Userdata } from '../userdata/userdata.entity';
 import { GenderType } from '../person/constants/gender.enum';
 import { AppLoggerService } from 'src/log/applogger.service';
-import { compare, genSalt, hash } from 'bcryptjs';
+import { UserAlreadyRegisteredException } from 'src/common/exceptions/user-already-registered.exception';
+import { WrongCredentialsException } from 'src/common/exceptions/wrong-credentials.exception';
+import { UserNotFoundException } from 'src/common/exceptions/user-not-found.exception';
+import { SendService } from '../send-email/send.service';
+import { SendMessageDto } from '../send-email/dto/sendMessage.dto';
 import { UserdataStatus } from '../userdata/constants/user-status.enum';
-import { UserAlreadyRegisteredException } from 'src/common/exceptions';
-import { WrongCredentialsException } from 'src/common/exceptions';
-import { UserNotFoundException } from 'src/common/exceptions';
 import { UserFederatedException } from 'src/common/exceptions';
 import { WrongRecoveryCredentialsException } from 'src/common/exceptions';
 import { BlockedUserException } from 'src/common/exceptions';
+import { genSalt, hash, compare } from 'bcryptjs';
+import { SendRecoverPasswordDto } from '../send-email/dto/sendRecoverPassword.dto';
+
 
 @Injectable()
 export class AuthService {
@@ -25,6 +29,7 @@ export class AuthService {
     private readonly _authRepository: AuthRepository,
     private readonly _jwtService: JwtService,
     private readonly _appLogger: AppLoggerService,
+    private readonly _sendEmail: SendService
   ) {}
 
   async googleLogin(
@@ -49,6 +54,10 @@ export class AuthService {
         UserdataRegistrationType.GOOGLE,
         RolName.CLIENT,
       );
+      
+      const userDto = new SendMessageDto(user.email, user.person.first_name, user.person.last_name)
+      this._sendEmail.send(userDto, 1)
+
     } else {
       user = posibleUser;
     }
@@ -82,6 +91,9 @@ export class AuthService {
       UserdataRegistrationType.REGULAR,
       RolName.CLIENT,
     );
+    
+    const userDto = new SendMessageDto(user.email, user.person.first_name, user.person.last_name)
+    this._sendEmail.send(userDto, 1);
 
     this._appLogger.log('NEW USER regitered successfully');
     return this.returnUser(user);
@@ -109,7 +121,7 @@ export class AuthService {
       this._appLogger.log('Wrong credentias provided');
       throw new WrongCredentialsException();
     }
-
+    
     this._appLogger.log('User logged in successfully');
     return this.returnUser(user);
   }
@@ -144,6 +156,10 @@ export class AuthService {
     const newPassword = Math.random()
       .toString(36)
       .slice(-10);
+    
+    const userDto = new SendRecoverPasswordDto(user.email, user.person.first_name, user.person.last_name, newPassword)
+    this._sendEmail.send(userDto, 3)
+    
     console.log('newPassword :>> ', newPassword);
     const salt = await genSalt(10);
     const saltedPassword = await hash(newPassword, salt);

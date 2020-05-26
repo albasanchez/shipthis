@@ -23,6 +23,7 @@ export class AuthRepository extends Repository<Userdata> {
       date_of_birth,
       ...detail
     } = signupDto;
+  
     //Creating Userdata structure
     const user = new Userdata();
     user.email = useremail;
@@ -30,6 +31,7 @@ export class AuthRepository extends Repository<Userdata> {
     user.registration_type = reg_type;
     user.registration_date = new Date();
     user.status = UserdataStatus.ACTIVE;
+
     //hashing password
     if (reg_type === UserdataRegistrationType.REGULAR) {
       const salt = await genSalt(10);
@@ -49,9 +51,12 @@ export class AuthRepository extends Repository<Userdata> {
     user.rol = defaulRol;
     //creating person structure
     const profile: Person = detail as Person;
+
     try {
-      profile.date_of_birth = new Date(date_of_birth);
-    } catch (error) {}
+      profile.date_of_birth = new Date();
+    } catch (error) {
+     
+    }
     //assigning person profile to user
     user.person = profile;
     //saving user on DB

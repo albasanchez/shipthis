@@ -8,7 +8,7 @@ import {
   IsBoolean,
   IsDateString,
 } from 'class-validator';
-import { Person } from '../../person/person.entity';
+
 export class SignupDto {
   @IsOptional()
   @IsString()

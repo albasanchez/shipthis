@@ -14,8 +14,11 @@ import { RolModule } from './rol/rol.module';
 import { TrajectoryModule } from './trajectory/trajectory.module';
 import { UserdataModule } from './userdata/userdata.module';
 import { AuthModule } from './auth/auth.module';
+import { SendModule } from './send-email/send.module';
+
 
 export const indexModules = [
+  SendModule,
   CategoryModule,
   CheckPointModule,
   CommentBoxModule,

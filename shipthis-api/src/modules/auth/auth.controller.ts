@@ -26,7 +26,8 @@ export class AuthController {
     const signupData: SignupDto = this._authService.generateSignuoDtoFromGoogle(
       req.user,
     );
-    return this._authService.googleLogin(signupData);
+   return this._authService.googleLogin(signupData);
+
   }
 
   @Post('registration')

@@ -11,9 +11,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from 'src/config/config.service';
 import { Configuration } from 'src/config/config.keys';
 import { AppLoggerModule } from 'src/log/applogger.module';
+import { SendService } from '../send-email/send.service';
+import { SendModule } from '../send-email/send.module';
+
 
 @Module({
   imports: [
+    SendModule,
     TypeOrmModule.forFeature([AuthRepository]),
     ConfigModule,
     PassportModule.register({

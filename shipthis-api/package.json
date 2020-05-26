@@ -21,7 +21,11 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "migration:generate": "ts-node node_modules/.bin/typeorm migration:generate --config ./orm.config.json --name",
     "migration:run": "ts-node node_modules/.bin/typeorm migration:run --config ./orm.config.json",
-    "migration:revert": "ts-node node_modules/.bin/typeorm migration:revert --config ./orm.config.json"
+    "migration:revert": "ts-node node_modules/.bin/typeorm migration:revert --config ./orm.config.json",
+    "migrationwindows:create": "ts-node node_modules/typeorm/cli.js migration:create --config ./orm.config.json --name",
+    "migrationwindows:generate": "ts-node node_modules/typeorm/cli.js migration:generate --config ./orm.config.json --name",
+    "migrationwindows:run": "ts-node node_modules/typeorm/cli.js migration:run --config ./orm.config.json",
+    "migrationwindows:reverse": "ts-node node_modules/typeorm/cli.js migration:revert --config ./orm.config.json"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
@@ -31,17 +35,21 @@
     "@nestjs/platform-express": "^7.0.0",
     "@nestjs/swagger": "^4.5.5",
     "@nestjs/typeorm": "^7.0.0",
+    "@sendgrid/mail": "^7.1.1",
     "@types/dotenv": "^8.2.0",
+    "base64-img": "^1.0.4",
     "bcrypt": "^4.0.1",
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.12.2",
     "dotenv": "^8.2.0",
     "helmet": "^3.22.0",
+    "hogan.js": "^3.0.2",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
+    "pdfkit": "^0.11.0",
     "pg": "^8.2.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
@@ -70,9 +78,9 @@
     "supertest": "^4.0.2",
     "ts-jest": "25.2.1",
     "ts-loader": "^6.2.1",
-    "ts-node": "^8.6.2",
+    "ts-node": "^8.10.1",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^3.7.4"
+    "typescript": "^3.9.3"
   },
   "jest": {
     "moduleFileExtensions": [
