@@ -204,6 +204,7 @@
 </template>
 
 <script>
+
   export default {
       name: 'RegistryLogin',
       data: vm => ({
@@ -290,8 +291,9 @@
       receiveNotifications: 'Quiero recibir notificaciones a mi correo.',
       validateAndSend: 'Validar y enviar',
       resetFields: 'Resetear campos'
-    }),
 
+
+    }),
 
     methods: {
       validate () {
