@@ -46,7 +46,6 @@ export default {
       { id: "6", name: 'Acceder', alter:'Escritorio', link: 'HomeUser' , activateLogin: true }
     ],
     activeColor: '',
-    loggedIn: false,
   }),
   components: {
     LoginForm

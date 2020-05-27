@@ -2,7 +2,7 @@
     <!-- Navbar de la pagina -->
     <v-app-bar id="Navbar"
       absolute class="navbar-color " style="position: sticky"
-      elevate-on-scroll
+      elevate-on-scroll text
     >
 
       <!-- Logo -->
@@ -18,7 +18,7 @@
         <template v-slot:activator="{ on, attrs }" >
           <v-btn class="mr-12 ml-3 px-0"
             v-bind="attrs"
-            v-on="on" flat
+            v-on="on" 
           >
             EN
           </v-btn>

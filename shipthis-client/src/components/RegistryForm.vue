@@ -236,10 +236,10 @@
       receive_notifications: '',
       show1: false,
       user_password: '',
-        rules: {
-          required: value => !!value || 'La contraseña es obligatoria.',
-          min: v => v.length >= 6 || 'Al menos 6 caracteres',
-        },
+      rules: {
+        required: value => !!value || 'La contraseña es obligatoria.',
+        min: v => v.length >= 6 || 'Al menos 6 caracteres',
+      },
       repeat_password: '',
       repeatPasswordRules: [
         v => (v && v.length >= 5) || 'La contraseña debe tener al menos 5 dígitos.',
