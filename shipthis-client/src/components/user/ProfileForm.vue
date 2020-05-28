@@ -6,7 +6,7 @@
           <v-text-field
             v-model="user_email"
             :rules="emailRules"
-            :label="email"
+            :label='$t("labels.email")'
             required
           ></v-text-field>
         </v-col>
@@ -15,7 +15,7 @@
             v-model="default_language"
             :items="default_language_items"
             :rules="[v => !!v || 'Selecciona un lenguaje por defecto.']"
-            :label="defaultLanguage"
+            :label='$t("labels.defaultLanguage")'
             required
           ></v-select>
         </v-col>
@@ -25,28 +25,28 @@
           <v-text-field
             v-model="first_name"
             :rules="firstNameRules"
-            :label="firstName"
+            :label='$t("labels.firstName")'
             required
           ></v-text-field>
         </v-col>
         <v-col md="3" cols="12">
           <v-text-field 
             v-model="middle_name"         
-            :label="middleName"                  
+            :label='$t("labels.middleName")'                  
           ></v-text-field>
         </v-col>
         <v-col md="3" cols="12">
           <v-text-field
             v-model="last_name"
             :rules="lastNameRules"
-            :label="lastName"
+            :label='$t("labels.lastName")'
             required
           ></v-text-field>
         </v-col>
         <v-col md="3" cols="12">
           <v-text-field 
             v-model="middle_last_name"
-            :label="middleLastName"                    
+            :label='$t("labels.middleLastName")'                    
             ></v-text-field>
         </v-col>
       </v-row>
@@ -58,7 +58,7 @@
             :rules="[rules.required, rules.min]"
             :type="show1 ? 'text' : 'password'"
             name="actualPassword"
-            :label="actualPassword"
+            :label='$t("labels.actualPassword")'
             hint="Al menos 6 caracteres"
             counter
             @click:append="show1 = !show1"
@@ -71,7 +71,7 @@
             :rules="[rules.required, rules.min]"
             :type="show2 ? 'text' : 'password'"
             name="new_password"
-            :label="newPassword"
+            :label='$t("labels.newPassword")'
             hint="Al menos 6 caracteres"
             counter
             @click:append="show2 = !show2"
@@ -84,7 +84,7 @@
             :rules="[rules.required, rules.min]"
             :type="show3 ? 'text' : 'password'"
             name="confirm_password"
-            :label="confirmPassword"
+            :label='$t("labels.confirmPassword")'
             hint="Al menos 6 caracteres"
             counter
             @click:append="show3 = !show3"
@@ -96,20 +96,20 @@
           <v-text-field
             v-model="area_code"
             :rules="phoneCodeRules"
-            :label="areaCode"
+            :label='$t("labels.areaCode")'
           ></v-text-field>
         </v-col>
         <v-col md="4" cols="10">
           <v-text-field 
             v-model="phone_number"
             :rules="phoneNumberRules"
-            :label="phoneNumber"             
+            :label='$t("labels.phoneNumber")'             
           ></v-text-field>
         </v-col>
         <v-col md="6" cols="12">
           <v-checkbox
             v-model="checkbox_notifications"
-            :label="receiveNotifications"                 
+            :label='$t("labels.receiveNotifications")'                 
           ></v-checkbox>
         </v-col>
       </v-row>        
@@ -120,14 +120,14 @@
             class="mr-4"
             @click="validate"
           >
-            {{ saveChanges }}
+            {{ $t("buttons.saveChanges") }}
           </v-btn>
           <v-btn
             color="error"
             class="mr-4"
             @click="reset"
           >
-            {{ resetFields }}
+            {{ $t("buttons.resetFields") }}
           </v-btn>
         </div>         
     </v-form>
@@ -180,22 +180,7 @@ export default {
           required: value => !!value || 'La contraseña es obligatoria.',
           min: v => v.length >= 6 || 'Al menos 6 caracteres',
         },
-
-        // Strings
-        email: 'Correo electrónico',
-        firstName: 'Primer nombre',
-        middleName: 'Segundo nombre',
-        lastName: 'Primer apellido',
-        middleLastName: 'Segundo apellido',
-        areaCode: 'Código de area',
-        phoneNumber: 'Número telefónico',
-        defaultLanguage: 'Idioma por defecto',
-        saveChanges: 'Guardar cambios',
-        resetFields: 'Resetear campos',
-        receiveNotifications: 'Quiero recibir notificaciones en mi correo.',
-        newPassword: 'Nueva contraseña',
-        actualPassword: 'Contraseña actual',
-        confirmPassword: 'Confirme su contraseña',
+        
     }),
     methods: {
       validate () {

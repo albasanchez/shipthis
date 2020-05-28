@@ -14,21 +14,14 @@
       <SectionsList class="d-none d-md-flex" :loggedIn="loggedIn"></SectionsList>
 
       <!-- Selector de idioma -->
-      <v-menu >
-        <template v-slot:activator="{ on, attrs }" >
-          <v-btn class="mr-12 ml-3 px-0"
-            v-bind="attrs"
-            v-on="on" 
-          >
-            EN
-          </v-btn>
-        </template>
-        <v-list v-for="language in languages" :key="language.id">
-          <v-list-item>
-            <v-list-item-title>{{ language.lang }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>   
+      <v-col cols="4" md="2" lg="1" sm="2" class="mt-8 mr-12" >
+        <v-select
+          v-model="$i18n.locale"
+          :items="languages" 
+          :label="$i18n.locale" solo
+        ></v-select> 
+      </v-col>
+      
     </v-app-bar>   
 </template>
 
@@ -45,9 +38,8 @@ export default {
         login: 'Acceder',
         activeLogin: false,
         languages: [
-          { id: "1", lang: "ES" },
-          { id: "2", lang: "EN" },
-          { id: "3", lang: "FR" }
+          "EN",
+          "ES" 
         ],
         linkToHome: '#'       
     }),

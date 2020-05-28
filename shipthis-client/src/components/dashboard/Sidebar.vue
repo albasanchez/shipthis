@@ -33,7 +33,7 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title class="white--text sidebar-item-title">{{ item.title }}</v-list-item-title>
+            <v-list-item-title class="white--text sidebar-item-title">{{ $t("sidebar."+item.title) }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -47,11 +47,11 @@
       return {
         drawer: true,
         sidebarItems: [
-          { title: 'Escritorio', icon: 'dashboard', route:'HomeUser' },
-          { title: 'Mi Perfil', icon: 'mdi-account', route:'UserProfile' },
-          { title: 'Historial', icon: 'mdi-history', route:'' },
-          { title: 'Nuevo envío', icon: 'local_shipping', route:'NewOrder' },
-          { title: 'Cerrar sesión', icon: 'cancel', route:'' }
+          { title: 'desktop', icon: 'dashboard', route:'HomeUser' },
+          { title: 'myProfile', icon: 'mdi-account', route:'UserProfile' },
+          { title: 'historial', icon: 'mdi-history', route:'' },
+          { title: 'newOrder', icon: 'local_shipping', route:'NewOrder' },
+          { title: 'signOff', icon: 'cancel', route:'' }
         ],
         mini: true,
         right: true,

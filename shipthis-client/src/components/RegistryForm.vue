@@ -7,21 +7,21 @@
             lazy-validation
         >
 
-        <h1 class="text-center secondary--text">{{ registryTitle }}</h1>
+        <h1 class="text-center secondary--text">{{ $t("registry.registryTitle") }}</h1>
 
         <v-row>
             <v-col md="3" cols="12">
                 <v-text-field
                     v-model="first_name"
                     :rules="firstNameRules"
-                    :label="firstName"
+                    :label='$t("labels.firstName")'
                     required
                     ></v-text-field>
             </v-col>
             <v-col md="3" cols="12">
                 <v-text-field 
                     v-model="middle_name"                   
-                    :label="middleName"                   
+                    :label='$t("labels.middleName")'                   
                 ></v-text-field>
             </v-col>
 
@@ -29,25 +29,24 @@
                 <v-text-field
                     v-model="last_name"
                     :rules="lastNameRules"
-                    :label="lastName"
+                    :label='$t("labels.lastName")'
                     required
                     ></v-text-field>
             </v-col>
             <v-col md="3" cols="12">
                 <v-text-field 
                     v-model="middle_last_name"                  
-                    :label="middleLastName"                 
+                    :label='$t("labels.middleLastName")'                 
                 ></v-text-field>
             </v-col>
         </v-row>
-
         <v-row>
             <v-col md="2">
                 <v-select 
                 v-model="nationality_type"
                 :items="identification_type_items"
                 :rules="[v => !!v || 'El tipo es obligatorio.']"
-                :label="idType" 
+                :label='$t("labels.idType")' 
                 required
             ></v-select>
             </v-col>
@@ -55,7 +54,7 @@
                 <v-text-field cols="2"
                     v-model="identification"
                     :rules="identificationRules"
-                    :label="idNumber"
+                    :label='$t("labels.idNumber")'
                     required
                     ></v-text-field>
             </v-col>
@@ -63,7 +62,7 @@
                 <v-text-field cols="2"
                     v-model="user_email"
                     :rules="emailRules"
-                    :label="email"
+                    :label='$t("labels.email")'
                     required
                     ></v-text-field>
             </v-col>
@@ -77,7 +76,7 @@
                     :rules="[rules.required, rules.min]"
                     :type="show1 ? 'text' : 'password'"
                     name="password"
-                    :label="password"
+                    :label='$t("labels.password")'
                     hint="Al menos 6 caracteres"
                     counter
                     @click:append="show1 = !show1"
@@ -90,7 +89,7 @@
                     :rules="[rules.required, rules.min]"
                     :type="show1 ? 'text' : 'password'"
                     name="repeat_password"
-                    :label="confirmPassword"
+                    :label='$t("labels.confirmPassword")'
                     hint="Al menos 6 caracteres"
                     counter
                     @click:append="show1 = !show1"
@@ -103,18 +102,16 @@
                 <v-text-field
                     v-model="phone_code"
                     :rules="phoneCodeRules"
-                    :label="areaCode"                   
+                    :label='$t("labels.areaCode")'                   
                     ></v-text-field>
             </v-col>
             <v-col md="4" cols="10">
                 <v-text-field 
                     v-model="phone_number"
                     :rules="phoneNumberRules"
-                    :label="phoneNumber"
-                    
+                    :label='$t("labels.phoneNumber")'            
                 ></v-text-field>
             </v-col>
-
             <v-col md="6" cols="12">
                 <!-- Modal para la fecha -->
                 <v-menu
@@ -129,7 +126,7 @@
                   <template v-slot:activator="{ on }">
                       <v-text-field
                         v-model="date_of_birth"
-                        :label="birthDate"
+                        :label='$t("registry.birthDate")'
                         :hint="dateFormat"
                         persistent-hint
                         prepend-icon="event"
@@ -143,11 +140,11 @@
         </v-row>
         <v-row>
             <v-col md="6" cols="12">
-                <label for="genre">{{ genre }}</label>
-                <v-radio-group v-model="user_genre" row name="genre">
-                    <v-radio :label="male" value="M"></v-radio>
-                    <v-radio :label="female" value="F"></v-radio>
-                    <v-radio :label="other" value="O"></v-radio>
+                <label for="gender">{{ $t("registry.gender") }}</label>
+                <v-radio-group v-model="user_gender" row name="gender">
+                    <v-radio :label='$t("registry.male")' value="M"></v-radio>
+                    <v-radio :label='$t("registry.female")' value="F"></v-radio>
+                    <v-radio :label='$t("registry.other")' value="O"></v-radio>
                 </v-radio-group>
             </v-col>
 
@@ -156,7 +153,7 @@
                     v-model="def_language"
                     :items="def_language_items"
                     :rules="[v => !!v || 'Selecciona un lenguaje por defecto.']"
-                    :label="defaultLanguage" 
+                    :label='$t("labels.defaultLanguage")' 
                     required
                 ></v-select>
             </v-col>
@@ -167,7 +164,7 @@
                 <v-checkbox
                     v-model="checkbox_terms"
                     :rules="[v => !!v || mustAgree ]"
-                    :label="iAgree"
+                    :label='$t("registry.iAgree")'
                     required 
                     ></v-checkbox>
             </v-col>
@@ -175,7 +172,7 @@
             <v-col md="6" cols="12">
                 <v-checkbox
                     v-model="checkbox_notifications"
-                    :label="receiveNotifications"                  
+                    :label='$t("labels.receiveNotifications")'                  
                     ></v-checkbox>
             </v-col>
         </v-row>
@@ -187,7 +184,7 @@
                   class="mr-4"
                   @click="validate"
                   >
-                  {{ validateAndSend }}
+                  {{ $t("buttons.validateAndSend") }}
                   </v-btn>
 
             <v-btn
@@ -195,7 +192,7 @@
             class="mr-4"
             @click="reset"
             >
-            {{ resetFields }}
+            {{ $t("buttons.resetFields") }}
             </v-btn>
             </div>           
         </v-form>
@@ -208,7 +205,7 @@
   export default {
       name: 'RegistryLogin',
       data: vm => ({
-      registryTitle: '¡Regístrate ahora!',
+      
       valid: true,
       first_name: '',
       firstNameRules: [
@@ -249,7 +246,7 @@
       identificationRules: [
         v => !!v || 'El documento de identidad es obligatorio',
       ],
-      user_genre: "",
+      user_gender: "",
       identification_type: 'V',
       identification_type_items: [
         'V',
@@ -261,38 +258,11 @@
         'Español',
         'Inglés'
       ],
-      checkbox_terms: false,
-      
+      checkbox_terms: false,   
       checkbox_notifications: false,
       date: new Date().toISOString().substr(0, 10),
       dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
       menu1: false,
-
-      // Strings
-      firstName: 'Primer nombre',
-      middleName: 'Segundo nombre',
-      lastName: 'Primer apellido',
-      middleLastName: 'Segundo apellido',
-      idType: 'Nac.',
-      idNumber: 'Número de identificación',
-      email: 'Correo electónico',
-      password: 'Contraseña',
-      confirmPassword: 'Confirme su contraseña',
-      areaCode: 'Código de área',
-      phoneNumber: 'Número telefónico',
-      birthDate: 'Fecha de nacimiento',
-      gengre: 'Género',
-      male: 'Masculino',
-      female: 'Femenino',
-      other: 'Otro',
-      defaultLanguage: 'Idioma por defecto',
-      iAgree: 'Estoy de acuerdo con los términos y condiciones.',
-      mustAgree: 'Debes estar de acuerdo',
-      receiveNotifications: 'Quiero recibir notificaciones a mi correo.',
-      validateAndSend: 'Validar y enviar',
-      resetFields: 'Resetear campos'
-
-
     }),
 
     methods: {

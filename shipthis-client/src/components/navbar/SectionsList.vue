@@ -8,17 +8,18 @@
           <!-- Si está logueado, muestra "Escritorio" y no "Acceder" -->
           <div v-if="loggedIn">
             <a class="sections-list__item d-none"  @click="activateLogin = true">
-            {{ section.name }} </a>
+            {{ $t("sections."+section.name) }} </a>
             <a class="sections-list__item"  @click="goRoute(section.link)">
             {{ section.alter }} </a>
           </div>
           <div v-else>
             <a class="sections-list__item"  @click="activateLogin = true">
-            {{ section.name }} </a>
+            {{ $t("sections."+section.name) }} </a>
           </div>
         </div>
         <div v-else>
-          <a class="sections-list__item" @click="goRoute('')" :href="section.link" >{{ section.name }}</a>
+          <a class="sections-list__item" @click="goRoute('')" :href="section.link" >
+            {{ $t("sections."+section.name) }}</a>
         </div>       
       </v-list-item>
     </v-list>
@@ -38,12 +39,12 @@ export default {
   data: () => ({
     activateLogin: false,
     sections: [
-      { id: "1", name: 'Inicio', link: '#', activateLogin: false },
-      { id: "2", name: 'Nosotros', link: '#Us', activateLogin: false },
-      { id: "3", name: 'Rastreo', link: '#TrackSec', activateLogin: false },
-      { id: "4", name: 'Servicios', link: '#Services', activateLogin: false },
-      { id: "5", name: 'Contacto', link: '#Contact', activateLogin: false },
-      { id: "6", name: 'Acceder', alter:'Escritorio', link: 'HomeUser' , activateLogin: true }
+      { id: "1", name: 'home', link: '#', activateLogin: false },
+      { id: "2", name: 'us', link: '#Us', activateLogin: false },
+      { id: "3", name: 'tracking', link: '#TrackSec', activateLogin: false },
+      { id: "4", name: 'services', link: '#Services', activateLogin: false },
+      { id: "5", name: 'contact', link: '#Contact', activateLogin: false },
+      { id: "6", name: 'access', alter:'Escritorio', link: 'HomeUser' , activateLogin: true }
     ],
     activeColor: '',
   }),

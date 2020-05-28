@@ -1,22 +1,19 @@
 <template>
   <v-row id="Banner">
         <v-col cols="12" align="center" align-self="center">
-          <h2 class="font-weight-medium">{{ bannerMessage1 }}</h2>
-          <h1 class="font-weight-bold">{{ bannerMessage2 }}</h1>
-          <h2 class="font-weight-medium">{{ bannerMessage3 }}</h2>
+          <h2 class="font-weight-medium">{{  $t("banner.theBestIn") }}</h2>
+          <h1 class="font-weight-bold">{{ $t("banner.packageAndPickUp") }}</h1>
+          <h2 class="font-weight-medium">{{ $t("banner.andDelivery") }}</h2>
         </v-col>
       </v-row>
 </template>
-
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vue-i18n/dist/vue-i18n.js"></script>
 <script>
 export default {
 name: "Banner",
   data: () => ({
 
-    // Strings
-    bannerMessage1: "Los mejores en",
-    bannerMessage2: "recolección y entrega",
-    bannerMessage3: "de paquetes"
   }),
 };
 </script>

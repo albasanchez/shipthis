@@ -2,20 +2,20 @@
   <v-form class="elevation-3" id="contact-form" ref="form" v-on:submit.prevent>
     <!--Alerts -->
     <v-alert v-model="alertSuccess" type="success" dismissible>
-      <strong>{{successMessage}}</strong>
+      <strong>{{ $t("contact.successMessage") }}</strong>
     </v-alert>
     <v-alert v-model="alertError" type="error" dismissible>
-      <strong>{{errorMessage}}</strong>
+      <strong>{{$t("contact.errorMessage")}}</strong>
     </v-alert>
     <v-row>
       <v-col cols="12" align="center" class="text-center secondary--text pa-0">
-        <h2 class="d-inline pr-1">{{ contactMessage }}</h2>
+        <h2 class="d-inline pr-1">{{ $t("contact.contactTitle") }}</h2>
         <v-icon class="d-inline secondary--text pl-1 mb-3 pb-3">{{ contactIcons.bolt }}</v-icon>
       </v-col>
     </v-row>
     <v-row>
       <v-col class="text-center secondary--text pb-2">
-        <p class="display-12 mb-0">{{ leaveSuggestion }}</p>
+        <p class="display-12 mb-0">{{ $t("contact.leaveSuggestion") }}</p>
       </v-col>
     </v-row>
     <v-row class="pt-0 mt-0">
@@ -23,8 +23,8 @@
         <v-textarea
           class="pt-0 mt-0"
           name="Message"
-          v-model="Suggestion"
-          :label="suggestionLabel"
+          v-model="suggestion"
+          :label='$t("contact.suggestionLabel")'
           :rules="commentRules"
           required
           :counter="500"
@@ -41,7 +41,7 @@
         @click="onSubmit"
         width="200"
         align="center"
-      >{{ send }}</v-btn>
+      >{{ $t("buttons.submit") }}</v-btn>
     </div>
     <v-row>
       <v-col class="text-center gray--text">
@@ -59,30 +59,22 @@ export default {
 
   data: () => ({
     alertSuccess: false,
-    successMessage: "Sugerencias registrada! Gracias por ayudarnos a mejorar!",
     alertError: false,
-    errorMessage: "Problemas de conexion. Intente mas tarde.",
     commentRules: [
       v => !!v || "El comentario no puede estar vacio",
       v => v.length <= 500 || "El comentario no puede exeder los 500 caracteres"
     ],
-    Suggestion: "",
+    suggestion: "",
 
     // Strings
-    contactMessage: "¡Ayúdanos a mejorar!",
     contactIcons: {
       bolt: "fas fa-bolt"
     },
-    leaveSuggestion:
-      "Deja tu sugerencia para mejorar la calidad de nuestra plataforma y/o servicios.",
-    suggestionLabel: "Me gustaría que...",
-    send: "Enviar",
-    contactInfo: "También puedes contactarnos a través de contacto@shipthis.com"
   }),
   methods: {
     onSubmit() {
       if (this.$refs.form.validate()) {
-        const comment = { comment: this.Suggestion };
+        const comment = { comment: this.suggestion };
         axios
           .post(
             "http://localhost:3000/shipthisapi/v1/comment-box/savecomment",

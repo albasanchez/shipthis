@@ -1,7 +1,7 @@
 <template>
   <div class="idTracking-box">
-        <v-text-field :label="idTracking" id="idTracking" class="pr-4"></v-text-field>
-        <v-btn class="success accent--text">{{ searchBtn }}</v-btn>
+        <v-text-field :label='$t("tracking.idTracking")'  id="idTracking" class="pr-4"></v-text-field>
+        <v-btn class="success accent--text">{{ $t("tracking.search") }}</v-btn>
   </div>
 </template>
 
@@ -9,8 +9,8 @@
 export default {
   name: "TrackingBox",
   data: () => ({
-    searchBtn: "Buscar",
-    idTracking: 'ID Tracking'
+
+
   }),
 }
 </script>
