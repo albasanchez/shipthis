@@ -1,3 +1,4 @@
+import { OrderHistoryDto } from './dto/order-history.dto';
 import { UserAlreadyRegisteredException } from 'src/common/exceptions/user-already-registered.exception';
 import { CheckPointRepository } from './../check-point/check-point.repository';
 import { TrajectoryRepository } from './../trajectory/trajectory.repository';
@@ -46,17 +47,7 @@ export class OrdersheetService {
   async createOrdersheet(order: CreateOrdersheetDto): Promise<any> {
     this._appLogger.log('Create ordersheet service');
     //validade user
-    const userdataRepo: UserDataRepository = await getConnection().getRepository(
-      Userdata,
-    );
-    const user: Userdata = await userdataRepo.findOne({
-      where: { email: order.useremail, status: UserdataStatus.ACTIVE },
-    });
-
-    if (!user) {
-      this._appLogger.log('Error creating ordersheet: User not found');
-      throw new UserNotFoundException();
-    }
+    const user: Userdata = await this.validateUser(order.useremail);
 
     //validate origin office
     const officeRepo: OfficeReposiroty = await getConnection().getRepository(
@@ -193,5 +184,37 @@ export class OrdersheetService {
     );
     savedOrdersheet.user.password = '';
     return savedOrdersheet;
+  }
+
+  async searchHistory(info: OrderHistoryDto): Promise<any> {
+    this._appLogger.log('Search user history orders service');
+    //Validate user
+    const user: Userdata = await this.validateUser(info.useremail);
+    const hist: Ordersheet[] = await this._ordersheetRepo.find({
+      where: { user: user },
+    });
+
+    hist.map(a => {
+      delete a.user;
+      delete a.trajectories.check_points;
+    });
+
+    return hist;
+  }
+
+  async validateUser(useremail: string): Promise<Userdata> {
+    //validade user
+    const userdataRepo: UserDataRepository = await getConnection().getRepository(
+      Userdata,
+    );
+    const user: Userdata = await userdataRepo.findOne({
+      where: { email: useremail, status: UserdataStatus.ACTIVE },
+    });
+
+    if (!user) {
+      this._appLogger.log('Error creating ordersheet: User not found');
+      throw new UserNotFoundException();
+    }
+    return user;
   }
 }

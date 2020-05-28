@@ -1,3 +1,4 @@
+import { OrderHistoryDto } from './dto/order-history.dto';
 import { OrdersheetService } from './ordersheet.service';
 import { CreateOrdersheetDto } from './dto/create-ordersheet.dto';
 import {
@@ -15,7 +16,12 @@ export class OrdersheetController {
   @Post('create')
   @UsePipes(ValidationPipe)
   async createOrdersheet(@Body() newOrder: CreateOrdersheetDto) {
-    console.log('Accedimos!!!');
     return this._orderSheetService.createOrdersheet(newOrder);
+  }
+
+  @Post('history')
+  @UsePipes(ValidationPipe)
+  async searchHistory(@Body() historyRef: OrderHistoryDto) {
+    return this._orderSheetService.searchHistory(historyRef);
   }
 }
