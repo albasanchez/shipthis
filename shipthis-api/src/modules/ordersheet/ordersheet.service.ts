@@ -140,7 +140,7 @@ export class OrdersheetService {
     newOrdersheet.origin_office = origin_office;
     newOrdersheet.order_price_hist = orderPrice;
     newOrdersheet.creation_date = new Date();
-    newOrdersheet.status = OrdersheetStatus.GENERATED;
+    newOrdersheet.status = OrdersheetStatus.DELIVERY;
     newOrdersheet.rec_fullname = order.rec_fullname;
     newOrdersheet.rec_phone_code = order.rec_phone_code;
     newOrdersheet.rec_phone_number = order.rec_phone_number;

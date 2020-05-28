@@ -1,3 +1,4 @@
+import { SimulationModule } from './simulation/simulation.module';
 import { CategoryModule } from './category/category.module';
 import { CheckPointModule } from './check-point/check-point.module';
 import { CommentBoxModule } from './comment-box/comment-box.module';
@@ -15,7 +16,6 @@ import { TrajectoryModule } from './trajectory/trajectory.module';
 import { UserdataModule } from './userdata/userdata.module';
 import { AuthModule } from './auth/auth.module';
 import { SendModule } from './send-email/send.module';
-
 
 export const indexModules = [
   SendModule,
@@ -35,4 +35,5 @@ export const indexModules = [
   TrajectoryModule,
   UserdataModule,
   AuthModule,
+  SimulationModule,
 ];

@@ -70,7 +70,7 @@ export class Ordersheet extends BaseEntity {
   @Column({
     type: 'varchar',
     enum: OrdersheetStatus,
-    default: OrdersheetStatus.GENERATED,
+    default: OrdersheetStatus.DELIVERY,
     name: 'order_status',
   })
   status: string;

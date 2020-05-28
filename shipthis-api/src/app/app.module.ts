@@ -8,11 +8,17 @@ import { Configuration } from 'src/config/config.keys';
 
 import { DatabaseModule } from 'src/database/database.module';
 import { indexModules } from 'src/modules/indexModule';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   controllers: [AppController],
   providers: [AppService],
-  imports: [...indexModules, ConfigModule, DatabaseModule],
+  imports: [
+    ...indexModules,
+    ConfigModule,
+    DatabaseModule,
+    ScheduleModule.forRoot(),
+  ],
 })
 export class AppModule {
   static port: number | string;
