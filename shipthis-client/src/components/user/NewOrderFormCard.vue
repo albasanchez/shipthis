@@ -99,7 +99,7 @@
             </v-container>
             <!-- Sección 1.3: Información del receptor -->
             <v-container fluid class="text-center form-container">
-                <h5>{{ $t("labels.receiverInformation") }}</h5>
+                <h5>{{ $t("newOrder.receiverInformation") }}</h5>
                 <v-row>
                   <v-col md="6" cols=12>
                     <v-text-field
@@ -425,6 +425,7 @@ export default {
     },
     onComplete() {     
         alert("¡Orden enviada! Pronto recibirás un correo de confirmación.")
+        this.$router.push('/ShippingHistory');
         console.log(this.order_details);
     },
     handleErrorMessage: function(errorMsg){

@@ -7,6 +7,7 @@ import Navbar from "../components/navbar/Navbar.vue";
 import Footer from "../components/Footer.vue";
 import HomeUser from "../views/HomeUser.vue";
 import NewOrder from "../views/NewOrder.vue";
+import History from "../views/History.vue";
 
 Vue.use(VueRouter);
 
@@ -46,6 +47,13 @@ const routes = [
     name: "NewOrder",
     components: {
       default: NewOrder
+    }
+  },
+  {
+    path: "/ShippingHistory",
+    name: "History",
+    components: {
+      default: History
     }
   }
 ];

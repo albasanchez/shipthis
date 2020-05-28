@@ -152,6 +152,24 @@ export default  {
         ensuranceTax: "Impuesto por seguro",
         fragilyTax: "Impusto por fragilidad",
       },
+      shippingHistory: {
+        shippingHistoryTitle: "Historial de envíos",
+        status: "Estatus",
+        destiny: "Destino",
+        id: "ID",
+        details: "Ver detalles",
+        order: "Orden",
+        close: "Cerrar",
+        createdDate: "Creada",
+        item: "Item",
+        items: "Items",
+        track: "Rastrear",
+      },
+      status: {
+        TRANSIT: "En tránsito",
+        DELIVERED: "Entregadas",
+        DELIVERY: "Por enviar",
+      }
   },
   EN: {
       labels: {
@@ -307,6 +325,24 @@ export default  {
         ensuranceTax: "Ensurance tax",
         fragilyTax: "Fragility tax",
       },
+      shippingHistory: {
+        shippingHistoryTitle: "Shipping History",
+        status: "Status",
+        destiny: "Destiny",
+        id: "ID",
+        details: "See details",
+        order: "Order",
+        close: "Close",
+        createdDate: "Created date",
+        item: "Item",
+        items: "Items",
+        track: "Track",
+      },
+      status: {
+        TRANSIT: "In transit",
+        DELIVERED: "Delivered",
+        DELIVERY: "For delivery",
+      }
   }
 }
 

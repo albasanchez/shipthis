@@ -49,7 +49,7 @@
         sidebarItems: [
           { title: 'desktop', icon: 'dashboard', route:'HomeUser' },
           { title: 'myProfile', icon: 'mdi-account', route:'UserProfile' },
-          { title: 'historial', icon: 'mdi-history', route:'' },
+          { title: 'historial', icon: 'mdi-history', route:'ShippingHistory' },
           { title: 'newOrder', icon: 'local_shipping', route:'NewOrder' },
           { title: 'signOff', icon: 'cancel', route:'' }
         ],

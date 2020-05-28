@@ -19,7 +19,11 @@ export default new Vuetify({
         error: "#FF5252",
         info: "#2196F3",
         success: "#07fcbf",
-        warning: "#FFC107"
+        warning: "#FFC107",
+        Bronce: "#e5bf99",
+        Silver: "#e3e4e5",
+        Gold: "#efb810",
+        Platinium: "#7f7679",
       }
     }
   }

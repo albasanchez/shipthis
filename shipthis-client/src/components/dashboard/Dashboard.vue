@@ -28,7 +28,7 @@ export default {
         username: "David",
         dashItems: [
             { id: 1, name: "myProfile", desc: "myProfileDesc", img: "dash-user.png", route: 'UserProfile' },
-            { id: 2, name: "historial", desc: "historialDesc", img: "dash-historial.png", route: '' },
+            { id: 2, name: "historial", desc: "historialDesc", img: "dash-historial.png", route: 'ShippingHistory' },
             { id: 3, name: "newOrder", desc: "newOrderDesc", img: "dash-order.png", route: 'NewOrder' }
         ]
     }),
