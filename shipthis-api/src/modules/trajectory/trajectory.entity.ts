@@ -16,10 +16,14 @@ export class Trajectory extends BaseEntity {
   @PrimaryGeneratedColumn()
   trajectory_id: number;
 
-  @ManyToOne(
+  @OneToOne(
     type => Ordersheet,
     ordersheet => ordersheet.trajectories,
-    { nullable: false, primary: false, onDelete: 'CASCADE' },
+    {
+      nullable: false,
+      primary: false,
+      onDelete: 'CASCADE',
+    },
   )
   @JoinColumn({ name: 'ordersheet_fk', referencedColumnName: 'ordersheet_id' })
   ordersheet: Ordersheet;
@@ -33,7 +37,7 @@ export class Trajectory extends BaseEntity {
   @OneToMany(
     type => CheckPoint,
     check_point => check_point.trajectory,
-    { cascade: true },
+    { cascade: true, eager: true },
   )
   check_points: CheckPoint[];
 }

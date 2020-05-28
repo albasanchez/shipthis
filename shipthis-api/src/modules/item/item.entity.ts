@@ -18,9 +18,7 @@ export class Item extends BaseEntity {
     tyoe => Ordersheet,
     ordersheet => ordersheet.items,
     {
-      eager: true,
       nullable: false,
-      cascade: true,
       onDelete: 'CASCADE',
       primary: false,
     },

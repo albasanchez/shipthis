@@ -6,7 +6,6 @@ import {
   IsEmail,
   IsDecimal,
   IsBoolean,
-  IsDateString,
 } from 'class-validator';
 
 export class SignupDto {
