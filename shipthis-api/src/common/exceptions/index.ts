@@ -10,3 +10,4 @@ export { EmptyDestinationException } from './empty-destination.exception';
 export { ItemPriceHistNotFoundException } from './item-price-hist-not-found.exception';
 export { OrderPriceHistNotFoundException } from './order-price-hist-not-found.exception';
 export { BadItemStructureException } from './bad-item-structure.exception';
+export { OrdersheetNotFoundException } from './ordersheet-not-found.exception';

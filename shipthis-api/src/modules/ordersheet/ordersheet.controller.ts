@@ -8,6 +8,7 @@ import {
   Post,
   Body,
 } from '@nestjs/common';
+import { OrderDetailDto } from './dto/order-detail.dto';
 
 @Controller('ordersheet')
 export class OrdersheetController {
@@ -23,5 +24,11 @@ export class OrdersheetController {
   @UsePipes(ValidationPipe)
   async searchHistory(@Body() historyRef: OrderHistoryDto) {
     return this._orderSheetService.searchHistory(historyRef);
+  }
+
+  @Post('detail')
+  @UsePipes(ValidationPipe)
+  async searchOrderDetail(@Body() orderDetail: OrderDetailDto) {
+    return this._orderSheetService.searchOrdersheetDetail(orderDetail);
   }
 }

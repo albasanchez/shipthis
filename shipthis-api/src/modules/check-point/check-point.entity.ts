@@ -32,6 +32,7 @@ export class CheckPoint extends BaseEntity {
     primary: false,
     onDelete: 'CASCADE',
     cascade: true,
+    eager: true,
   })
   @JoinColumn({ name: 'place_fk', referencedColumnName: 'place_id' })
   place: Place;

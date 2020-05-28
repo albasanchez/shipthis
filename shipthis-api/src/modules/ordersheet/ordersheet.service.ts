@@ -22,6 +22,7 @@ import {
   OrderPriceHistNotFoundException,
   ItemPriceHistNotFoundException,
   BadItemStructureException,
+  OrdersheetNotFoundException,
 } from 'src/common/exceptions';
 import { OfficeStatus } from '../office/constants/office-status.enum';
 import { UserdataStatus } from '../userdata/constants/user-status.enum';
@@ -35,6 +36,7 @@ import { async } from 'rxjs/internal/scheduler/async';
 import { CheckPoint } from '../check-point/check-point.entity';
 import { validate } from 'class-validator';
 import { AppLoggerService } from 'src/log/applogger.service';
+import { OrderDetailDto } from './dto/order-detail.dto';
 
 @Injectable()
 export class OrdersheetService {
@@ -183,7 +185,7 @@ export class OrdersheetService {
       `New order created successfuly with ID = ${savedOrdersheet.ordersheet_id}`,
     );
     savedOrdersheet.user.password = '';
-    return savedOrdersheet;
+    return { response: 'Order Registered successfully' };
   }
 
   async searchHistory(info: OrderHistoryDto): Promise<any> {
@@ -202,7 +204,29 @@ export class OrdersheetService {
     return hist;
   }
 
-  async validateUser(useremail: string): Promise<Userdata> {
+  async searchOrdersheetDetail(orderDetail: OrderDetailDto): Promise<any> {
+    this._appLogger.log('Search order Detail service');
+    const order: Ordersheet = await this.validateExitingOrdersheet(
+      orderDetail.tracking_id,
+    );
+    const person = order.user.person;
+    delete order.user;
+    return { person: person, ...order };
+  }
+
+  private async validateExitingOrdersheet(id: string): Promise<Ordersheet> {
+    const order: Ordersheet = await this._ordersheetRepo.findOne({
+      where: { ordersheet_id: id },
+    });
+
+    if (!order) {
+      this._appLogger.log('Error in OrdersheetService: Ordersheet not found');
+      throw new OrdersheetNotFoundException();
+    }
+    return order;
+  }
+
+  private async validateUser(useremail: string): Promise<Userdata> {
     //validade user
     const userdataRepo: UserDataRepository = await getConnection().getRepository(
       Userdata,
@@ -212,7 +236,7 @@ export class OrdersheetService {
     });
 
     if (!user) {
-      this._appLogger.log('Error creating ordersheet: User not found');
+      this._appLogger.log('Error in OrdersheetService: User not found');
       throw new UserNotFoundException();
     }
     return user;
