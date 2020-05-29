@@ -156,12 +156,6 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn
-                        class="success secondary--text d-inline"
-                        flat   
-                    >
-                        {{$t("shippingHistory.track")}}
-                    </v-btn>
-                    <v-btn
                         color=" red--text" class="mr-4 d-inline"
                         text
                         @click="details_dialog = false"

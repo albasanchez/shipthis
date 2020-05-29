@@ -100,7 +100,7 @@
                     <v-spacer></v-spacer>
                     <v-btn
                         class="success secondary--text d-inline"
-                        flat   
+                        flat @click="goTracking(shipOrder.ordersheet_id)"
                     >
                         {{$t("shippingHistory.track")}}
                     </v-btn>
