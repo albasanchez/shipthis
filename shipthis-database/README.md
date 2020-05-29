@@ -2,7 +2,7 @@
 
 <p>Para el presente proyecto hemos decidido utilizar <a href="https://www.postgresql.org/" target="blank"><strong>PostgreSQL</strong></a> como manejador de base de datos. A continuación se resumen una serie de instrucciones que se deben seguir para el <strong>SET-UP</strong> de la base de datos</p>
 
-## Instalación de POSTGRESQL
+# Instalación de POSTGRESQL
 
 Para realizar la instalación desde la linea de comandos:
 
@@ -17,7 +17,7 @@ $ sudo -u postgres psql -c "SELECT version();"
 
 Para mayor información, les extendemos una invitación formal al portal oficial de <a href="https://www.postgresql.org/" target="blank"><strong>PostgreSQL</strong></a>. Alli encontrarán instrucciones de instalación para diferentes SO, además de la <strong>Documentación Oficial</strong>.
 
-## Creacion de USUARIO y BASE DE DATOS
+# Creacion de USUARIO y BASE DE DATOS
 
 Pasos a seguir:
 
@@ -48,7 +48,47 @@ postgres@$ psql
 
 LLegados a este punto la BD <strong>shipthisdb</strong> ha sido creada y el usuario <strong>shipthis_client</strong> tiene acceso a ella.
 
-## Manejo de la BASE DE DATOS
+# Manejo de la BASE DE DATOS: Forma recomendada
+
+## Inicializar tablas
+
+Tras haber instalado el servidor y agregado el archivo .env de configuración, dirijare a la carpera del servidor y ejecutar los siguientes comandosÑ
+
+Linux
+
+```
+$ npm run migration:generate fist-migration
+$ npm run migration:migration:run
+```
+
+macOS y Windows:
+
+```
+$ npm run migrationwindows:generate
+$ npm run migrationwindows:run
+```
+
+## Llenado con datos iniciales
+
+Para <strong>LLENAR</strong> las entidades con data de prueba ejecutar en el archivo de <a href="./inserts.sql" target=""><strong>INSERTS</strong></a>.
+
+## Reinicialización de tablas
+
+Dirijase a la carpeta del servidor y ejecutar los siguiente comandos
+
+Linux
+
+```
+$ npm run migration:migration:revert
+```
+
+macOS y Windows:
+
+```
+$ npm run migrationwindows:reverse
+```
+
+# Manejo de la BASE DE DATOS: Forma alternativa
 
 Para este paso se recomienda el uso de una interfaz gráfica para el manejador de base de dato como <a href="https://www.pgadmin.org/" target="blank"><strong>PGAdmin</strong></a>. En la página oficial entraran la documentación necesaria para descargarla y utilizarla.
 
