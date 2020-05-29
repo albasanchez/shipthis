@@ -8,6 +8,7 @@ import Footer from "../components/Footer.vue";
 import HomeUser from "../views/HomeUser.vue";
 import NewOrder from "../views/NewOrder.vue";
 import History from "../views/History.vue";
+import Tracking from "../views/Tracking.vue";
 
 import store from "../store/index";
 
@@ -62,9 +63,16 @@ const routes = [
     path: "/ShippingHistory",
     name: "History",
     components: {
-      default: History,
-    },
+      default: History
+    }
   },
+  {
+    path: "/tracking/:id",
+    name: "Tracking",
+    components: {
+      default: Tracking
+    }
+  }
 ];
 
 const router = new VueRouter({

@@ -45,7 +45,7 @@
     </div>
     <v-row>
       <v-col class="text-center gray--text">
-        <p style="font-size: 15px; color: gray" class="pb-0 mb-0 pt-2">{{ contactInfo }}</p>
+        <p style="font-size: 15px; color: gray" class="pb-0 mb-0 pt-2">{{ $t("contact.contactInfo") }}</p>
       </v-col>
     </v-row>
   </v-form>

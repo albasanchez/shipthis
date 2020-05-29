@@ -22,14 +22,13 @@
                                             {{ $t("shippingHistory.items") }}: {{ shipOrder.items.length }} 
                 </v-card-text>
         </v-col>
-        <v-col class="track-field" cols="12" md="2">
+        <v-col class="track-field" cols="12" md="2" @click="goTracking(shipOrder.ordersheet_id)">
                 <h5>
                     {{$t("shippingHistory.track")}}
                 </h5>              
         </v-col>   
         
-    </v-row>          
-        
+    </v-row>                  
         <v-dialog
             v-model="details_dialog"
             max-width="650"
@@ -121,6 +120,11 @@ export default {
     }),
     props: {
         shipOrder: Object,
+    },
+    methods: {
+        goTracking(id) {
+            this.$router.push("./tracking/"+id);
+        }
     }
 }
 </script>
