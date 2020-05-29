@@ -30,7 +30,7 @@ export default {
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-position-y: -180px;
+    background-position-y: 300px; 
   }
 
 </style>

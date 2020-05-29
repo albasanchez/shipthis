@@ -55,7 +55,8 @@ export default {
         insertData: "Introduce tus datos",
         noAccountQuestion: '¿No tienes cuenta?',
         recoverPassword: 'Recuperar mi contraseña',
-        successMessage: "Se ha enviado un link a su correo para reestablecer su contraseña.",
+        recoverAlertSuccess: "Se ha enviado un correo con su nueva contraseña a",
+        recoverAlertError: "Por favor revise que el correo y el documento sean correctos.",
         logginErrorMessage: "Credenciales de acceso incorrectas"
       },
       banner: {
@@ -78,7 +79,8 @@ export default {
           from: "Desde",
           to: "Hasta",
           moreDetails: "Más detalles",
-          notReached: "Punto de control aún no alcanzado"
+          notReached: "Punto de control aún no alcanzado",
+          alertNoOrder: "No existe una orden con el id"
       },
       services: {
         servicesTitle: '¿Qué ofrecemos?',
@@ -239,7 +241,8 @@ export default {
         insertData: "Insert your data",
         noAccountQuestion: 'Do not have an account?',
         recoverPassword: 'Recover my password',
-        successMessage: "A link has been sent to your email to recover your password.",
+        recoverAlertSuccess: "An email with your new password has been sent to",
+        recoverAlertError: "Please check if the email and the document are correct.",
         logginErrorMessage: "Wrong access credentials"
       },
       banner: {
@@ -263,7 +266,8 @@ export default {
           from: "From",
           to: "To",
           moreDetails: "More details",
-          notReached: "Checkpoint not reached yet."
+          notReached: "Checkpoint not reached yet.",
+          alertNoOrder: "There is no an order with the id"
       },
       services: {
         servicesTitle: 'What do we offer?',

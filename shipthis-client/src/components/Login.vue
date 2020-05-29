@@ -121,15 +121,19 @@
                 </div>
               </v-col>
               <v-col cols="8" class="ma-0">
-                <v-alert v-model="alertSuccess" type="success" dismissible>
-                  <strong>{{ $t("login.successMessage") }}</strong>
-                </v-alert>
+                <!--Alerts -->
                 <v-card-text class="mt-3">
+                  <v-alert v-model="recoverAlertSuccess" type="success" dismissible>
+                    <strong class="secondary--text">{{ $t("login.recoverAlertSuccess") }}  {{ user_email }}</strong>
+                  </v-alert>
+                  <v-alert v-model="recoverAlertError" type="error" dismissible>
+                    <strong>{{ $t("login.recoverAlertError") }}</strong>
+                  </v-alert>
                   <h1 class="text-center display-5 accent--text text--accent-3">
                     {{ $t("login.recoverPassword") }}
                   </h1>
                   <h4 class="text-center mt-4">{{ $t("login.insertData") }}</h4>
-                  <v-form ref="recover_form">
+                  <v-form ref="recover_form" v-on:recoverPasswordSubmit.prevent>
                     <v-text-field
                       :label="$t('labels.email')"
                       name="Correo electrónico"
@@ -144,7 +148,7 @@
                       id="identification"
                       :label="$t('labels.idNumber')"
                       name="identification"
-                      v-model="id_number"
+                      v-model="document"
                       type="text"
                       prepend-icon="person"
                       color="primary accent-3"
@@ -191,9 +195,9 @@ export default {
   },
   data: () => ({
     alertError: false,
-    user_email: "",
+    user_email: null,
     user_password: "",
-    id_number: "",
+    document: null,
 
     googleSignInParams: {
       clientId:
@@ -206,6 +210,8 @@ export default {
 
     step: 1,
     alertSuccess: false,
+    recoverAlertSuccess: false,
+    recoverAlertError: false,
 
     // Strings
     loginIcons: [
@@ -267,10 +273,20 @@ export default {
           this.alertError = true;
         });
     },
-    recoverPasswordSubmit() {
+    async recoverPasswordSubmit() {
       if (this.$refs.recover_form.validate()) {
-        console.log("submit!" + " email: " + this.user_email);
-        this.alertSuccess = true;
+        const payload = {
+          useremail: this.user_email,
+          document: this.document,
+        };
+        axios
+          .post("http://localhost:3000/shipthisapi/v1/auth/recoveruser", payload)
+          .then((r) => {
+            this.recoverAlertSuccess = true;
+          })
+          .catch((e) => {
+            this.recoverAlertError = true;
+          });
       } else {
         console.log("Faltan campos");
       }
