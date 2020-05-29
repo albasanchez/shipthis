@@ -28,6 +28,7 @@ export default  {
         other: 'Otro',
         iAgree: 'Estoy de acuerdo con los términos y condiciones.',
         mustAgree: 'Debes estar de acuerdo',
+        registryErrorMessage: "Error to conect, check if the email is already registered."
       },
       buttons: {
         search: "Buscar",
@@ -55,6 +56,7 @@ export default  {
         noAccountQuestion: '¿No tienes cuenta?',
         recoverPassword: 'Recuperar mi contraseña',
         successMessage: "Se ha enviado un link a su correo para reestablecer su contraseña.",
+        logginErrorMessage: "Credenciales de acceso incorrectas"
       },
       banner: {
           theBestIn: "Los mejores en",
@@ -207,6 +209,7 @@ export default  {
         male: 'Male',
         female: 'Female',
         other: 'Other',
+        registryErrorMessage: "Error al conectar, revise si el correo ya está registrado."
       },
       buttons:{
         search: "Search",
@@ -234,6 +237,7 @@ export default  {
         noAccountQuestion: 'Do not have an account?',
         recoverPassword: 'Recover my password',
         successMessage: "A link has been sent to your email to recover your password.",
+        logginErrorMessage: "Wrong access credentials"
       },
       banner: {
           theBestIn: "The best in",
