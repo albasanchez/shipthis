@@ -46,6 +46,7 @@
     "dotenv": "^8.2.0",
     "helmet": "^3.22.0",
     "hogan.js": "^3.0.2",
+    "node-telegram-bot-api": "^0.50.0",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.0",

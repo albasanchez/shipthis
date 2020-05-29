@@ -11,7 +11,7 @@ import { AppLoggerService } from 'src/log/applogger.service';
 @Injectable()
 export class SimulationService {
   constructor(private readonly _appLogger: AppLoggerService) {}
-  @Cron(CronExpression.EVERY_30_SECONDS)
+  @Cron(CronExpression.EVERY_5_MINUTES)
   async handleCron() {
     this._appLogger.log('UNATTENDED SERVICE: simulating order movement');
     //search all orders with status different from DELIVERED
@@ -63,13 +63,15 @@ export class SimulationService {
     order: Ordersheet,
     newStatus: string,
   ): Promise<void> {
+    const date: Date =
+      newStatus === OrdersheetStatus.DELIVERED ? new Date() : null;
     const ordersheetRepo: OrdersheetRepository = getConnection().getRepository(
       Ordersheet,
     );
     await ordersheetRepo
       .createQueryBuilder()
       .update()
-      .set({ status: newStatus })
+      .set({ status: newStatus, delivery_date: date })
       .where({ ordersheet_id: order.ordersheet_id })
       .execute();
   }
