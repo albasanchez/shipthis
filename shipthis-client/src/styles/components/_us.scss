@@ -1,0 +1,39 @@
+
+  #Us {
+    height: 100%;
+    background: $primary-gradient;
+  }
+
+  .us-info{
+      position: relative;
+  }
+
+  .us-info p{
+      color: white;
+      font-size: 18px;
+  }
+  .us-info hr{
+      width: 30%;
+      margin: 0 auto;
+  }
+  .logo{
+      width:50%;
+  }
+  @media only screen and (max-width: 540px){
+      .us-info p{
+        font-size: 14px;
+      }
+  }
+  @media only screen and (max-width: 720px){
+      .us-info p{
+        font-size: 16px;
+      }
+  }
+  @media only screen and (min-width: 720px){
+      #Us {
+        height: 400px;
+      }
+      .us-info p{
+        font-size: 16px;
+      }
+  }

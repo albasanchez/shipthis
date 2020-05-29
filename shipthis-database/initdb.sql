@@ -1,0 +1,12 @@
+CREATE DATABASE shipthisdb;
+
+CREATE USER shipthis_client WITH
+    SUPERUSER
+    CREATEDB
+    INHERIT
+    LOGIN
+    NOREPLICATION
+    CONNECTION LIMIT -1
+    PASSWORD 'shipthis123456';
+
+GRANT ALL PRIVILEGES ON DATABASE shipthisdb TO shipthis_client;

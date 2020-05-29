@@ -1,0 +1,58 @@
+.dashboard-list{
+    display: flex;
+    justify-content: center;
+}
+.dashboard-item{
+    margin: 0;
+    width: 260px;
+    height: 320px;
+}
+
+#Dashboard:before {
+    content:"";
+    position: absolute;
+    width: 100%;
+    height: 480px;
+    background-color: $second-color;
+    opacity:0.8;
+}
+#Dashboard h1 {
+position: relative;
+}
+
+@media only screen and (max-width: 960px){
+.dashboard-list{
+    flex-wrap: wrap;
+}
+.dashboard-item{
+    width: 310px;
+    height: 240px;
+    margin: 8px;
+}
+#Dashboard {
+  height: 100%;
+  font-size: 16px;
+}
+#Dashboard:before {
+  height: 625px;
+}
+}
+
+@media only screen and (max-width: 720px){
+.dashboard-list{
+    flex-wrap: wrap;
+}
+.dashboard-item{
+    width: 260px;
+    height: 190px;
+    margin: 8px;
+}
+#Dashboard:before {
+  height: 540px;
+}
+}
+@media only screen and (max-width: 550px){
+#Dashboard:before {
+  height: 940px;
+}
+}
