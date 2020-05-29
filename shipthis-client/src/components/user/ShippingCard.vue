@@ -50,7 +50,12 @@
                             <span class="font-weight-bold"> {{ $t("shippingHistory.createdDate") }}: </span> {{ shipOrder.creation_date }} <br>
                             <span class="font-weight-bold"> {{ $t("newOrder.ignoreHolidays") }}: </span> {{ shipOrder.ignore_hollydays }} <br>
                             <span class="font-weight-bold"> {{ $t("newOrder.origin") }}: </span> {{ shipOrder.origin_office.name }} ({{ shipOrder.origin_office.place.address }})<br>
-                            <span class="font-weight-bold"> {{ $t("newOrder.destiny") }}: </span> {{ shipOrder.destination_office }} {{ shipOrder.destination_place.address }}<br>
+                        </p>
+                        <p v-if="shipOrder.destination_office">
+                            <span> {{ $t("newOrder.destiny") }}: </span> {{ shipOrder.destination_office.name }}  {{ shipOrder.destination_office.place.address }}
+                        </p>
+                        <p v-else>
+                            <span> {{ $t("newOrder.destiny") }}: </span> {{ shipOrder.destination_place.address }} 
                         </p>
                     </v-card-text>
                     <v-card-text class="py-3 my-3 form-container text-center " >

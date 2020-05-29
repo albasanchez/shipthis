@@ -4,7 +4,7 @@
       <v-row>
         <v-col md="6" cols="12">
           <v-text-field
-            v-model="user_email"
+            v-model="userdata.email"
             :rules="emailRules"
             :label='$t("labels.email")'
             required
@@ -12,7 +12,7 @@
         </v-col>
         <v-col md="6" cols="12">
           <v-select
-            v-model="default_language"
+            v-model="userdata.def_language"
             :items="default_language_items"
             :rules="[v => !!v || 'Selecciona un lenguaje por defecto.']"
             :label='$t("labels.defaultLanguage")'
@@ -23,7 +23,7 @@
       <v-row>
         <v-col md="3" cols="12">
           <v-text-field
-            v-model="first_name"
+            v-model="userdata.person.first_name"
             :rules="firstNameRules"
             :label='$t("labels.firstName")'
             required
@@ -31,13 +31,13 @@
         </v-col>
         <v-col md="3" cols="12">
           <v-text-field 
-            v-model="middle_name"         
+            v-model="userdata.person.middle_name"         
             :label='$t("labels.middleName")'                  
           ></v-text-field>
         </v-col>
         <v-col md="3" cols="12">
           <v-text-field
-            v-model="last_name"
+            v-model="userdata.person.last_name"
             :rules="lastNameRules"
             :label='$t("labels.lastName")'
             required
@@ -45,7 +45,7 @@
         </v-col>
         <v-col md="3" cols="12">
           <v-text-field 
-            v-model="middle_last_name"
+            v-model="userdata.person.second_last_name"
             :label='$t("labels.middleLastName")'                    
             ></v-text-field>
         </v-col>
@@ -94,21 +94,21 @@
       <v-row>
         <v-col md="2" cols="2">
           <v-text-field
-            v-model="area_code"
+            v-model="userdata.person.phone_code"
             :rules="phoneCodeRules"
             :label='$t("labels.areaCode")'
           ></v-text-field>
         </v-col>
         <v-col md="4" cols="10">
           <v-text-field 
-            v-model="phone_number"
+            v-model="userdata.person.phone_number"
             :rules="phoneNumberRules"
             :label='$t("labels.phoneNumber")'             
           ></v-text-field>
         </v-col>
         <v-col md="6" cols="12">
           <v-checkbox
-            v-model="checkbox_notifications"
+            v-model="userdata.person.receive_notifications"
             :label='$t("labels.receiveNotifications")'                 
           ></v-checkbox>
         </v-col>
@@ -135,22 +135,15 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
     name: "ProfileForm",
     data: () => ({
-        user_email: 'djmonroy9@gmail.com',
-        first_name: 'David',
-        middle_name: 'Javier',
-        last_name: 'Monroy',
-        middle_last_name: 'Pacheco',
-        area_code: '+58',
-        phone_number: '2756537',
-        default_language: 'Español',
+        
         default_language_items: [
             'Español',
             'Inglés'
         ],
-        checkbox_notifications: true,
         show1: false,
         show2: false,
         show3: false,
@@ -192,7 +185,11 @@ export default {
       resetValidation () {
         this.$refs.form.resetValidation()
       },
-    }
+    },
+    computed: 
+    mapState({
+        userdata: state => state.user,
+    }),
 }
 </script>
 

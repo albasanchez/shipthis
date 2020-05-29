@@ -176,7 +176,7 @@
 
 <script>
 export default {
-    name: "ProfileForm",
+    name: "TrackCard",
     data: () => ({
       details_dialog: false,
     }),

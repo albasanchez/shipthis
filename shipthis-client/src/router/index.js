@@ -51,6 +51,13 @@ const routes = [
     components: {
       default: UserProfile,
     },
+    beforeEnter(to, from, next) {
+      if (store.state.idToken) {
+        next();
+      } else {
+        next("/");
+      }
+    },
   },
   {
     path: "/NewOrder",
@@ -58,13 +65,27 @@ const routes = [
     components: {
       default: NewOrder,
     },
+    beforeEnter(to, from, next) {
+      if (store.state.idToken) {
+        next();
+      } else {
+        next("/");
+      }
+    },
   },
   {
     path: "/ShippingHistory",
     name: "History",
     components: {
       default: History
-    }
+    },
+    beforeEnter(to, from, next) {
+      if (store.state.idToken) {
+        next();
+      } else {
+        next("/");
+      }
+    },
   },
   {
     path: "/tracking/:id",

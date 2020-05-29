@@ -14,6 +14,11 @@ export default new Vuex.Store({
       state.idToken = token;
       state.user = user;
     },
+    logout(state){
+      console.log("logged out");
+      state.idToken = null,
+      state.user = null
+    }
   },
   actions: {},
   modules: {},

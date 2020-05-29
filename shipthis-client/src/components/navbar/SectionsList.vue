@@ -6,11 +6,11 @@
         <!-- Condicional para saber si el usuario está logueado o no -->
         <div v-if="section.activateLogin">
           <!-- Si está logueado, muestra "Escritorio" y no "Acceder" -->
-          <div v-if="loggedIn">
+          <div v-if="idToken">
             <a class="sections-list__item d-none"  @click="activateLogin = true">
             {{ $t("sections."+section.name) }} </a>
             <a class="sections-list__item"  @click="goRoute(section.link)">
-            {{ section.alter }} </a>
+            {{ $t("sidebar."+section.alter) }} </a>
           </div>
           <div v-else>
             <a class="sections-list__item"  @click="activateLogin = true">
@@ -34,6 +34,7 @@
 
 <script>
 import LoginForm from '../Login.vue';
+import { mapState } from 'vuex';
 export default {
   name: "SectionsList",
   data: () => ({
@@ -44,7 +45,7 @@ export default {
       { id: "3", name: 'tracking', link: '#TrackSec', activateLogin: false },
       { id: "4", name: 'services', link: '#Services', activateLogin: false },
       { id: "5", name: 'contact', link: '#Contact', activateLogin: false },
-      { id: "6", name: 'access', alter:'Escritorio', link: 'HomeUser' , activateLogin: true }
+      { id: "6", name: 'access', alter:'desktop', link: 'HomeUser' , activateLogin: true }
     ],
     activeColor: '',
   }),
@@ -57,6 +58,10 @@ export default {
       default: false
     }
   },
+  computed: 
+    mapState({
+        idToken: state => state.idToken,
+    }),
   methods: {
     goRoute(route) {
       this.$router.push('/'+route);

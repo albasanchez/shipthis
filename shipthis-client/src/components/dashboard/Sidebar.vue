@@ -10,7 +10,7 @@
           <v-img src="../../assets/dashboard/guest.png"></v-img>
         </v-list-item-avatar>
 
-        <v-list-item-title class="white--text">John Leider</v-list-item-title>
+        <v-list-item-title class="white--text">{{ userdata.person.first_name }} {{ userdata.person.last_name }}</v-list-item-title>
 
         <v-btn 
           icon
@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
   export default {
     data () {
       return {
@@ -61,9 +62,18 @@
     },
     methods: {
       goRoute(route) {
-        this.$router.push('/'+route);
-      }
-    }
+        if (route==""){
+          this.$store.commit("logout");
+          this.$router.push('/');
+        }else{
+          this.$router.push('/'+route);
+        }
+      },
+    },
+    computed: 
+    mapState({
+        userdata: state => state.user,
+    }),
   }
 </script>
 <style lang="scss">

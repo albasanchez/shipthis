@@ -1,7 +1,7 @@
 <template>
   <v-row id="Dashboard">
       <v-col cols="12" class="text-center white--text pt-8 pb-0">
-          <h1>{{ $t("dashboard.helloMessage") }} {{ username }}</h1>
+          <h1>{{ $t("dashboard.helloMessage") }} {{ userdata.first_name }}</h1>
       </v-col>
       <v-col cols="12" class="dashboard-list">
           <div v-for="dashboard in dashItems" :key="dashboard.id" class="dashboard-item ma-0">
@@ -17,7 +17,7 @@
 <script>
 import DashboardCard from './DashboardCard.vue';
 // import axios from 'axios';
-
+import { mapState } from 'vuex'
 export default {
     name: "Dashboard",
     components: {
@@ -32,6 +32,10 @@ export default {
             { id: 3, name: "newOrder", desc: "newOrderDesc", img: "dash-order.png", route: 'NewOrder' }
         ]
     }),
+    computed: 
+    mapState({
+        userdata: state => state.user.person,
+    })
 }
 </script>
 

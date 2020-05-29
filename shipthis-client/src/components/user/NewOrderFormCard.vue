@@ -1,7 +1,8 @@
 <template>
   <v-card class="pa-12 newOrderFormCard--card" cols="12">
     <form-wizard title="" subtitle="" color="#4d80e4" class="ma-0" @on-error="handleErrorMessage" @on-complete="onComplete"
-    :nextButtonText='$t("newOrder.nextBtn")' :backButtonText='$t("newOrder.backBtn")' :finishButtonText='$t("newOrder.finishBtn")' stepSize="sm">
+    :nextButtonText='$t("newOrder.nextBtn")' :backButtonText='$t("newOrder.backBtn")' 
+    :finishButtonText='$t("newOrder.finishBtn")' stepSize="sm" ref="order_form" v-on="onComplete.prevent">
 
         <!-- Paso 1: Configurar orden -->
         <tab-content :title='$t("newOrder.orderConfiguration")' :before-change="validateFirstStep" >
@@ -334,8 +335,7 @@
                                 <span class="font-weight-bold" v-else>{{ $t("newOrder.no") }}</span>
                                 </p>
                             </v-col>
-                        </div>
-                        
+                        </div>                  
                     </v-row>
                 </div>
             </v-container>
@@ -343,6 +343,9 @@
         <div v-if="errorMsg">
             <span class="error">{{errorMsg}}</span>
         </div>
+        <v-alert v-model="alertError" type="error" dismissible>
+            <strong>{{ $t("newOrder.errorMessage") }}</strong>
+        </v-alert> 
     </form-wizard>
   </v-card>
 </template>
@@ -351,6 +354,7 @@
 import {FormWizard, TabContent} from 'vue-form-wizard';
 import 'vue-form-wizard/dist/vue-form-wizard.min.css';
 import axios from "axios";
+import {mapState} from "vuex";
 
 export default {
   name: "NewOrderFormCard",
@@ -365,7 +369,6 @@ export default {
     destiny_address: "",
     order_details: 
         {
-            useremail: null,
             origin_office: null,
             order_price_hist: null,
             rec_fullname: null,
@@ -380,7 +383,7 @@ export default {
         },
 
     errorMsg: null,
-
+    alertError: false,
     order_types_list: null,
     offices_list: null,
     item_types_list: null,
@@ -408,6 +411,10 @@ export default {
           )
           .then(res => this.item_types_list = res.data)
   },
+  computed: 
+    mapState({
+        userdata: state => state.user,
+    }),
 
   methods: {     
     addItem() {
@@ -424,9 +431,20 @@ export default {
       this.order_details.items.splice(index, 1);
     },
     onComplete() {     
-        alert("¡Orden enviada! Pronto recibirás un correo de confirmación.")
-        this.$router.push('/ShippingHistory');
-        console.log(this.order_details);
+          const payload = {
+              useremail: this.$store.state.user.email,
+              ...this.order_details
+          };
+          console.log(payload);
+          axios
+            .post("http://localhost:3000/shipthisapi/v1/ordersheet/create", payload)
+            .then(() => {
+                alert("¡Orden enviada! Pronto recibirás un correo de confirmación.");
+                this.$router.push('/ShippingHistory');
+            })
+            .catch(() => {
+              this.alertError = true;
+            });    
     },
     handleErrorMessage: function(errorMsg){
           this.errorMsg = errorMsg

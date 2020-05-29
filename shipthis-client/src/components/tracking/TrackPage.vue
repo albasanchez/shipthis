@@ -32,7 +32,12 @@ export default {
             "http://localhost:3000/shipthisapi/v1/ordersheet/detail",
             tracking_id
           )
-          .then(res => this.ship = res.data)
+          .then(res => {
+              this.ship.trajectories.check_points = this.ship.trajectories.check_points.sort(
+                    (a, b) => (a.check_point_order > b.check_point_order ? 1 : -1),
+                );
+              this.ship = res.data
+            })
           .catch(() => (this.alertError = true));
     }
 }

@@ -230,6 +230,23 @@ export default {
     GoogleLogin,
   },
   methods: {
+    async loginSubmit() {
+      if (this.$refs.login_form.validate()) {
+        const payload = {
+          useremail: this.user_email,
+          password: this.user_password,
+        };
+        axios
+          .post("http://localhost:3000/shipthisapi/v1/auth/regularlogin", payload)
+          .then((r) => {
+            this.loginCommit(r.data);
+            this.$router.push("/HomeUser");
+          })
+          .catch((e) => {
+            this.alertError = true;
+          });
+      }
+    },
     googleLogin(googleUser) {
       // This only gets the user information: id, name, imageUrl and email
       const googleInfo = googleUser.getBasicProfile();

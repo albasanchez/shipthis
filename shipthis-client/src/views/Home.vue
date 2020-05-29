@@ -5,6 +5,7 @@
     <TrackSec id="TrackSec"></TrackSec>
     <Services id="Services"></Services>
     <Contact id="Contact"></Contact>
+    <Sidebar v-if="idToken"></Sidebar>
   </div>
 </template>
 
@@ -17,7 +18,8 @@ import Us from "../components/home/Us.vue";
 import TrackSec from "../components/home/TrackSec.vue";
 import Services from "../components/home/Services.vue";
 import Contact from "../components/home/Contact.vue";
-
+import Sidebar from "../components/dashboard/Sidebar.vue";
+import { mapState } from 'vuex';
 export default {
   name: "Home",
   components: {
@@ -25,7 +27,13 @@ export default {
     Us,
     TrackSec,
     Services,
-    Contact
-  }
+    Sidebar,
+    Contact,
+  },
+  computed: 
+    mapState({
+        idToken: state => state.idToken,
+    })
+  
 };
 </script>
