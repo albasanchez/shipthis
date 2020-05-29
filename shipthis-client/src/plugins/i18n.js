@@ -151,6 +151,7 @@ export default {
         volume: "Volumen (ml)",
         deleteBtn: "X",
         errorMessage: "Error, check the fields.",
+        emptyMessage: "You must add at least one item",
 
       category: "Categoría",
       type: "Tipo",
@@ -335,7 +336,7 @@ export default {
         volume: "Volume (ml)",
         deleteBtn: "X",
         errorMessage: "Error, comprueba los campos",
-
+        emptyMessage: "Debes añadir al menos un item",
       category: "Category",
       type: "Type",
       fragileObject: "Fragile object",

@@ -52,10 +52,10 @@
                             <span class="font-weight-bold"> {{ $t("newOrder.origin") }}: </span> {{ shipOrder.origin_office.name }} ({{ shipOrder.origin_office.place.address }})<br>
                         </p>
                         <p v-if="shipOrder.destination_office">
-                            <span> {{ $t("newOrder.destiny") }}: </span> {{ shipOrder.destination_office.name }}  {{ shipOrder.destination_office.place.address }}
+                            <span class="font-weight-bold"> {{ $t("newOrder.destiny") }}: </span> {{ shipOrder.destination_office.name }}  {{ shipOrder.destination_office.place.address }}
                         </p>
                         <p v-else>
-                            <span> {{ $t("newOrder.destiny") }}: </span> {{ shipOrder.destination_place.address }} 
+                            <span class="font-weight-bold"> {{ $t("newOrder.destiny") }}: </span> {{ shipOrder.destination_place.address }} 
                         </p>
                     </v-card-text>
                     <v-card-text class="py-3 my-3 form-container text-center " >
@@ -77,10 +77,10 @@
                         focusable hover
                         >
                         <v-expansion-panel
-                            v-for="item in shipOrder.items.slice().reverse()"
-                            :key="item.item_id"
+                            v-for="(item, index) in shipOrder.items.slice().reverse()"
+                            :key="index"
                         >
-                            <v-expansion-panel-header>{{ item.item_id }} - 
+                            <v-expansion-panel-header>{{ index+1 }} - 
                                 {{ item.item_type_hist.item_type.name }}
                             </v-expansion-panel-header>
                             <v-expansion-panel-content class="mt-2">

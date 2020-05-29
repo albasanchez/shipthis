@@ -23,7 +23,7 @@ export default new Vuetify({
         Bronce: "#e5bf99",
         Silver: "#e3e4e5",
         Gold: "#efb810",
-        Platinium: "#7f7679",
+        Premium: "#7f7679",
       }
     }
   }

@@ -59,13 +59,13 @@
                             </v-row>
                         </div> 
                 <v-row>                     
-                    <v-col md="4" cols="12" class="d-flex">
+                    <!-- <v-col md="4" cols="12" class="d-flex">
                          <v-select
                         v-model="destiny_type" name="destiny_type"
                         :items="destiny_types"
                         :label='$t("newOrder.destinyType")'             
                         ></v-select>
-                    </v-col>
+                    </v-col> -->
                     <div v-if="destiny_type=='Sucursal'">
                         <v-col md="12" cols="12">
                             <v-select
@@ -143,7 +143,7 @@
         </tab-content>
 
         <!-- Paso 2: Configurar items -->
-        <tab-content :title='$t("newOrder.itemConfiguration")' >
+        <tab-content :title='$t("newOrder.itemConfiguration")'>
             <h4 class="text-center"> {{ $t("newOrder.itemConfigurationTitle") }} </h4>
             <!-- Añadir items -->
             <v-container fluid class="text-center form-container">
@@ -248,12 +248,12 @@
                             </div>
                         </v-col>
                         <v-col md="6" cols="12" class="py-0">
-                            <div v-if="destiny_type=='Personal'">
+                            <!-- <div v-if="destiny_type=='Personal'">
                                 <p class="order-details">{{ $t("newOrder.destiny") }}: 
                                 <span class="font-weight-bold">{{ order_details.destination_address }}</span>
                                 </p>
                             </div>
-                            <div v-else>
+                            <div v-else> -->
                                 <div v-for="item in offices_list" :key="item.office_id">
                                     <div v-if="item.office_id == order_details.destination_office">
                                         <p class="order-details">{{ $t("newOrder.destiny") }}:
@@ -261,7 +261,7 @@
                                     </p>
                                     </div> 
                                 </div>
-                            </div>     
+                            <!-- </div>      -->
                         </v-col>
                     </v-row>
                 </div>
@@ -346,6 +346,9 @@
         <v-alert v-model="alertError" type="error" dismissible>
             <strong>{{ $t("newOrder.errorMessage") }}</strong>
         </v-alert> 
+        <v-alert v-model="emptyMessage" type="error" dismissible>
+            <strong>{{ $t("newOrder.emptyMessage") }}</strong>
+        </v-alert> 
     </form-wizard>
   </v-card>
 </template>
@@ -360,7 +363,7 @@ export default {
   name: "NewOrderFormCard",
   data: () => ({
     row: null,
-    destiny_type: "",
+    destiny_type: "Sucursal",
     destiny_types: [
         "Personal",
         "Sucursal",
@@ -381,7 +384,7 @@ export default {
             destination_address: null,
             items: [],
         },
-
+    emptyMessage: false,
     errorMsg: null,
     alertError: false,
     order_types_list: null,
@@ -436,6 +439,7 @@ export default {
               ...this.order_details
           };
           console.log(payload);
+          if (this.order_details.items.length>0){
           axios
             .post("http://localhost:3000/shipthisapi/v1/ordersheet/create", payload)
             .then(() => {
@@ -444,7 +448,13 @@ export default {
             })
             .catch(() => {
               this.alertError = true;
-            });    
+            });
+          }else{
+              this.emptyMessage = true;
+          }    
+    },
+    validateNoEmpty() {
+        return this.order_details.items;
     },
     handleErrorMessage: function(errorMsg){
           this.errorMsg = errorMsg
@@ -466,7 +476,7 @@ export default {
               } 
           })
          },
-    validateSecondStep:function() {
+    secondStepValidation:function() {
           return new Promise((resolve, reject) => {
               for (var i=0; i < this.order_details.items.length; i++){
                 if(this.order_details.item[i].category_id == ""){

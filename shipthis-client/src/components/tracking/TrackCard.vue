@@ -52,7 +52,7 @@
             <v-btn class="mx-2 mt-1 white--text checkpoint-box" small outlined color="primary">
                 {{ $t("newOrder.destiny") }}
             </v-btn>
-            <p class="checkpoint-text"> {{ ship.destination_office.place.address }} {{ ship.destination_office.place.address }} </p>
+            <p class="checkpoint-text"> {{ ship.destination_office.place.address }} {{ ship.destination_place }} </p>
           </div>
         </v-col>
       </v-row>
@@ -134,10 +134,10 @@
                         focusable hover
                         >
                         <v-expansion-panel
-                            v-for="item in ship.items.slice().reverse()"
-                            :key="item.item_id"
+                            v-for="(item, index) in ship.items.slice().reverse()"
+                            :key="index"
                         >
-                            <v-expansion-panel-header>{{ item.item_id }} - 
+                            <v-expansion-panel-header>{{ index+1 }} - 
                                 {{ item.item_type_hist.item_type.name }}
                             </v-expansion-panel-header>
                             <v-expansion-panel-content class="mt-2">
