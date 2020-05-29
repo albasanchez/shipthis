@@ -9,6 +9,8 @@ import HomeUser from "../views/HomeUser.vue";
 import NewOrder from "../views/NewOrder.vue";
 import History from "../views/History.vue";
 
+import store from "../store/index";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -18,50 +20,57 @@ const routes = [
     components: {
       default: Home,
       Navbar: Navbar,
-      Footer: Footer
-    }
+      Footer: Footer,
+    },
   },
   {
     path: "/HomeUser",
     name: "HomeUser",
     components: {
-      default: HomeUser
-    }
+      default: HomeUser,
+    },
+    beforeEnter(to, from, next) {
+      if (store.state.idToken) {
+        next();
+      } else {
+        next("/");
+      }
+    },
   },
   {
     path: "/Registry",
     name: "Registry",
     components: {
-      default: Registry
-    }
+      default: Registry,
+    },
   },
   {
     path: "/UserProfile",
     name: "UserProfile",
     components: {
-      default: UserProfile
-    }
+      default: UserProfile,
+    },
   },
   {
     path: "/NewOrder",
     name: "NewOrder",
     components: {
-      default: NewOrder
-    }
+      default: NewOrder,
+    },
   },
   {
     path: "/ShippingHistory",
     name: "History",
     components: {
-      default: History
-    }
-  }
+      default: History,
+    },
+  },
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
 });
 
 export default router;

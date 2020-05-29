@@ -24,7 +24,7 @@
           class="pt-0 mt-0"
           name="Message"
           v-model="suggestion"
-          :label='$t("contact.suggestionLabel")'
+          :label="$t('contact.suggestionLabel')"
           :rules="commentRules"
           required
           :counter="500"
@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "../../services/auth-connector";
 
 export default {
   name: "ContactForm",
@@ -69,17 +69,14 @@ export default {
     // Strings
     contactIcons: {
       bolt: "fas fa-bolt"
-    },
+    }
   }),
   methods: {
     onSubmit() {
       if (this.$refs.form.validate()) {
         const comment = { comment: this.suggestion };
         axios
-          .post(
-            "http://localhost:3000/shipthisapi/v1/comment-box/savecomment",
-            comment
-          )
+          .post("/comment-box/savecomment", comment)
           .then(() => (this.alertSuccess = true))
           .catch(() => (this.alertError = true));
       }
