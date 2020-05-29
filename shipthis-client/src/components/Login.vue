@@ -17,16 +17,14 @@
                     {{ $t("login.loginTitle") }}
                   </h1>
                   <div class="account-icons">
-                    <div
-                      class="text-center mt-4 d-inline"
-                      justify="center"
-                      v-for="icon in loginIcons"
-                      :key="icon.id"
+                    <!-- Google -->
+                    <GoogleLogin
+                      class="g-signin-button "
+                      :params="params"
+                      :onSuccess="googleLogin"
+                      :onFailure="onFailure"
+                      ><v-icon>fab fa-google-plus-g</v-icon></GoogleLogin
                     >
-                      <v-btn class="mx-2" fab color="black" outlined>
-                        <v-icon>{{ icon.code }}</v-icon>
-                      </v-btn>
-                    </div>
                   </div>
                   <h4 class="text-center mt-4">
                     {{ $t("login.loginInstruction") }}
@@ -184,6 +182,8 @@
 <script>
 import { required, minLength, between } from "vuelidate/lib/validators";
 import axios from "../services/auth-connector";
+import GoogleLogin from "vue-google-login";
+
 export default {
   name: "LoginForm",
   props: {
@@ -195,6 +195,11 @@ export default {
     user_password: "",
     id_number: "",
 
+    googleSignInParams: {
+      clientId:
+        "966846708768-sku50cmo0oo2l1giks2qsvhktd2al2pq.apps.googleusercontent.com",
+    },
+
     rules: {
       required: (value) => !!value || "This field cannot be empty.",
     },
@@ -204,30 +209,46 @@ export default {
 
     // Strings
     loginIcons: [
-      { id: "1", network: "Facebook", code: "fab fa-facebook-f" },
-      { id: "2", network: "Google", code: "fab fa-google-plus-g" },
+      {
+        id: "1",
+        network: "Facebook",
+        code: "fab fa-facebook-f",
+        action: "facebookLogin",
+      },
+      {
+        id: "2",
+        network: "Google",
+        code: "fab fa-google-plus-g",
+        action: "googleLogin",
+      },
     ],
   }),
   props: {
     source: String,
   },
+  components: {
+    GoogleLogin,
+  },
   methods: {
-    async loginSubmit() {
-      if (this.$refs.login_form.validate()) {
-        const payload = {
-          useremail: this.user_email,
-          password: this.user_password,
-        };
-        axios
-          .post("/auth/regularlogin", payload)
-          .then((r) => {
-            this.loginCommit(r.data);
-            this.$router.push("/HomeUser");
-          })
-          .catch((e) => {
-            this.alertError = true;
-          });
-      }
+    googleLogin(googleUser) {
+      // This only gets the user information: id, name, imageUrl and email
+      const googleInfo = googleUser.getBasicProfile();
+      const payload = {
+        email: googleInfo.Du,
+        firstName: googleInfo.sW,
+        lastName: googleInfo.tU,
+        picture: googleInfo.SK,
+        language: "en",
+      };
+      axios
+        .post("/auth/regGoogle", payload)
+        .then((r) => {
+          this.loginCommit(r.data);
+          this.$router.push("/HomeUser");
+        })
+        .catch((e) => {
+          this.alertError = true;
+        });
     },
     recoverPasswordSubmit() {
       if (this.$refs.recover_form.validate()) {
@@ -250,4 +271,12 @@ export default {
 
 <style lang="scss">
 @import "../styles/main.scss";
+.g-signin-button {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 3px;
+  background-color: #3c82f7;
+  color: #fff;
+  box-shadow: 0 3px 0 #0f69ff;
+}
 </style>

@@ -9,10 +9,10 @@ export default new Vuex.Store({
     user: null,
   },
   mutations: {
-    login(state, { token, userdata }) {
+    login(state, { token, user }) {
       console.log("token :>> ", token);
       state.idToken = token;
-      state.user = userdata;
+      state.user = user;
     },
   },
   actions: {},
