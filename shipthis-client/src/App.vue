@@ -1,12 +1,9 @@
 <template>
   <v-app>
-    <div class="app">
-      <router-view name="Navbar"></router-view>
-      <router-view></router-view>
-      <router-view name="Footer"></router-view>
-    </div>
+    <router-view name="Navbar"></router-view>
+    <router-view></router-view>
+    <router-view name="Footer"></router-view>
   </v-app>
-  
 </template>
 
 <script>

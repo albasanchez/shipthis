@@ -1,6 +1,5 @@
 
   #Us {
-    height: 100%;
     background: $primary-gradient;
   }
 
@@ -30,9 +29,6 @@
       }
   }
   @media only screen and (min-width: 720px){
-      #Us {
-        height: 400px;
-      }
       .us-info p{
         font-size: 16px;
       }

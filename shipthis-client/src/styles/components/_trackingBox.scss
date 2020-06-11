@@ -9,9 +9,14 @@
     border-radius: 15px;
 }
 
-@media only screen and (max-width: 7200px){
+@media screen and (max-width: 7200px){
     .idTracking-box{
         width: 65%;
     }
 }
 
+@media screen and (max-width: 720px){
+    .idTracking-box{
+        width: 85%;
+    }
+}

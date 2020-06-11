@@ -14,7 +14,7 @@ Vue.config.productionTip = false;
 
 const i18n = new VueI18n({
   locale: "EN",
-  messages,
+  messages
 });
 
 new Vue({
@@ -22,5 +22,5 @@ new Vue({
   store,
   vuetify,
   i18n,
-  render: (h) => h(App),
+  render: h => h(App)
 }).$mount("#app");

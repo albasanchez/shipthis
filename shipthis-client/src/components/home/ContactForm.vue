@@ -5,12 +5,14 @@
       <strong>{{ $t("contact.successMessage") }}</strong>
     </v-alert>
     <v-alert v-model="alertError" type="error" dismissible>
-      <strong>{{$t("contact.errorMessage")}}</strong>
+      <strong>{{ $t("contact.errorMessage") }}</strong>
     </v-alert>
     <v-row>
       <v-col cols="12" align="center" class="text-center secondary--text pa-0">
         <h2 class="d-inline pr-1">{{ $t("contact.contactTitle") }}</h2>
-        <v-icon class="d-inline secondary--text pl-1 mb-3 pb-3">{{ contactIcons.bolt }}</v-icon>
+        <v-icon class="d-inline secondary--text pl-1 mb-3 pb-3">{{
+          contactIcons.bolt
+        }}</v-icon>
       </v-col>
     </v-row>
     <v-row>
@@ -41,18 +43,22 @@
         @click="onSubmit"
         width="200"
         align="center"
-      >{{ $t("buttons.submit") }}</v-btn>
+        >{{ $t("buttons.submit") }}</v-btn
+      >
     </div>
     <v-row>
       <v-col class="text-center gray--text">
-        <p style="font-size: 15px; color: gray" class="pb-0 mb-0 pt-2">{{ $t("contact.contactInfo") }}</p>
+        <p style="font-size: 15px; color: gray" class="pb-0 mb-0 pt-2">
+          {{ $t("contact.contactInfo") }}
+        </p>
       </v-col>
     </v-row>
   </v-form>
 </template>
 
 <script>
-import axios from "../../services/auth-connector";
+import Repository from "../../services/repositories/repositoryFactory";
+const CommentRepository = Repository.get("comment");
 
 export default {
   name: "ContactForm",
@@ -72,13 +78,15 @@ export default {
     }
   }),
   methods: {
-    onSubmit() {
+    async onSubmit() {
       if (this.$refs.form.validate()) {
         const comment = { comment: this.suggestion };
-        axios
-          .post("/comment-box/savecomment", comment)
-          .then(() => (this.alertSuccess = true))
-          .catch(() => (this.alertError = true));
+        try {
+          await CommentRepository.registerComment(comment);
+          this.alertSuccess = true;
+        } catch (e) {
+          this.alertError = true;
+        }
       }
     }
   }

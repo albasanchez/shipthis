@@ -5,7 +5,7 @@
     <TrackSec id="TrackSec"></TrackSec>
     <Services id="Services"></Services>
     <Contact id="Contact"></Contact>
-    <Sidebar v-if="idToken"></Sidebar>
+    <Sidebar v-if="loggedIn"></Sidebar>
   </div>
 </template>
 
@@ -19,7 +19,7 @@ import TrackSec from "../components/home/TrackSec.vue";
 import Services from "../components/home/Services.vue";
 import Contact from "../components/home/Contact.vue";
 import Sidebar from "../components/dashboard/Sidebar.vue";
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 export default {
   name: "Home",
   components: {
@@ -28,12 +28,10 @@ export default {
     TrackSec,
     Services,
     Sidebar,
-    Contact,
+    Contact
   },
-  computed: 
-    mapState({
-        idToken: state => state.idToken,
-    })
-  
+  computed: mapState({
+    loggedIn: state => !!state.user
+  })
 };
 </script>

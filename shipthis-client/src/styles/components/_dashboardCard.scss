@@ -3,7 +3,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width:230px;
+    width:210px;
     height:260px;
     transition: 0.5;
 }
@@ -15,7 +15,7 @@
     color: $second-color;
 }
 .dashboard-card__info-title{
-    font-size:20px;
+    font-size:16px;
     margin: 6px 0 8px 0;
 }
 .dashboard-card__info-text{

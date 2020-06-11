@@ -16,16 +16,7 @@
                   <h1 class="text-center display-5 accent--text text--accent-3">
                     {{ $t("login.loginTitle") }}
                   </h1>
-                  <div class="account-icons">
-                    <!-- Google -->
-                    <GoogleLogin
-                      class="g-signin-button "
-                      :params="params"
-                      :onSuccess="googleLogin"
-                      :onFailure="onFailure"
-                      ><v-icon>fab fa-google-plus-g</v-icon></GoogleLogin
-                    >
-                  </div>
+
                   <h4 class="text-center mt-4">
                     {{ $t("login.loginInstruction") }}
                   </h4>
@@ -123,8 +114,15 @@
               <v-col cols="8" class="ma-0">
                 <!--Alerts -->
                 <v-card-text class="mt-3">
-                  <v-alert v-model="recoverAlertSuccess" type="success" dismissible>
-                    <strong class="secondary--text">{{ $t("login.recoverAlertSuccess") }}  {{ user_email }}</strong>
+                  <v-alert
+                    v-model="recoverAlertSuccess"
+                    type="success"
+                    dismissible
+                  >
+                    <strong class="secondary--text"
+                      >{{ $t("login.recoverAlertSuccess") }}
+                      {{ user_email }}</strong
+                    >
                   </v-alert>
                   <v-alert v-model="recoverAlertError" type="error" dismissible>
                     <strong>{{ $t("login.recoverAlertError") }}</strong>
@@ -185,120 +183,66 @@
 <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 <script>
 import { required, minLength, between } from "vuelidate/lib/validators";
-import axios from "../services/auth-connector";
-import GoogleLogin from "vue-google-login";
-
+import Repository from "../services/repositories/repositoryFactory";
 export default {
   name: "LoginForm",
   props: {
-    activateLogin: Boolean,
+    activateLogin: Boolean
   },
   data: () => ({
     alertError: false,
+    error: "",
+
     user_email: null,
     user_password: "",
     document: null,
 
-    googleSignInParams: {
-      clientId:
-        "966846708768-sku50cmo0oo2l1giks2qsvhktd2al2pq.apps.googleusercontent.com",
-    },
-
     rules: {
-      required: (value) => !!value || "This field cannot be empty.",
+      required: value => !!value || "This field cannot be empty."
     },
 
     step: 1,
     alertSuccess: false,
     recoverAlertSuccess: false,
-    recoverAlertError: false,
-
-    // Strings
-    loginIcons: [
-      {
-        id: "1",
-        network: "Facebook",
-        code: "fab fa-facebook-f",
-        action: "facebookLogin",
-      },
-      {
-        id: "2",
-        network: "Google",
-        code: "fab fa-google-plus-g",
-        action: "googleLogin",
-      },
-    ],
+    recoverAlertError: false
   }),
   props: {
-    source: String,
-  },
-  components: {
-    GoogleLogin,
+    source: String
   },
   methods: {
     async loginSubmit() {
       if (this.$refs.login_form.validate()) {
-        const payload = {
+        const user = {
           useremail: this.user_email,
-          password: this.user_password,
+          password: this.user_password
         };
-        axios
-          .post("http://localhost:3000/shipthisapi/v1/auth/regularlogin", payload)
-          .then((r) => {
-            this.loginCommit(r.data);
-            this.$router.push("/HomeUser");
-          })
-          .catch((e) => {
-            this.alertError = true;
-          });
+        await this.$store.dispatch("users/authorize", user);
+        this.error = this.$store.getters["users/getError"].error;
+        if (this.error !== "") this.alertError = true;
+        else this.$router.push("/HomeUser");
       }
-    },
-    googleLogin(googleUser) {
-      // This only gets the user information: id, name, imageUrl and email
-      const googleInfo = googleUser.getBasicProfile();
-      const payload = {
-        email: googleInfo.Du,
-        firstName: googleInfo.sW,
-        lastName: googleInfo.tU,
-        picture: googleInfo.SK,
-        language: "en",
-      };
-      axios
-        .post("/auth/regGoogle", payload)
-        .then((r) => {
-          this.loginCommit(r.data);
-          this.$router.push("/HomeUser");
-        })
-        .catch((e) => {
-          this.alertError = true;
-        });
     },
     async recoverPasswordSubmit() {
       if (this.$refs.recover_form.validate()) {
-        const payload = {
+        const userRecoveryData = {
           useremail: this.user_email,
-          document: this.document,
+          document: this.document
         };
-        axios
-          .post("http://localhost:3000/shipthisapi/v1/auth/recoveruser", payload)
-          .then((r) => {
-            this.recoverAlertSuccess = true;
-          })
-          .catch((e) => {
-            this.recoverAlertError = true;
-          });
-      } else {
-        console.log("Faltan campos");
+        try {
+          await AuthorizeRepository.recoverUser(userRecoveryData);
+          this.recoverAlertSuccess = true;
+        } catch (e) {
+          this.recoverAlertError = true;
+        }
       }
     },
     goRegistry() {
       this.$router.push("/Registry");
     },
     loginCommit(data) {
-      console.log("data :>> ", data);
       this.$store.commit("login", { token: data.token, user: data.userdata });
-    },
-  },
+    }
+  }
 };
 </script>
 

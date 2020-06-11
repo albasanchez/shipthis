@@ -1,10 +1,21 @@
-#contact-form{
-    background-color: $third-color;
-    width: 50%;
-    padding:20px 35px;
-    border-radius:12px;
+#contact-form {
+  background-color: $third-color;
+  padding: 20px 35px;
+  border-radius: 12px;
 }
-.center-btn{
-    display: flex;
-    justify-content: center;
+.center-btn {
+  display: flex;
+  justify-content: center;
+}
+
+@media screen and (max-width: 7200px) {
+  #contact-form {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  #contact-form {
+    width: 90%;
+  }
 }
