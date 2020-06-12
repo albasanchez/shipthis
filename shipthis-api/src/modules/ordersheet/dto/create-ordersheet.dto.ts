@@ -1,4 +1,3 @@
-import { CreateItemDto } from './../../item/dto/create-item.dto';
 import {
   IsOptional,
   IsString,
@@ -8,16 +7,12 @@ import {
   IsBoolean,
   IsArray,
 } from 'class-validator';
+import { CreateItemDto } from './create-item.dto';
 
 export class CreateOrdersheetDto {
-  @IsNotEmpty()
-  @IsString()
-  @IsEmail()
-  useremail: string;
-
-  @IsNotEmpty()
-  @IsNumber()
-  origin_office: number;
+  @IsOptional()
+  @IsBoolean()
+  ignore_hollydays: boolean;
 
   @IsNotEmpty()
   @IsNumber()
@@ -25,28 +20,20 @@ export class CreateOrdersheetDto {
 
   @IsNotEmpty()
   @IsString()
-  rec_fullname: string;
-
-  @IsNotEmpty()
-  @IsString()
-  rec_phone_code: string;
-
-  @IsNotEmpty()
-  @IsString()
-  rec_phone_number: string;
-
-  @IsNotEmpty()
-  @IsString()
-  rec_document: string;
-
-  @IsNotEmpty()
-  @IsString()
   @IsEmail()
-  rec_email: string;
+  useremail: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  receiver_id: number;
 
   @IsOptional()
-  @IsBoolean()
-  ignore_hollydays: boolean;
+  @IsNumber()
+  discount_id: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  origin_office: number;
 
   @IsOptional()
   @IsNumber()

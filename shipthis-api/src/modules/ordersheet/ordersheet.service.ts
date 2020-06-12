@@ -1,20 +1,17 @@
+import { ItemPriceHist } from './../item-type/entities/item-price-hist.entity';
+import { ItemPriceHistRepository } from './../item-type/repositories/item-price-hist.repository';
+import { Office } from './../office/entities/office.entity';
+import { OfficeReposiroty } from './../office/repositories/office.repository';
 import { OrderHistoryDto } from './dto/order-history.dto';
-import { UserAlreadyRegisteredException } from 'src/common/exceptions/user-already-registered.exception';
-import { CheckPointRepository } from './../check-point/check-point.repository';
-import { TrajectoryRepository } from './../trajectory/trajectory.repository';
-import { Trajectory } from './../trajectory/trajectory.entity';
-import { ItemRepository } from './../item/item.repository';
-import { Place } from './../place/place.entity';
-import { OrderPriceHist } from './../order-price-hist/order-price-hist.entity';
-import { OrdersheetRepository } from './ordersheet.repository';
-import { ItemPriceHistRepository } from './../item-price-hist/item-price-hist.repository';
-import { OfficeReposiroty } from './../office/office.repository';
-import { Office } from './../office/office.entity';
-import { getConnection } from 'typeorm';
+import { Trajectory } from './entities/trajectory.entity';
+import { Place } from './entities/place.entity';
+import { OrderPriceHist } from '../order-type/entities/order-price-hist.entity';
+import { OrdersheetRepository } from './repositories/ordersheet.repository';
+import { getConnection, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { CreateOrdersheetDto } from './dto/create-ordersheet.dto';
-import { Userdata } from '../userdata/userdata.entity';
-import { UserDataRepository } from '../userdata/userdata.repository';
+import { Userdata } from '../userdata/entities/userdata.entity';
+import { UserDataRepository } from '../userdata/repositories/userdata.repository';
 import {
   UserNotFoundException,
   OfficeNotFoundException,
@@ -26,15 +23,12 @@ import {
 } from 'src/common/exceptions';
 import { OfficeStatus } from '../office/constants/office-status.enum';
 import { UserdataStatus } from '../userdata/constants/user-status.enum';
-import { Item } from '../item/item.entity';
-import { ItemPriceHist } from '../item-price-hist/item-price-hist.entity';
+import { Item } from './entities/item.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { OrderPriceHistRepository } from '../order-price-hist/order-price-hist.repository';
-import { Ordersheet } from './ordersheet.entity';
+import { OrderPriceHistRepository } from '../order-type/repositories/order-price-hist.repository';
+import { Ordersheet } from './entities/ordersheet.entity';
 import { OrdersheetStatus } from './constants/ordersheet-status.enum';
-import { async } from 'rxjs/internal/scheduler/async';
-import { CheckPoint } from '../check-point/check-point.entity';
-import { validate } from 'class-validator';
+import { CheckPoint } from './entities/check-point.entity';
 import { AppLoggerService } from 'src/log/applogger.service';
 import { OrderDetailDto } from './dto/order-detail.dto';
 
@@ -47,12 +41,12 @@ export class OrdersheetService {
   ) {}
 
   async createOrdersheet(order: CreateOrdersheetDto): Promise<any> {
-    this._appLogger.log('Create ordersheet service');
+    /* this._appLogger.log('Create ordersheet service');
     //validade user
     const user: Userdata = await this.validateUser(order.useremail);
 
     //validate origin office
-    const officeRepo: OfficeReposiroty = await getConnection().getRepository(
+    const officeRepo: Repository<Office> = getConnection().getRepository(
       Office,
     );
     const origin_office = await officeRepo.findOne({
@@ -67,7 +61,7 @@ export class OrdersheetService {
     }
 
     //validate order_price_hist
-    const orderPriceHistRepo: OrderPriceHistRepository = await getConnection().getRepository(
+    const orderPriceHistRepo: OrderPriceHistRepository = getConnection().getRepository(
       OrderPriceHist,
     );
     const orderPrice = await orderPriceHistRepo.findOne({
@@ -105,7 +99,7 @@ export class OrdersheetService {
 
     //validate items
     let itemsToInsert: Item[] = [];
-    const itemPriceRepo: ItemPriceHistRepository = await getConnection().getRepository(
+    const itemPriceRepo: ItemPriceHistRepository = getConnection().getRepository(
       ItemPriceHist,
     );
     let newItem: Item;
@@ -158,7 +152,7 @@ export class OrdersheetService {
     newOrdersheet.items = itemsToInsert;
     //create trajectory
     const orderRoute: Trajectory = new Trajectory();
-    orderRoute.linear_distance = Math.floor(90 + Math.random() * 700);
+    orderRoute.distance = Math.floor(90 + Math.random() * 700);
     orderRoute.efective_distance = Math.floor(orderRoute.linear_distance * 1.2);
     //check-point
     const cpArray: CheckPoint[] = [];
@@ -185,7 +179,7 @@ export class OrdersheetService {
       `New order created successfuly with ID = ${savedOrdersheet.ordersheet_id}`,
     );
     savedOrdersheet.user.password = '';
-    return { response: 'Order Registered successfully' };
+    return { response: 'Order Registered successfully' }; */
   }
 
   async searchHistory(info: OrderHistoryDto): Promise<any> {
@@ -206,7 +200,7 @@ export class OrdersheetService {
 
   async searchOrdersheetDetail(orderDetail: OrderDetailDto): Promise<any> {
     this._appLogger.log('Search order Detail service');
-    const order: Ordersheet = await this.validateExitingOrdersheet(
+    const order: Ordersheet = await this.validateExistingOrdersheet(
       orderDetail.tracking_id,
     );
     const person = order.user.person;
@@ -214,7 +208,7 @@ export class OrdersheetService {
     return { person: person, ...order };
   }
 
-  private async validateExitingOrdersheet(id: string): Promise<Ordersheet> {
+  private async validateExistingOrdersheet(id: string): Promise<Ordersheet> {
     const order: Ordersheet = await this._ordersheetRepo.findOne({
       where: { ordersheet_id: id },
     });
@@ -228,7 +222,7 @@ export class OrdersheetService {
 
   private async validateUser(useremail: string): Promise<Userdata> {
     //validade user
-    const userdataRepo: UserDataRepository = await getConnection().getRepository(
+    const userdataRepo: UserDataRepository = getConnection().getRepository(
       Userdata,
     );
     const user: Userdata = await userdataRepo.findOne({

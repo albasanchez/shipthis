@@ -1,25 +1,24 @@
+import { CharacteristicRepository } from './repositories/characteristic.repository';
+import { ItemPriceHistRepository } from './repositories/item-price-hist.repository';
 import { Injectable } from '@nestjs/common';
-import { ItemTypeRepository } from './item-type.repository';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ItemType } from './item-type.entity';
-import { ItemTypeStatus } from './constants/item-type-status.enum';
-import { AppLoggerService } from 'src/log/applogger.service';
+import { ItemPriceHist } from './entities/item-price-hist.entity';
+import { Characteristic } from './entities/characteristic.entity';
 
 @Injectable()
 export class ItemTypeService {
   constructor(
-    @InjectRepository(ItemTypeRepository)
-    private readonly _itemTypeRepo: ItemTypeRepository,
-    private readonly _appLogger: AppLoggerService,
+    @InjectRepository(ItemPriceHistRepository)
+    private readonly _itemPriceRepo: ItemPriceHistRepository,
+    @InjectRepository(CharacteristicRepository)
+    private readonly _characRepo: CharacteristicRepository,
   ) {}
 
-  async getAllActiveItemtypes(): Promise<ItemType[]> {
-    this._appLogger.log('Reading all Active ItemTypes');
-    return this._itemTypeRepo
-      .createQueryBuilder('it')
-      .innerJoinAndSelect('it.prices', 'price', 'price.ending_date is null')
-      .innerJoinAndSelect('it.category', 'category')
-      .where('it.status = :st', { st: ItemTypeStatus.ACTIVE })
-      .getMany();
+  async getCurrentItemPrice(): Promise<ItemPriceHist> {
+    return this._itemPriceRepo.getCurrentPrice();
+  }
+
+  async getACurrentActiveCharacteristics(): Promise<Characteristic[]> {
+    return this._characRepo.getAllCharacteristics();
   }
 }

@@ -1,10 +1,10 @@
-import { CheckPointRepository } from './../check-point/check-point.repository';
-import { CheckPoint } from './../check-point/check-point.entity';
+import { CheckPointRepository } from '../ordersheet/repositories/check-point.repository';
+import { CheckPoint } from '../ordersheet/entities/check-point.entity';
 import { OrdersheetStatus } from './../ordersheet/constants/ordersheet-status.enum';
-import { OrdersheetRepository } from './../ordersheet/ordersheet.repository';
+import { OrdersheetRepository } from '../ordersheet/repositories/ordersheet.repository';
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { Ordersheet } from '../ordersheet/ordersheet.entity';
+import { Ordersheet } from '../ordersheet/entities/ordersheet.entity';
 import { getConnection, Not } from 'typeorm';
 import { AppLoggerService } from 'src/log/applogger.service';
 

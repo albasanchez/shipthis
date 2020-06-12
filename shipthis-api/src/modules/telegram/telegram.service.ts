@@ -1,10 +1,10 @@
-import { OrdersheetRepository } from './../ordersheet/ordersheet.repository';
+import { OrdersheetRepository } from '../ordersheet/repositories/ordersheet.repository';
 import { Configuration } from './../../config/config.keys';
 import { ConfigService } from './../../config/config.service';
 import { HttpService, Injectable, OnModuleInit } from '@nestjs/common';
 import { AppLoggerService } from 'src/log/applogger.service';
 import { getConnection } from 'typeorm';
-import { Ordersheet } from '../ordersheet/ordersheet.entity';
+import { Ordersheet } from '../ordersheet/entities/ordersheet.entity';
 
 @Injectable()
 export class TelegramService implements OnModuleInit {
@@ -79,7 +79,7 @@ export class TelegramService implements OnModuleInit {
           resp = `ORDER STATUS: ${order.status}`;
           resp += `\nCREATION DATE: ${order.creation_date}`;
           resp += `\nORIGIN OFFICE: ${order.origin_office.place.address}`;
-          resp += `\nDESTINARATY: ${order.rec_fullname}`;
+          resp += `\nDESTINARATY: ${order.receiver.name}`;
           resp += `\nDESTINATION ADDRESS: ${
             order.destination_office
               ? order.destination_office.place.address

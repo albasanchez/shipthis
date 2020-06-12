@@ -1,14 +1,7 @@
-import {
-  Injectable,
-  BadRequestException,
-  NotFoundException,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
-import { RolRepository } from './rol.repository';
+import { Injectable, BadRequestException } from '@nestjs/common';
+import { RolRepository } from './repositories/rol.repository';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Rol } from './rol.entity';
-import { throws } from 'assert';
+import { Rol } from './entities/rol.entity';
 import { RolNotFoundException } from 'src/common/exceptions/rol-not-found.exception';
 
 @Injectable()

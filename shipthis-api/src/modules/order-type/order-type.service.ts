@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { OrderPriceHistRepository } from '../order-price-hist/order-price-hist.repository';
 import { InjectRepository } from '@nestjs/typeorm';
-import { OrderType } from './order-type.entity';
-import { OrderTypeStatus } from './constants/orer-type-status.enum';
-import { OrderTypeRepository } from './order-type.repository';
+import { OrderType } from './entities/order-type.entity';
+import { OrderTypeStatus } from './constants/order-type-status.enum';
+import { OrderTypeRepository } from './repositories/order-type.repository';
 import { AppLoggerService } from 'src/log/applogger.service';
 
 @Injectable()
@@ -16,10 +15,6 @@ export class OrderTypeService {
 
   async getAllActiveOrdertypes(): Promise<OrderType[]> {
     this._appLogger.log('Reading all active order types');
-    return await this._orderTypeRepository
-      .createQueryBuilder('ot')
-      .innerJoinAndSelect('ot.prices', 'prices', 'prices.ending_date is null')
-      .where('ot.status = :st', { st: OrderTypeStatus.ACTIVE })
-      .getMany();
+    return await this._orderTypeRepository.getAllActiveOrdertypes();
   }
 }

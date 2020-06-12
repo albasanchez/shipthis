@@ -1,11 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
-import { AuthService } from '../auth.service';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AuthRepository } from '../auth.repository';
-import { IJwtPayload } from '../payloads/jwt-payload.interace';
-import { UserdataStatus } from 'src/modules/userdata/constants/user-status.enum';
+import { AuthRepository } from '../repositories/auth.repository';
 import { ILocalPayload } from '../payloads/local-payload';
 
 @Injectable()

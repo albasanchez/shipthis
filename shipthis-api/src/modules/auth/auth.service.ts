@@ -1,26 +1,22 @@
+import { GenderType } from './../userdata/constants/gender.enum';
+import { AuthRepository } from './repositories/auth.repository';
 import { Injectable } from '@nestjs/common';
-import { AuthRepository } from './auth.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { SignupDto, LoginDto, RecoverUserDto } from './dto';
 import { UserdataRegistrationType } from '../userdata/constants/user-registration.enum';
 import { RolName } from '../rol/constants/rol-name.enum';
 import { IJwtPayload } from './payloads/jwt-payload.interace';
-import { Userdata } from '../userdata/userdata.entity';
-import { GenderType } from '../person/constants/gender.enum';
+import { Userdata } from '../userdata/entities/userdata.entity';
 import { AppLoggerService } from 'src/log/applogger.service';
 import { UserAlreadyRegisteredException } from 'src/common/exceptions/user-already-registered.exception';
 import { WrongCredentialsException } from 'src/common/exceptions/wrong-credentials.exception';
 import { UserNotFoundException } from 'src/common/exceptions/user-not-found.exception';
-import { SendService } from '../send-email/send.service';
-import { SendMessageDto } from '../send-email/dto/sendMessage.dto';
 import { UserdataStatus } from '../userdata/constants/user-status.enum';
 import { UserFederatedException } from 'src/common/exceptions';
 import { WrongRecoveryCredentialsException } from 'src/common/exceptions';
 import { BlockedUserException } from 'src/common/exceptions';
 import { genSalt, hash, compare } from 'bcryptjs';
-import { SendRecoverPasswordDto } from '../send-email/dto/sendRecoverPassword.dto';
-
 
 @Injectable()
 export class AuthService {
@@ -29,15 +25,12 @@ export class AuthService {
     private readonly _authRepository: AuthRepository,
     private readonly _jwtService: JwtService,
     private readonly _appLogger: AppLoggerService,
-    private readonly _sendEmail: SendService
   ) {}
 
   async googleLogin(
     signup: SignupDto,
   ): Promise<{ token: string; userdata: any }> {
-    this._appLogger.log(
-      'GoogleLogin: User trying to authenticate using federated login with google',
-    );
+    this._appLogger.log('Handling New Request: Google Login Service');
     //validating email no registeres
     const { useremail } = signup;
 
@@ -54,10 +47,8 @@ export class AuthService {
         UserdataRegistrationType.GOOGLE,
         RolName.CLIENT,
       );
-      
-      const userDto = new SendMessageDto(user.email, user.person.first_name, user.person.last_name)
-      this._sendEmail.send(userDto, 1)
 
+      /* SEND EMAIL HERE */
     } else {
       user = posibleUser;
     }
@@ -68,9 +59,7 @@ export class AuthService {
   async regularSignup(
     signup: SignupDto,
   ): Promise<{ token: string; userdata: any }> {
-    this._appLogger.log(
-      'No federated registration: User trying to sign up with form registration',
-    );
+    this._appLogger.log('Handling New Request: No Federated Sign UP Service');
     //validating email no registeres
     const { useremail } = signup;
 
@@ -91,9 +80,8 @@ export class AuthService {
       UserdataRegistrationType.REGULAR,
       RolName.CLIENT,
     );
-    
-    const userDto = new SendMessageDto(user.email, user.person.first_name, user.person.last_name)
-    this._sendEmail.send(userDto, 1);
+
+    /* SEND EMAIL HERE */
 
     this._appLogger.log('NEW USER regitered successfully');
     return this.returnUser(user);
@@ -102,7 +90,7 @@ export class AuthService {
   async regularLogin(
     logindata: LoginDto,
   ): Promise<{ token: string; userdata: any }> {
-    this._appLogger.log('No federated Login: user logging in');
+    this._appLogger.log('Handling New Request: No Federated Login Service');
     //validating email no registeres
     const { useremail, password: pwd } = logindata;
 
@@ -121,12 +109,13 @@ export class AuthService {
       this._appLogger.log('Wrong credentias provided');
       throw new WrongCredentialsException();
     }
-    
+
     this._appLogger.log('User logged in successfully');
     return this.returnUser(user);
   }
 
   async recoverUser(recoverData: RecoverUserDto): Promise<any> {
+    this._appLogger.log('Handling New Request: User Recovery Service');
     const { useremail, document } = recoverData;
 
     const user: Userdata = await this._authRepository.findOne({
@@ -139,7 +128,7 @@ export class AuthService {
     }
 
     if (user.status === UserdataStatus.BLOCKED) {
-      this._appLogger.log('Impossible to recover blocked rated users');
+      this._appLogger.log('Impossible to recover blocked users');
       throw new BlockedUserException();
     }
 
@@ -156,10 +145,7 @@ export class AuthService {
     const newPassword = Math.random()
       .toString(36)
       .slice(-10);
-    
-    const userDto = new SendRecoverPasswordDto(user.email, user.person.first_name, user.person.last_name, newPassword)
-    this._sendEmail.send(userDto, 3)
-    
+
     console.log('newPassword :>> ', newPassword);
     const salt = await genSalt(10);
     const saltedPassword = await hash(newPassword, salt);
@@ -171,10 +157,7 @@ export class AuthService {
       .where('email = :email', { email: useremail })
       .execute();
 
-    /*******
-    Send email with new password
-    Insert code here
-    ********/
+    /* SEND EMAIL HERE */
 
     return { response: 'New password set on user successfully' };
   }
