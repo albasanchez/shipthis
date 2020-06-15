@@ -7,10 +7,17 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { Ordersheet } from '../ordersheet/entities/ordersheet.entity';
 import { getConnection, Not } from 'typeorm';
 import { AppLoggerService } from 'src/log/applogger.service';
+import { Simulation } from './entities/simulation.entity';
+import { SimulationRepository } from './repositories/simulation.repository';
+import { InjectRepository } from '@nestjs/typeorm';
+import { NewRegisterDto } from './dto/NewRegister.dto';
 
 @Injectable()
 export class SimulationService {
-  constructor(private readonly _appLogger: AppLoggerService) {}
+  constructor(private readonly _appLogger: AppLoggerService,
+    @InjectRepository (SimulationRepository)
+    private readonly _simulationRepo: SimulationRepository,) {}
+
   @Cron(CronExpression.EVERY_5_MINUTES)
   async handleCron() {
     this._appLogger.log('UNATTENDED SERVICE: simulating order movement');
@@ -87,4 +94,12 @@ export class SimulationService {
       .where({ check_point_id: checkPoint.check_point_id })
       .execute();
   }
+
+  async getCurrentConfigTime(): Promise<Simulation> {
+    return this._simulationRepo.getCurrentConfigTime();
+  }
+
+  async updateConfigTime(NewRegister: NewRegisterDto): Promise<NewRegisterDto> {
+    return this._simulationRepo.updateConfigTime(NewRegister);
+ } 
 }

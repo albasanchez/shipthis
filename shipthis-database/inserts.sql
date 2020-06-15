@@ -89,3 +89,9 @@ VALUES
     ('Los Olivos', '+1 (641) 2351-524', 'ACTIVE', 10),
     ('Los Pepinos', '+1 (641) 7586-423', 'ACTIVE', 11),
     ('Las Mariposas', '+1 (641) 9854-785', 'BLOCKED', 12);
+
+/*Simulation*/
+INSERT INTO simulation 
+	(starting_date,ending_date,config_time)
+VALUES
+	('2020-06-13',null,5);

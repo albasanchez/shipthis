@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ItemPriceHist } from './entities/item-price-hist.entity';
 import { Characteristic } from './entities/characteristic.entity';
+import { NewItemHistDto } from './dto/item-price-history.dto';
 
 @Injectable()
 export class ItemTypeService {
@@ -21,4 +22,10 @@ export class ItemTypeService {
   async getACurrentActiveCharacteristics(): Promise<Characteristic[]> {
     return this._characRepo.getAllCharacteristics();
   }
+
+  async updatePriceHist(NewRegister: NewItemHistDto): Promise<NewItemHistDto> {
+     return this._itemPriceRepo.updateHistory(NewRegister);
+  } 
+
+  
 }
