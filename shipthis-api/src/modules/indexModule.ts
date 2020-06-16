@@ -1,3 +1,4 @@
+import { InternationalizationModule } from './internationalization/internationalization.module';
 import { DiscountModule } from './discount/discount.module';
 import { CommercialAllyModule } from './commercial-ally/commercial-ally.module';
 import { SimulationModule } from './simulation/simulation.module';
@@ -24,4 +25,5 @@ export const indexModules = [
   SimulationModule,
   TelegramModule,
   UserdataModule,
+  InternationalizationModule,
 ];
