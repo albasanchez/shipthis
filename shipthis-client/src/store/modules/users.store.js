@@ -6,7 +6,13 @@ const AuthorizeRepository = Repository.get("authorize");
 
 // Initial State object
 const initialState = () => {
-  return { user: {}, tracking_info: {}, tracking_status: {}, error: "" };
+  return {
+    user: {},
+    tracking_info: {},
+    tracking_status: {},
+    error: "",
+    language: process.env.VUE_APP_I18N_LOCALE,
+  };
 };
 
 // State object
@@ -22,7 +28,7 @@ const getters = {
   },
   getUserId(state) {
     return state.user.id;
-  }
+  },
 };
 
 // Mutations
@@ -33,12 +39,15 @@ const mutations = {
   set_error_message(state, error) {
     state.error = error;
   },
+  set_language(state, language) {
+    state.language = language;
+  },
   reset(state) {
     const newState = initialState();
-    Object.keys(newState).forEach(key => {
+    Object.keys(newState).forEach((key) => {
       state[key] = newState[key];
     });
-  }
+  },
 };
 
 // Actions
@@ -60,7 +69,10 @@ const actions = {
     } catch (e) {
       commit("set_error_message", e);
     }
-  }
+  },
+  changeLanguage({ commit }, payload) {
+    commit("set_language", payload);
+  },
 };
 
 export default {
@@ -68,5 +80,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

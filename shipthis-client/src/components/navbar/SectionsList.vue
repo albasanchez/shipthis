@@ -1,27 +1,45 @@
 <template>
   <div>
-    <v-list id="sections-list" class="pa-0 ma-0">
+    <v-list
+      :id="$vuetify.breakpoint.mdAndUp ? 'sections-list' : ''"
+      class="pa-0 ma-0"
+    >
       <v-list-item v-for="section in sections" :key="section.id">
         <!-- Condicional para saber si el usuario está logueado o no -->
         <div v-if="section.activateLogin">
           <!-- Si está logueado, muestra "Escritorio" y no "Acceder" -->
           <div v-if="userLoggedIn">
-            <a class="sections-list__item d-none" @click="activateLogin = true">
-              {{ $t("sections." + section.name) }}
-            </a>
-            <a class="sections-list__item" @click="goRoute(section.link)">
+            <a
+              :class="
+                $vuetify.breakpoint.mdAndUp
+                  ? 'sections-list__item'
+                  : 'sections-menu__item'
+              "
+              @click="goRoute(section.link)"
+            >
               {{ $t("sidebar." + section.alter) }}
             </a>
           </div>
           <div v-else>
-            <a class="sections-list__item" @click="activateLogin = true">
+            <a
+              :class="
+                $vuetify.breakpoint.mdAndUp
+                  ? 'sections-list__item'
+                  : 'sections-menu__item'
+              "
+              @click.stop="loginDialog(true)"
+            >
               {{ $t("sections." + section.name) }}
             </a>
           </div>
         </div>
         <div v-else>
           <a
-            class="sections-list__item"
+            :class="
+              $vuetify.breakpoint.mdAndUp
+                ? 'sections-list__item'
+                : 'sections-menu__item'
+            "
             @click="goRoute('')"
             :href="section.link"
           >
@@ -48,12 +66,6 @@ import LoginForm from "../Login.vue";
 import { mapState } from "vuex";
 export default {
   name: "SectionsList",
-  props: {
-    loggedIn: {
-      type: Boolean,
-      default: false
-    }
-  },
   data: () => ({
     activateLogin: false,
     sections: [
@@ -67,22 +79,24 @@ export default {
         name: "access",
         alter: "desktop",
         link: "HomeUser",
-        activateLogin: true
-      }
+        activateLogin: true,
+      },
     ],
-    activeColor: ""
   }),
   components: {
-    LoginForm
+    LoginForm,
   },
   computed: mapState({
-    userLoggedIn: state => state.users.user.user_id != null
+    userLoggedIn: (state) => state.users.user.user_id != null,
   }),
   methods: {
     goRoute(route) {
       this.$router.push("/" + route);
-    }
-  }
+    },
+    loginDialog(activate) {
+      this.activateLogin = activate;
+    },
+  },
 };
 </script>
 <style lang="scss">
