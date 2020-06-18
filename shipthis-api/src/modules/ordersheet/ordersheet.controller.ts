@@ -7,6 +7,7 @@ import {
   ValidationPipe,
   Post,
   Body,
+  Get,
 } from '@nestjs/common';
 import { OrderDetailDto } from './dto/order-detail.dto';
 
@@ -31,4 +32,15 @@ export class OrdersheetController {
   async searchOrderDetail(@Body() orderDetail: OrderDetailDto) {
     return this._orderSheetService.searchOrdersheetDetail(orderDetail);
   }
+
+  @Get('orders')
+  async getAllOrders() {
+    return await this._orderSheetService.gelAllOrders();
+  }
+
+  @Get('orders-total')
+  async getAllOrdersTotal() {
+    return await this._orderSheetService.gelAllOrdersTotal();
+  }
+
 }

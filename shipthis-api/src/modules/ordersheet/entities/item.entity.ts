@@ -42,7 +42,7 @@ export class Item extends BaseEntity {
     type => Ordersheet,
     ordersheet => ordersheet.items,
     {
-      nullable: false,
+      nullable: true,
       onDelete: 'CASCADE',
       primary: false,
     },
@@ -54,7 +54,7 @@ export class Item extends BaseEntity {
     type => Pickup,
     pickup => pickup.items,
     {
-      nullable: false,
+      nullable: true,
       onDelete: 'CASCADE',
       primary: false,
     },

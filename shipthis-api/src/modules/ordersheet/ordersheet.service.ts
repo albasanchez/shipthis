@@ -31,6 +31,9 @@ import { OrdersheetStatus } from './constants/ordersheet-status.enum';
 import { CheckPoint } from './entities/check-point.entity';
 import { AppLoggerService } from 'src/log/applogger.service';
 import { OrderDetailDto } from './dto/order-detail.dto';
+import { OrdersDetailsDto } from './dto/orders-details.dto';
+import { TotalsDto } from './dto/orders-totals.dto';
+import { MapperOrder } from '../../mapper/mapper-order';
 
 @Injectable()
 export class OrdersheetService {
@@ -235,4 +238,43 @@ export class OrdersheetService {
     }
     return user;
   }
+
+  async gelAllOrders(): Promise<OrdersDetailsDto[]> {
+    
+    const orders: Ordersheet[] = await this._ordersheetRepo.getAllOrders();
+    const ordersInfo: OrdersDetailsDto[] = [];
+
+    orders.forEach(order => { ordersInfo.push(MapperOrder.ordersheetToOrderDetails(order))
+    })
+
+    return ordersInfo;
+
+  }
+
+  async gelAllOrdersTotal(): Promise<TotalsDto> {
+
+    const ordersTotal: Ordersheet[] = await this._ordersheetRepo.getAllOrders();
+    const ordersDeliveryTotal: Ordersheet[] = [];
+    const ordersInTransitTotal: Ordersheet[] = [];
+    const ordersDeliveredTotal: Ordersheet[] = [];
+
+      ordersTotal.forEach(order => { 
+        if(order.status == OrdersheetStatus.DELIVERY) {
+          ordersDeliveryTotal.push(order);
+        } else if(order.status == OrdersheetStatus.TRANSIT) {
+          ordersInTransitTotal.push(order);
+        } else if(order.status == OrdersheetStatus.DELIVERED) {
+          ordersDeliveredTotal.push(order);
+        }
+      })
+
+      const Totals = new TotalsDto();
+    
+      Totals.delivery= ordersDeliveryTotal.length;
+      Totals.inTransit= ordersInTransitTotal.length;
+      Totals.delivered= ordersDeliveredTotal.length;
+      Totals.total= ordersTotal.length;
+
+    return Totals;
+  } 
 }

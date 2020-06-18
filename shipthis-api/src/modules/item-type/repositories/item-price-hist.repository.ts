@@ -15,7 +15,14 @@ export class ItemPriceHistRepository extends Repository<ItemPriceHist> {
 
     this.update(OldRegister.item_price_hist_id, OldRegister);
 
-    return this.save(NewRegister);
+    const NewPriceRegister = {
+      starting_date: new Date (),
+      ending_date: null,
+      base_price: NewRegister.base_price,
+      price_km: NewRegister.price_km,
+    };
+
+    return this.save(NewPriceRegister);
 
   }
 

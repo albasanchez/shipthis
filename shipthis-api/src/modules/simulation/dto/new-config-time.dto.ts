@@ -6,15 +6,7 @@ import {
     IsNumber,
   } from 'class-validator';
   
-  export class NewRegisterDto {
-    @IsOptional()
-    @IsString()
-    starting_date: string;
-  
-    @IsOptional()
-    @IsString()
-    ending_date: string;
-  
+  export class NewConfigTimeDto {
     @IsNotEmpty()
     @IsNumber()
     config_time: number;

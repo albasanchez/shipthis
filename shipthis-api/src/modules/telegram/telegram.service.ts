@@ -66,9 +66,7 @@ export class TelegramService implements OnModuleInit {
       const trackingID: string = input[1];
       let resp: string;
       if (trackingID.match(regex)) {
-        const orderRepo: OrdersheetRepository = getConnection().getRepository(
-          Ordersheet,
-        );
+        const orderRepo: OrdersheetRepository = new OrdersheetRepository()
         const order: Ordersheet = await orderRepo.findOne({
           where: { ordersheet_id: trackingID },
         });

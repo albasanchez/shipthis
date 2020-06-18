@@ -1,6 +1,6 @@
 import { Controller, Get, Patch, UsePipes, ValidationPipe, Body, Post} from '@nestjs/common';
 import { SimulationService } from './simulation.service';
-import { NewRegisterDto } from './dto/NewRegister.dto';
+import { NewConfigTimeDto } from './dto/new-config-time.dto';
 
 @Controller('simulation')
 export class SimulationController {
@@ -11,9 +11,9 @@ export class SimulationController {
     return this._simulationServ.getCurrentConfigTime();
   }
 
-  @Post ('update-config-time') 
-  @UsePipes(ValidationPipe)
-  async updateItemHist (@Body() NewRegister: NewRegisterDto): Promise<NewRegisterDto> {
-  return this._simulationServ.updateConfigTime(NewRegister);
+    @Post ('update-config-time') 
+    @UsePipes(ValidationPipe)
+    async updateItemHist (@Body() NewRegister: NewConfigTimeDto): Promise<NewConfigTimeDto> {
+    return this._simulationServ.updateConfigTime(NewRegister);
   }
 }

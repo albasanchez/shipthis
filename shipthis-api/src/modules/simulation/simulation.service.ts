@@ -10,7 +10,7 @@ import { AppLoggerService } from 'src/log/applogger.service';
 import { Simulation } from './entities/simulation.entity';
 import { SimulationRepository } from './repositories/simulation.repository';
 import { InjectRepository } from '@nestjs/typeorm';
-import { NewRegisterDto } from './dto/NewRegister.dto';
+import { NewConfigTimeDto } from './dto/new-config-time.dto';
 
 @Injectable()
 export class SimulationService {
@@ -58,9 +58,7 @@ export class SimulationService {
   }
 
   private async searchNotDeliveredOrders(): Promise<Ordersheet[]> {
-    const ordersheetRepo: OrdersheetRepository = getConnection().getRepository(
-      Ordersheet,
-    );
+    const ordersheetRepo: OrdersheetRepository = new OrdersheetRepository()
     return await ordersheetRepo.find({
       where: { status: Not(OrdersheetStatus.DELIVERED) },
     });
@@ -72,16 +70,14 @@ export class SimulationService {
   ): Promise<void> {
     const date: Date =
       newStatus === OrdersheetStatus.DELIVERED ? new Date() : null;
-    const ordersheetRepo: OrdersheetRepository = getConnection().getRepository(
-      Ordersheet,
-    );
+    const ordersheetRepo: OrdersheetRepository = new OrdersheetRepository()
     await ordersheetRepo
       .createQueryBuilder()
       .update()
       .set({ status: newStatus, delivery_date: date })
       .where({ ordersheet_id: order.ordersheet_id })
       .execute();
-  }
+  }  
 
   private async updateCheckPoint(checkPoint: CheckPoint): Promise<void> {
     const checkPointRepo: CheckPointRepository = getConnection().getRepository(
@@ -99,7 +95,7 @@ export class SimulationService {
     return this._simulationRepo.getCurrentConfigTime();
   }
 
-  async updateConfigTime(NewRegister: NewRegisterDto): Promise<NewRegisterDto> {
+  async updateConfigTime(NewRegister: NewConfigTimeDto): Promise<NewConfigTimeDto> {
     return this._simulationRepo.updateConfigTime(NewRegister);
  } 
 }
