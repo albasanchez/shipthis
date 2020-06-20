@@ -1,0 +1,16 @@
+.general-container {
+  padding: 10px 60px;
+  width: 100% !important;
+  background-color: $second-color !important;
+  height: 100%;
+}
+
+.general-title {
+  font-size: 22px;
+}
+
+@media only screen and (max-width: 720px) {
+  .general-title {
+    font-size: 15px;
+  }
+}

@@ -1,0 +1,22 @@
+#LoginForm{
+    width: 100% !important;
+  }
+  .loginCard{
+    width: 100% !important;
+  }
+  .account-icons{
+    display: flex;
+    justify-content: center;
+  }
+  .login-logo{
+    width: 80%;
+  }
+  .center-img{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .forgotPassword:hover{
+    cursor: pointer;
+  }

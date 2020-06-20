@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+// Configuration and helpers
+@import "abstracts/variables";
+
+// Components
+@import "components/navbar",
+        "components/sectionsList",
+        "components/banner",
+        "components/us",
+        "components/services",
+        "components/serviceCard",
+        "components/trackSec",
+        "components/trackingBox",
+        "components/contact",
+        "components/contactForm",
+        "components/login",
+        "components/footer",
+        "components/dashboard",
+        "components/dashboardCard",
+        "components/toolbar",
+        "components/registryForm",
+        "components/profile",
+        "components/general",
+        "components/newOrderForm",
+        "components/shipments";
