@@ -10,20 +10,20 @@ export class SimulationRepository extends Repository<Simulation> {
         return this.findOne({ ending_date: null });
       }
 
-    async updateConfigTime(NewConfigtime: NewConfigTimeDto) : Promise<any> {
+    async updateConfigTime(newConfigtime: NewConfigTimeDto) : Promise<any> {
 
-        const OldRegister: Simulation = await this.findOne({ where: { ending_date: null } });
-        OldRegister.ending_date = new Date ();
+        const oldRegister: Simulation = await this.findOne({ where: { ending_date: null } });
+        oldRegister.ending_date = new Date ();
     
-        this.update(OldRegister.simulation_id, OldRegister);
+        this.update(oldRegister.simulation_id, oldRegister);
 
-        const NewRegister = {
+        const newRegister = {
           starting_date: new Date (),
           ending_date: null,
-          config_time: NewConfigtime.config_time
+          config_time: newConfigtime.config_time
         };
     
-        return this.save(NewRegister);
+        return this.save(newRegister);
     
       }
 

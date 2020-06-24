@@ -18,8 +18,8 @@ export class ItemTypeController {
 
   @Post ('updateItemHistory') 
   @UsePipes(ValidationPipe)
-  async updateItemHist (@Body() NewRegister: NewItemHistDto): Promise<NewItemHistDto> {
-  return this._itemTypeServ.updatePriceHist(NewRegister);
+  async updateItemHist (@Body() newRegister: NewItemHistDto): Promise<NewItemHistDto> {
+  return this._itemTypeServ.updatePriceHist(newRegister);
 }
 
 }

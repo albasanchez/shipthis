@@ -23,8 +23,8 @@ export class ItemTypeService {
     return this._characRepo.getAllCharacteristics();
   }
 
-  async updatePriceHist(NewRegister: NewItemHistDto): Promise<NewItemHistDto> {
-     return this._itemPriceRepo.updateHistory(NewRegister);
+  async updatePriceHist(newRegister: NewItemHistDto): Promise<NewItemHistDto> {
+     return this._itemPriceRepo.updateHistory(newRegister);
   } 
 
   

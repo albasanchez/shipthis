@@ -11,6 +11,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from 'src/config/config.service';
 import { Configuration } from 'src/config/config.keys';
 import { AppLoggerModule } from 'src/log/applogger.module';
+import { EmailModule } from "../email/email.module";
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { AppLoggerModule } from 'src/log/applogger.module';
       },
     }),
     AppLoggerModule,
+    EmailModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, GoogleStrategy, JwtStrategy],

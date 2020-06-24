@@ -16,7 +16,7 @@ export class UserdataService {
 
     async getReceivers(userid: number): Promise<ReceiverInfoDto[]> {
         if (!userid) {
-          throw new BadRequestException('id must be sent');
+          throw new BadRequestException('Userid is expected');
         }
     
         const receivers: Receiver[] = await this._receiverRepository.find({
@@ -27,16 +27,13 @@ export class UserdataService {
 
         receivers.forEach(rec => {
             receiversInfo.push({
+              id: rec.receiver_id,
               name : rec.name,
               last_name: rec.last_name,
               phone_number: rec.phone_numer,
               email : rec.email,
             })
           });
-    
-       if (receiversInfo.length===0) {
-          throw new ReceiverNotFoundException();
-        }  
     
         return receiversInfo;
       } 

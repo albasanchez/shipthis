@@ -95,7 +95,7 @@ export class SimulationService {
     return this._simulationRepo.getCurrentConfigTime();
   }
 
-  async updateConfigTime(NewRegister: NewConfigTimeDto): Promise<NewConfigTimeDto> {
-    return this._simulationRepo.updateConfigTime(NewRegister);
+  async updateConfigTime(newRegister: NewConfigTimeDto): Promise<NewConfigTimeDto> {
+    return this._simulationRepo.updateConfigTime(newRegister);
  } 
 }

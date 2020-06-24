@@ -13,7 +13,7 @@ export class SimulationController {
 
     @Post ('update-config-time') 
     @UsePipes(ValidationPipe)
-    async updateItemHist (@Body() NewRegister: NewConfigTimeDto): Promise<NewConfigTimeDto> {
-    return this._simulationServ.updateConfigTime(NewRegister);
+    async updateItemHist (@Body() newRegister: NewConfigTimeDto): Promise<NewConfigTimeDto> {
+    return this._simulationServ.updateConfigTime(newRegister);
   }
 }

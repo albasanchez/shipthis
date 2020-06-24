@@ -17,6 +17,7 @@ import { UserFederatedException } from 'src/common/exceptions';
 import { WrongRecoveryCredentialsException } from 'src/common/exceptions';
 import { BlockedUserException } from 'src/common/exceptions';
 import { genSalt, hash, compare } from 'bcryptjs';
+import { EmailService } from "../email/email.service";
 
 @Injectable()
 export class AuthService {
@@ -25,6 +26,7 @@ export class AuthService {
     private readonly _authRepository: AuthRepository,
     private readonly _jwtService: JwtService,
     private readonly _appLogger: AppLoggerService,
+    private readonly _emailService: EmailService,
   ) {}
 
   async googleLogin(
@@ -48,7 +50,7 @@ export class AuthService {
         RolName.CLIENT,
       );
 
-      /* SEND EMAIL HERE */
+      await this._emailService.sendWelcomeEmail(signup.useremail,signup.first_name,signup.last_name);
     } else {
       user = posibleUser;
     }
@@ -81,7 +83,7 @@ export class AuthService {
       RolName.CLIENT,
     );
 
-    /* SEND EMAIL HERE */
+    await this._emailService.sendWelcomeEmail(signup.useremail,signup.first_name,signup.last_name);
 
     this._appLogger.log('NEW USER regitered successfully');
     return this.returnUser(user);

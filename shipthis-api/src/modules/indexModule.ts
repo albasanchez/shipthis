@@ -11,6 +11,7 @@ import { RolModule } from './rol/rol.module';
 import { UserdataModule } from './userdata/userdata.module';
 import { AuthModule } from './auth/auth.module';
 import { TelegramModule } from './telegram/telegram.module';
+import { EmailModule } from "./email/email.module";
 
 export const indexModules = [
   AuthModule,
@@ -25,5 +26,6 @@ export const indexModules = [
   SimulationModule,
   TelegramModule,
   UserdataModule,
+  EmailModule,
   InternationalizationModule,
 ];
