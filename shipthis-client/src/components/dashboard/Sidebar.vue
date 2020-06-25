@@ -61,6 +61,7 @@ export default {
         { title: "myProfile", icon: "mdi-account", route: "UserProfile" },
         { title: "historial", icon: "mdi-history", route: "ShippingHistory" },
         { title: "newOrder", icon: "local_shipping", route: "NewOrder" },
+        { title: "receivers", icon: "mdi-account-group", route: "Receivers" },
         { title: "signOff", icon: "cancel", route: "" }
       ],
       mini: true,

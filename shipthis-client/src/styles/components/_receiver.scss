@@ -1,0 +1,24 @@
+.Receiver h1 {
+  position: relative;
+}
+
+.receiver-list-card {
+  margin: 0;
+  padding: 30px;
+}
+
+.header-color th{
+  color:$second-color !important;
+}
+
+@media only screen and (max-width: 7200px) {
+  .receiver-list-card {
+    width: 80%;
+  }
+}
+@media only screen and (max-width: 720px) {
+  .receiver-list-card {
+    width: 100%;
+    padding-right: 90px;
+  }
+}

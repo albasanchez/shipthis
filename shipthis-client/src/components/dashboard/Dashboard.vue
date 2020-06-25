@@ -64,6 +64,13 @@ export default {
         desc: "newOrderDesc",
         img: "dash-order.png",
         route: "NewOrder"
+      },
+      {
+        id: 4,
+        name: "receivers",
+        desc: "receiversDesc",
+        img: "dash-contact.png",
+        route: "Receivers"
       }
     ]
   }),

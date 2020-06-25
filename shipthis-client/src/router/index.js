@@ -49,6 +49,12 @@ const routes = [
     component: () => import("../views/Tracking.vue")
   },
   {
+    path: "/receivers/",
+    name: "Receivers",
+    meta: { requiresAuth: true },
+    component: () => import("../views/Receivers.vue")
+  },
+  {
     path: "*",
     redirect: "/"
   }

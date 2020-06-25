@@ -4,6 +4,7 @@ import OrderRepository from "./order.repository";
 import ItemTypeRepository from "./itemType.repository";
 import OrderTypeRepository from "./orderType.repository";
 import OfficeRepository from "./office.repository";
+import ReceiverRepository from "./receiver.repository";
 
 const repositories = {
   authorize: AuthorizeRepository,
@@ -11,7 +12,8 @@ const repositories = {
   order: OrderRepository,
   itemType: ItemTypeRepository,
   office: OfficeRepository,
-  orderType: OrderTypeRepository
+  orderType: OrderTypeRepository,
+  receiver: ReceiverRepository,
 };
 export default {
   get: name => repositories[name]
