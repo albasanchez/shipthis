@@ -225,9 +225,7 @@ export class OrdersheetService {
 
   private async validateUser(useremail: string): Promise<Userdata> {
     //validade user
-    const userdataRepo: UserDataRepository = getConnection().getRepository(
-      Userdata,
-    );
+    const userdataRepo: UserDataRepository = new UserDataRepository();
     const user: Userdata = await userdataRepo.findOne({
       where: { email: useremail, status: UserdataStatus.ACTIVE },
     });

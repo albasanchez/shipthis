@@ -1,10 +1,6 @@
-import { IsNotEmpty, IsString, IsEmail, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsString, IsEmail , IsNumber} from 'class-validator';
 
-export class ReceiverInfoDto {
-
-  @IsNotEmpty()
-  @IsNumber()
-  id: Number;
+export class UpdateReceiverDto {
 
   @IsNotEmpty()
   @IsString()
@@ -19,7 +15,8 @@ export class ReceiverInfoDto {
   phone_number: string;
 
   @IsNotEmpty()
-  @IsEmail()
   @IsString()
+  @IsEmail()
   email: string;
+
 }
