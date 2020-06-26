@@ -2,7 +2,11 @@
   <div class="general-container pt-10">
     <v-row>
       <v-col cols="12" class="dashboard-list" align="center" justify="center">
-        <div v-for="dashboard in dashItems" :key="dashboard.id" class="dashboard-item ma-0">
+        <div
+          v-for="dashboard in dashItems"
+          :key="dashboard.id"
+          class="dashboard-item ma-0"
+        >
           <!-- Componente de tarjeta de dashboard -->
           <Card
             :name="dashboard.name"
@@ -29,7 +33,7 @@ export default {
         name: "Shipments",
         desc: "",
         icon: "mdi-truck",
-        route: "Shipments"
+        route: "Shipments",
       },
       { id: 3, name: "Emails", desc: "", icon: "mdi-email", route: "Emails" },
       {
@@ -37,13 +41,13 @@ export default {
         name: "Configuration",
         desc: "",
         icon: "mdi-cog",
-        route: "Configuration"
-      }
-    ]
+        route: "Configuration",
+      },
+    ],
   }),
   components: {
-    Card
-  }
+    Card,
+  },
 };
 </script>
 

@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -17,7 +18,7 @@ const routes = [
   {
     path: "/Shipments",
     name: "ShipmentsView",
-    component: () => import ('../views/ShipmentsView.vue' ),
+    component: () => import("../views/ShipmentsView.vue"),
     meta: {
       requiresAuth: true,
       hideBasicComponents: false,
@@ -26,7 +27,7 @@ const routes = [
   {
     path: "/Configuration",
     name: "ConfigurationView",
-    component: () => import ('../views/ConfigurationView.vue' ),
+    component: () => import("../views/ConfigurationView.vue"),
     meta: {
       requiresAuth: true,
       hideBasicComponents: false,
@@ -35,7 +36,7 @@ const routes = [
   {
     path: "/Emails",
     name: "EmailsView",
-    component: () => import ('../views/EmailsView.vue' ),
+    component: () => import("../views/EmailsView.vue"),
     meta: {
       requiresAuth: true,
       hideBasicComponents: false,
