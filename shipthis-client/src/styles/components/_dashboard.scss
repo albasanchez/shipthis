@@ -2,6 +2,13 @@
   display: flex;
   justify-content: center;
 }
+.page-content,
+.home {
+  height: 100%;
+}
+#Dashboard {
+  height: 100%;
+}
 
 #Dashboard h1 {
   position: relative;

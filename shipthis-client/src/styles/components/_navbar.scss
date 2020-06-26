@@ -1,5 +1,6 @@
 .navbar-color {
   background: $primary-gradient;
+  width: 100%;
 }
 .lang-btn {
   max-width: 50px;
@@ -12,7 +13,8 @@
   color: $second-color !important;
 }
 
-.navbar-translator, .navbar-translator .v-application .primary--text {
+.navbar-translator,
+.navbar-translator .v-application .primary--text {
   color: $third-color !important;
   text-decoration: none;
   // padding-bottom: 8px;

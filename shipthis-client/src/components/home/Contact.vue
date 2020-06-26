@@ -1,5 +1,5 @@
 <template>
-  <v-row id="Contact" class="py-10" align="center" justify="center">
+  <v-row id="Contact" class="py-12" align="center" justify="center">
     <v-col align="center">
       <!-- Formulario de contacto -->
       <ContactForm></ContactForm>

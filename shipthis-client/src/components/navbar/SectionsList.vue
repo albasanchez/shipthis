@@ -71,7 +71,7 @@ export default {
     sections: [
       { id: "1", name: "home", link: "#", activateLogin: false },
       { id: "2", name: "us", link: "#Us", activateLogin: false },
-      { id: "3", name: "tracking", link: "#TrackSec", activateLogin: false },
+      { id: "3", name: "tracking", link: "#", activateLogin: false },
       { id: "4", name: "services", link: "#Services", activateLogin: false },
       { id: "5", name: "contact", link: "#Contact", activateLogin: false },
       {

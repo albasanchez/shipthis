@@ -7,7 +7,8 @@
       src="../../assets/home/logoNav.png"
       id="imgNavbar"
       @click="goRoute(linkToHome)"
-      style="width: 100px;"
+      contain
+      max-width="300"
     ></v-img>
 
     <v-spacer v-if="$vuetify.breakpoint.mdAndUp"></v-spacer>
@@ -33,7 +34,7 @@
       lg="1"
       sm="2"
       class="mt-7"
-      :class="$vuetify.breakpoint.mdAndUp ? 'mr-10' : 'mr-0'"
+      :class="$vuetify.breakpoint.mdAndUp ? 'mr-12' : 'mr-0'"
     >
       <Translator />
     </v-col>

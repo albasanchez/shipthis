@@ -1,6 +1,6 @@
 <template>
-  <v-row id="Services">
-    <v-col cols="12" class="text-center white--text pt-8 pb-0">
+  <v-row id="Services" class="py-12">
+    <v-col cols="12" class="text-center white--text pb-0">
       <h1>{{ $t("services.servicesTitle") }}</h1>
     </v-col>
     <v-col cols="12" class="service-list">

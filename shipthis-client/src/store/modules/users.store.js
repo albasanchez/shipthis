@@ -11,7 +11,6 @@ const initialState = () => {
     tracking_info: {},
     tracking_status: {},
     error: "",
-    language: process.env.VUE_APP_I18N_LOCALE,
   };
 };
 

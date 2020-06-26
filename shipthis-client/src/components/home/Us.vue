@@ -1,5 +1,5 @@
 <template>
-  <v-row id="Us" class="px-12 py-6">
+  <v-row id="Us" class="px-12 py-12">
     <v-col>
       <v-row>
         <v-col class="us-logo sm-12 md-6" align-self="center" align="center">
