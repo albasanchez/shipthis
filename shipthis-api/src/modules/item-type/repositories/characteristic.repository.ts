@@ -10,4 +10,8 @@ export class CharacteristicRepository extends Repository<Characteristic> {
       .where('c.status = :st', { st: CharacteristicStatus.ACTIVE })
       .getMany();
   }
+
+  async getCharacteristicById(id: number): Promise<Characteristic>{
+    return this.findOne({ where: {characteristic_id: id}});
+ }
 }

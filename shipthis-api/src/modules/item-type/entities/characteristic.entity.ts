@@ -24,7 +24,7 @@ export class Characteristic extends BaseEntity {
     nullable: false,
     default: CharacteristicStatus.ACTIVE,
   })
-  status: number;
+  status: string;
 
   @OneToMany(
     type => CharPriceHist,

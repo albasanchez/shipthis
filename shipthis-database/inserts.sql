@@ -18,7 +18,7 @@ VALUES
     ('Premium', 1, 'ACTIVE');
 
 INSERT INTO order_price_hist
-    (starting_date,ending_date,time_tax,hollydays_tax,specific_destinatio_tax,order_type_fk)
+    (starting_date,ending_date,time_tax,holidays_tax,specific_destination_tax,order_type_fk)
 VALUES
     ('2020-04-01', null, 0, 2, 1, 1),
     ('2020-04-01', null, 1, 1, 1, 2),

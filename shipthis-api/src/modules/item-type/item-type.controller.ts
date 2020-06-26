@@ -1,6 +1,7 @@
 import { ItemTypeService } from './item-type.service';
 import { Controller, Get, Post, UsePipes, ValidationPipe, Body} from '@nestjs/common';
 import { NewItemHistDto } from './dto/item-price-history.dto';
+import { NewCharPriceDto} from './dto/new-char-price.dto';
 
 @Controller('item-type')
 export class ItemTypeController {
@@ -20,6 +21,16 @@ export class ItemTypeController {
   @UsePipes(ValidationPipe)
   async updateItemHist (@Body() newRegister: NewItemHistDto): Promise<NewItemHistDto> {
   return this._itemTypeServ.updatePriceHist(newRegister);
-}
+  }
 
+  @Get('characteristics')
+  async getCharacteristicsInfo() {
+  return this._itemTypeServ.getCharacteristicsInfo();
+  }
+
+  @Post ('updateCharHistory') 
+  @UsePipes(ValidationPipe)
+  async updateCharHist (@Body() newRegister: NewCharPriceDto): Promise<NewCharPriceDto> {
+  return this._itemTypeServ.updateCharHist(newRegister);
+  }
 }

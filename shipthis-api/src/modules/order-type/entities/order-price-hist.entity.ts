@@ -24,11 +24,11 @@ export class OrderPriceHist extends BaseEntity {
   @Column({ type: 'numeric', nullable: false, name: 'time_tax' })
   time_tax: number;
 
-  @Column({ type: 'numeric', nullable: false, name: 'hollydays_tax' })
-  hollydays_tax: number;
+  @Column({ type: 'numeric', nullable: false, name: 'holidays_tax' })
+  holidays_tax: number;
 
-  @Column({ type: 'numeric', nullable: false, name: 'specific_destinatio_tax' })
-  specific_destinatio_tax: number;
+  @Column({ type: 'numeric', nullable: false, name: 'specific_destination_tax' })
+  specific_destination_tax: number;
 
   @ManyToOne(
     type => OrderType,

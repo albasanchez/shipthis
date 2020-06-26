@@ -10,4 +10,8 @@ export class OrderTypeRepository extends Repository<OrderType> {
       .where('ot.status = :st', { st: OrderTypeStatus.ACTIVE })
       .getMany();
   }
+
+  async getOrderTypeById(id: number): Promise<OrderType>{
+    return this.findOne({ where: {order_type_id: id}});
+ }
 }
