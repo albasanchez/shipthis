@@ -18,9 +18,6 @@ export class Discount extends BaseEntity {
   @Column({ name: 'dis_percentage', type: 'numeric', nullable: false })
   percentage: number;
 
-  @Column({ name: 'expiration_date', type: 'date', nullable: false })
-  expiration_date: Date;
-
   @OneToMany(
     type => DiscPer,
     disc_per => disc_per.discount,

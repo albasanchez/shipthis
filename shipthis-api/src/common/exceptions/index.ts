@@ -12,3 +12,5 @@ export { OrderPriceHistNotFoundException } from './order-price-hist-not-found.ex
 export { BadItemStructureException } from './bad-item-structure.exception';
 export { OrdersheetNotFoundException } from './ordersheet-not-found.exception';
 export { POEditorConnectionException } from './poeditor-connection.exception';
+export { WrongRoleTypeAccessException } from './wrong-rote-type-access.exception';
+export { UserNotActiveException } from './user-not-active.exception';

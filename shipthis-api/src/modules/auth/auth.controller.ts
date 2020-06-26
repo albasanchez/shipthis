@@ -1,55 +1,61 @@
+import { MapperSignupDto } from './../../mapper/maper-sigup';
 import {
   Controller,
-  Get,
-  UseGuards,
-  Req,
   Body,
   Post,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
-import { SignupDto, LoginDto, RecoverUserDto } from './dto';
+import { SignupDto, LoginDto, RecoverUserDto, SocialNetDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly _authService: AuthService) {}
 
-  @Get('googlelogin')
-  @UseGuards(AuthGuard('google'))
-  async googleAuth(@Req() req) {}
-
-  @Get('googleredirect')
-  @UseGuards(AuthGuard('google'))
-  googleAuthRedirect(@Req() req) {
-    const signupData: SignupDto = this._authService.generateSignuoDtoFromGoogle(
-      req.user,
-    );
-    return this._authService.googleLogin(signupData);
-  }
-
-  @Post('regGoogle')
-  googleLogin(@Body() user) {
-    const signupData: SignupDto = this._authService.generateSignuoDtoFromGoogle(
+  @Post('google-login')
+  @UsePipes(ValidationPipe)
+  googleLogin(@Body() user: SocialNetDto) {
+    const signupData: SignupDto = MapperSignupDto.SignuoDtoFromSocialNetDto(
       user,
     );
     return this._authService.googleLogin(signupData);
   }
 
-  @Post('registration')
+  @Post('facebook-login')
   @UsePipes(ValidationPipe)
-  noferedatedRegidstration(@Body() user: SignupDto): Promise<any> {
-    return this._authService.regularSignup(user);
+  facebookLogin(@Body() user: SocialNetDto) {
+    const signupData: SignupDto = MapperSignupDto.SignuoDtoFromSocialNetDto(
+      user,
+    );
+    return this._authService.facebookLogin(signupData);
   }
 
-  @Post('regularlogin')
+  @Post('client-registration')
   @UsePipes(ValidationPipe)
-  nofederatedLogin(@Body() credentials: LoginDto): Promise<any> {
-    return this._authService.regularLogin(credentials);
+  clientRegidstration(@Body() user: SignupDto): Promise<any> {
+    return this._authService.clientSignup(user);
   }
 
-  @Post('recoveruser')
+  @Post('admin-registration')
+  @UsePipes(ValidationPipe)
+  adminRegidstration(@Body() user: SignupDto): Promise<any> {
+    return this._authService.adminSignup(user);
+  }
+
+  @Post('client-login')
+  @UsePipes(ValidationPipe)
+  clientLogin(@Body() credentials: LoginDto): Promise<any> {
+    return this._authService.clientLogin(credentials);
+  }
+
+  @Post('admin-login')
+  @UsePipes(ValidationPipe)
+  adminLogin(@Body() credentials: LoginDto): Promise<any> {
+    return this._authService.adminLogin(credentials);
+  }
+
+  @Post('user-recovery')
   @UsePipes(ValidationPipe)
   recoverUser(@Body() recoverData: RecoverUserDto) {
     return this._authService.recoverUser(recoverData);

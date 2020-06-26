@@ -1,17 +1,17 @@
+import { DiscountModule } from './../discount/discount.module';
 import { AuthRepository } from './repositories/auth.repository';
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from 'src/config/config.module';
-import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from 'src/config/config.service';
 import { Configuration } from 'src/config/config.keys';
 import { AppLoggerModule } from 'src/log/applogger.module';
-import { EmailModule } from "../email/email.module";
+import { EmailModule } from '../email/email.module';
 
 @Module({
   imports: [
@@ -32,9 +32,10 @@ import { EmailModule } from "../email/email.module";
     }),
     AppLoggerModule,
     EmailModule,
+    DiscountModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, GoogleStrategy, JwtStrategy],
+  providers: [AuthService, JwtStrategy],
   exports: [JwtStrategy, PassportModule],
 })
 export class AuthModule {}

@@ -1,3 +1,4 @@
+import { AppLoggerModule } from './../../log/applogger.module';
 import { DiscPerRepository } from './repositories/disc-per.repository';
 import { Module } from '@nestjs/common';
 import { DiscountService } from './discount.service';
@@ -6,8 +7,12 @@ import { DiscountRepository } from './repositories/discount.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([DiscountRepository, DiscPerRepository])],
+  imports: [
+    TypeOrmModule.forFeature([DiscountRepository, DiscPerRepository]),
+    AppLoggerModule,
+  ],
   providers: [DiscountService],
   controllers: [DiscountController],
+  exports: [DiscountService],
 })
 export class DiscountModule {}

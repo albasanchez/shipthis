@@ -46,14 +46,6 @@ export class Userdata extends BaseEntity {
   })
   email: string;
 
-  @Column({
-    type: 'varchar',
-    unique: true,
-    nullable: true,
-    name: 'user_name',
-  })
-  username: string;
-
   @Column({ type: 'varchar', nullable: false, name: 'user_password' })
   password: string;
 

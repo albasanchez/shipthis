@@ -6,6 +6,7 @@ import {
   JoinColumn,
   OneToOne,
   Entity,
+  Column,
 } from 'typeorm';
 import { Discount } from './discount.entity';
 import { Userdata } from './../../userdata/entities/userdata.entity';
@@ -14,6 +15,9 @@ import { Userdata } from './../../userdata/entities/userdata.entity';
 export class DiscPer extends BaseEntity {
   @PrimaryGeneratedColumn()
   disc_per_id: number;
+
+  @Column({ name: 'expiration_date', type: 'date', nullable: false })
+  expiration_date: Date;
 
   @ManyToOne(
     type => Discount,

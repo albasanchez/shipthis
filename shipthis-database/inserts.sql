@@ -91,7 +91,13 @@ VALUES
     ('Las Mariposas', '+1 (641) 9854-785', 'BLOCKED', 12);
 
 /*Simulation*/
-INSERT INTO simulation 
-	(starting_date,ending_date,config_time)
+INSERT INTO simulation
+    (starting_date,ending_date,config_time)
 VALUES
-	('2020-06-13',null,5);
+    ('2020-06-13', null, 5);
+
+/*Discount*/
+INSERT INTO discount
+    (dis_name, dis_percentage)
+VALUES
+    ('WELCOME', 10);

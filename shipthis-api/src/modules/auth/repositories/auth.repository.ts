@@ -15,18 +15,11 @@ export class AuthRepository extends Repository<Userdata> {
     reg_type: string,
     rol_name: string,
   ): Promise<Userdata> {
-    const {
-      useremail,
-      username,
-      password,
-      date_of_birth,
-      ...detail
-    } = signupDto;
+    const { useremail, password, date_of_birth, ...detail } = signupDto;
 
     //Creating Userdata structure
     const user = new Userdata();
     user.email = useremail;
-    user.username = username;
     user.registration_type = reg_type;
     user.registration_date = new Date();
     user.status = UserdataStatus.ACTIVE;
@@ -67,5 +60,26 @@ export class AuthRepository extends Repository<Userdata> {
       if (isMatch) return user;
     }
     return null;
+  }
+
+  async fetchUser(email: string): Promise<Userdata> {
+    return this.findOne({ where: { email: email } });
+  }
+
+  async fetchRegularUser(email: string): Promise<Userdata> {
+    return this.findOne({
+      where: {
+        email: email,
+        registration_type: UserdataRegistrationType.REGULAR,
+      },
+    });
+  }
+
+  async resetUser(useremail: string, newPassword: string) {
+    this.createQueryBuilder()
+      .update()
+      .set({ password: newPassword, status: UserdataStatus.RESETED })
+      .where('email = :email', { email: useremail })
+      .execute();
   }
 }

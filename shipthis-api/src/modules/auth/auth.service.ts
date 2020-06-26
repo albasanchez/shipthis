@@ -1,3 +1,4 @@
+import { DiscountService } from './../discount/discount.service';
 import { GenderType } from './../userdata/constants/gender.enum';
 import { AuthRepository } from './repositories/auth.repository';
 import { Injectable } from '@nestjs/common';
@@ -9,15 +10,19 @@ import { RolName } from '../rol/constants/rol-name.enum';
 import { IJwtPayload } from './payloads/jwt-payload.interace';
 import { Userdata } from '../userdata/entities/userdata.entity';
 import { AppLoggerService } from 'src/log/applogger.service';
-import { UserAlreadyRegisteredException } from 'src/common/exceptions/user-already-registered.exception';
-import { WrongCredentialsException } from 'src/common/exceptions/wrong-credentials.exception';
-import { UserNotFoundException } from 'src/common/exceptions/user-not-found.exception';
 import { UserdataStatus } from '../userdata/constants/user-status.enum';
-import { UserFederatedException } from 'src/common/exceptions';
-import { WrongRecoveryCredentialsException } from 'src/common/exceptions';
-import { BlockedUserException } from 'src/common/exceptions';
+import {
+  UserFederatedException,
+  UserNotActiveException,
+  WrongRoleTypeAccessException,
+  WrongRecoveryCredentialsException,
+  BlockedUserException,
+  UserAlreadyRegisteredException,
+  WrongCredentialsException,
+  UserNotFoundException,
+} from 'src/common/exceptions';
 import { genSalt, hash, compare } from 'bcryptjs';
-import { EmailService } from "../email/email.service";
+import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class AuthService {
@@ -27,92 +32,121 @@ export class AuthService {
     private readonly _jwtService: JwtService,
     private readonly _appLogger: AppLoggerService,
     private readonly _emailService: EmailService,
+    private readonly _discountServ: DiscountService,
   ) {}
 
   async googleLogin(
     signup: SignupDto,
   ): Promise<{ token: string; userdata: any }> {
     this._appLogger.log('Handling New Request: Google Login Service');
-    //validating email no registeres
-    const { useremail } = signup;
-
-    const posibleUser = await this._authRepository.findOne({
-      where: { email: useremail },
-    });
-
-    let user: Userdata;
-
-    if (!posibleUser) {
-      this._appLogger.log('Registering new user. Registration type : GOOGLE');
-      user = await this._authRepository.signup(
-        signup,
-        UserdataRegistrationType.GOOGLE,
-        RolName.CLIENT,
-      );
-
-      await this._emailService.sendWelcomeEmail(signup.useremail,signup.first_name,signup.last_name);
-    } else {
-      user = posibleUser;
-    }
-
-    return this.returnUser(user);
+    return this.federatedLogin(signup, UserdataRegistrationType.GOOGLE);
   }
 
-  async regularSignup(
+  async facebookLogin(
     signup: SignupDto,
   ): Promise<{ token: string; userdata: any }> {
-    this._appLogger.log('Handling New Request: No Federated Sign UP Service');
+    this._appLogger.log('Handling New Request: Facebook Login Service');
+    return this.federatedLogin(signup, UserdataRegistrationType.FACEBOOK);
+  }
+
+  private async federatedLogin(
+    signup: SignupDto,
+    registrationType: string,
+  ): Promise<{ token: string; userdata: any }> {
+    //validating email no registeres
+    const { useremail } = signup;
+    const posibleUser: Userdata = await this._authRepository.fetchUser(
+      useremail,
+    );
+
+    let user: Userdata;
+    if (this.userIsRegistered(posibleUser)) {
+      user = posibleUser;
+    } else {
+      user = await this.registerUser(signup, registrationType, RolName.CLIENT);
+    }
+    return this.returnUser(user, this.userIsNotRegistered(posibleUser));
+  }
+
+  async clientSignup(
+    signup: SignupDto,
+  ): Promise<{ token: string; userdata: any }> {
+    this._appLogger.log('Handling New Request: Client SignUP Service');
+    return this.userSignup(signup, RolName.CLIENT);
+  }
+
+  async adminSignup(
+    signup: SignupDto,
+  ): Promise<{ token: string; userdata: any }> {
+    this._appLogger.log('Handling New Request: Admin SignUP Service');
+    return this.userSignup(signup, RolName.ADMIN);
+  }
+
+  private async userSignup(
+    signup: SignupDto,
+    role: string,
+  ): Promise<{ token: string; userdata: any }> {
     //validating email no registeres
     const { useremail } = signup;
 
-    const posibleUser = await this._authRepository.findOne({
-      where: { email: useremail },
-    });
+    const posibleUser = await this._authRepository.fetchUser(useremail);
 
     let user: Userdata;
 
-    if (posibleUser) {
-      this._appLogger.log('Registered email trying to register again');
+    if (this.userIsRegistered(posibleUser)) {
       throw new UserAlreadyRegisteredException();
     }
 
-    this._appLogger.log('Registering new user. Registration type : REGULAR');
-    user = await this._authRepository.signup(
+    user = await this.registerUser(
       signup,
       UserdataRegistrationType.REGULAR,
-      RolName.CLIENT,
+      role,
     );
 
-    await this._emailService.sendWelcomeEmail(signup.useremail,signup.first_name,signup.last_name);
-
-    this._appLogger.log('NEW USER regitered successfully');
     return this.returnUser(user);
   }
 
-  async regularLogin(
+  async clientLogin(
     logindata: LoginDto,
   ): Promise<{ token: string; userdata: any }> {
-    this._appLogger.log('Handling New Request: No Federated Login Service');
+    this._appLogger.log('Handling New Request: Client Login Service');
+    return this.userLogin(logindata, RolName.CLIENT);
+  }
+
+  async adminLogin(
+    logindata: LoginDto,
+  ): Promise<{ token: string; userdata: any }> {
+    this._appLogger.log('Handling New Request: Admin Login Service');
+    return this.userLogin(logindata, RolName.ADMIN);
+  }
+
+  private async userLogin(
+    logindata: LoginDto,
+    role: string,
+  ): Promise<{ token: string; userdata: any }> {
     //validating email no registeres
     const { useremail, password: pwd } = logindata;
 
-    const user: Userdata = await this._authRepository.findOne({
-      where: { email: useremail },
-    });
+    const user: Userdata = await this._authRepository.fetchRegularUser(
+      useremail,
+    );
 
-    if (!user) {
-      this._appLogger.log('User not found');
+    if (this.userIsNotRegistered(user)) {
       throw new UserNotFoundException();
     }
 
-    const isMatch = await compare(pwd, user.password);
-
-    if (!isMatch) {
-      this._appLogger.log('Wrong credentias provided');
+    if (await this.passwordsDontMatch(pwd, user.password)) {
       throw new WrongCredentialsException();
     }
 
-    this._appLogger.log('User logged in successfully');
+    if (this.userIsNotActive(user)) {
+      throw new UserNotActiveException();
+    }
+
+    if (this.userRoleDontMatch(user, role)) {
+      throw new WrongRoleTypeAccessException();
+    }
+
     return this.returnUser(user);
   }
 
@@ -120,71 +154,128 @@ export class AuthService {
     this._appLogger.log('Handling New Request: User Recovery Service');
     const { useremail, document } = recoverData;
 
-    const user: Userdata = await this._authRepository.findOne({
-      where: { email: useremail },
-    });
+    const user: Userdata = await this._authRepository.fetchUser(useremail);
 
-    if (!user) {
-      this._appLogger.log('User not found');
+    if (this.userIsNotRegistered(user)) {
       throw new UserNotFoundException();
     }
 
-    if (user.status === UserdataStatus.BLOCKED) {
-      this._appLogger.log('Impossible to recover blocked users');
+    if (this.userIsBlocked(user)) {
       throw new BlockedUserException();
     }
 
-    if (user.registration_type !== UserdataRegistrationType.REGULAR) {
-      this._appLogger.log('Impossible to recover federated users');
+    if (this.userIsFederated(user)) {
       throw new UserFederatedException();
     }
 
-    if (user.person.document !== document) {
-      this._appLogger.log('Wrong identity document provided');
+    if (this.documentsDontMatch(user, document)) {
       throw new WrongRecoveryCredentialsException();
     }
 
-    const newPassword = Math.random()
-      .toString(36)
-      .slice(-10);
+    const { newPassword, saltedPassword } = await this.generatePassword();
 
-    console.log('newPassword :>> ', newPassword);
-    const salt = await genSalt(10);
-    const saltedPassword = await hash(newPassword, salt);
-
-    await this._authRepository
-      .createQueryBuilder()
-      .update()
-      .set({ password: saltedPassword, status: UserdataStatus.RESETED })
-      .where('email = :email', { email: useremail })
-      .execute();
+    await this._authRepository.resetUser(useremail, saltedPassword);
 
     /* SEND EMAIL HERE */
 
     return { response: 'New password set on user successfully' };
   }
 
-  async returnUser(user: Userdata): Promise<{ token: string; userdata: any }> {
+  private async returnUser(
+    user: Userdata,
+    isNew: boolean = false,
+  ): Promise<{ token: string; userdata: any; newUser: boolean }> {
     const payload: IJwtPayload = {
       id: user.user_id,
       email: user.email,
-      username: user.username,
       rol: user.rol.name as RolName,
     };
     const token = await this._jwtService.sign(payload);
     const { password, ...userdata } = user;
-    return { token, userdata };
+    this._appLogger.log(`${user.rol.name} logged in successfully`);
+    return { token, userdata, newUser: isNew };
   }
 
-  generateSignuoDtoFromGoogle(googleData: any): SignupDto {
-    const signup: SignupDto = new SignupDto();
-    signup.useremail = googleData.email;
-    signup.first_name = googleData.firstName;
-    signup.last_name = googleData.lastName;
-    signup.picture_url = googleData.picture;
-    signup.def_language = googleData.language;
-    signup.gender = GenderType.OTHER;
-    signup.receive_notifications = true;
-    return signup;
+  private async registerUser(
+    signup: SignupDto,
+    registrationType: string,
+    role: string,
+  ): Promise<Userdata> {
+    this._appLogger.log(
+      `Registering new user. Registration type : ${registrationType}`,
+    );
+    const user: Userdata = await this._authRepository.signup(
+      signup,
+      registrationType,
+      role,
+    );
+
+    if (this.userIsClient(user)) {
+      this._discountServ.assignWelcomeDiscount(user);
+      await this.sendWelcomeEmail(signup);
+    }
+
+    this._appLogger.log(`NEW ${role} registered successfully`);
+    return user;
+  }
+
+  private async generatePassword(): Promise<{
+    newPassword: string;
+    saltedPassword: string;
+  }> {
+    const newPassword = Math.random()
+      .toString(36)
+      .slice(-10);
+    const salt = await genSalt(10);
+    const saltedPassword = await hash(newPassword, salt);
+    return { newPassword, saltedPassword };
+  }
+
+  private documentsDontMatch(user: Userdata, document: string): boolean {
+    return user.person.document !== document;
+  }
+
+  private userIsClient(user: Userdata): boolean {
+    return user.rol.name === RolName.CLIENT;
+  }
+
+  private userIsNotActive(user: Userdata): boolean {
+    return user.status !== UserdataStatus.ACTIVE;
+  }
+
+  private userIsFederated(user: Userdata): boolean {
+    return user.registration_type !== UserdataRegistrationType.REGULAR;
+  }
+
+  private userIsBlocked(user: Userdata): boolean {
+    return user.status === UserdataStatus.BLOCKED;
+  }
+
+  private userIsRegistered(user: Userdata): boolean {
+    return user ? true : false;
+  }
+
+  private userIsNotRegistered(user: Userdata): boolean {
+    return !this.userIsRegistered(user);
+  }
+
+  private userRoleDontMatch(user: Userdata, role: string): boolean {
+    return !user ? true : user.rol.name === role ? false : true;
+  }
+
+  private async sendWelcomeEmail(signup: SignupDto) {
+    this._emailService.sendWelcomeEmail(
+      signup.useremail,
+      signup.first_name,
+      signup.last_name,
+    );
+  }
+
+  private async passwordsDontMatch(
+    providedPassword: string,
+    hashedPassword: string,
+  ): Promise<boolean> {
+    const isMatch = await compare(providedPassword, hashedPassword);
+    return !isMatch;
   }
 }
