@@ -1,5 +1,5 @@
 <template>
-  <v-card class="receiver-list-card" align-self="center">
+  <v-card class="receiver-list-card" >
     <v-card-title>
       <v-spacer></v-spacer>
       <v-text-field

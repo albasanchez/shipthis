@@ -1,12 +1,12 @@
 <template>
   <v-row
     id="RegistryForm"
-    class="success"
+    class="success py-5"
     justify="center"
     align="center"
     align-self="center"
   >
-    <v-card class="registry-form">
+    <v-card class="registry-form px-12 mt-12">
       <v-form
         ref="sigin_form"
         v-model="valid"
@@ -17,111 +17,99 @@
           {{ $t("registry.registryTitle") }}
         </h1>
 
-        <v-row>
-          <v-col md="3" cols="12">
+        <v-row class="mb-0 pb-0">
+          <v-col md="6" cols="12">
             <v-text-field
               v-model="payload.first_name"
-              :rules="firstNameRules"
+              :rules="[rules.required]"
               :label="$t('labels.firstName')"
+              outlined
+              placeholder="John"
               required
             ></v-text-field>
           </v-col>
-          <v-col md="3" cols="12">
+          <v-col
+            md="6"
+            cols="12"
+            :class="$vuetify.breakpoint.smAndDown ? 'mt-n2 pt-0' : ''"
+          >
             <v-text-field
               v-model="payload.middle_name"
               :label="$t('labels.middleName')"
-            ></v-text-field>
-          </v-col>
-
-          <v-col md="3" cols="12">
-            <v-text-field
-              v-model="payload.last_name"
-              :rules="lastNameRules"
-              :label="$t('labels.lastName')"
-              required
-            ></v-text-field>
-          </v-col>
-          <v-col md="3" cols="12">
-            <v-text-field
-              v-model="payload.second_last_name"
-              :label="$t('labels.middleLastName')"
+              placeholder="Robert"
+              outlined
             ></v-text-field>
           </v-col>
         </v-row>
-        <v-row>
-          <v-col cols="3" md="2">
-            <v-select
-              v-model="payload.nationality_type"
-              :items="identification_type_items"
-              :rules="[v => !!v || 'El tipo es obligatorio.']"
-              :label="$t('labels.idType')"
+
+        <v-row class="mb-0 pb-0 mt-n5 pt-0">
+          <v-col md="6" cols="12">
+            <v-text-field
+              v-model="payload.last_name"
+              :rules="[rules.required]"
+              :label="$t('labels.lastName')"
+              placeholder="Doe"
+              outlined
               required
-            ></v-select>
+            ></v-text-field>
           </v-col>
-          <v-col cols="9" md="4">
+          <v-col
+            md="6"
+            cols="12"
+            :class="$vuetify.breakpoint.smAndDown ? 'mt-n2 pt-0' : ''"
+          >
+            <v-text-field
+              v-model="payload.second_last_name"
+              :label="$t('labels.middleLastName')"
+              placeholder="Smith"
+              outlined
+            ></v-text-field>
+          </v-col>
+        </v-row>
+
+        <v-row class="mb-0 pb-0 mt-n5 pt-0">
+          <v-col cols="12">
+            <v-text-field
+              v-model="payload.useremail"
+              :rules="[rules.required, emailRules[0]]"
+              :label="$t('labels.email')"
+              placeholder="johndoe@gmail.com"
+              outlined
+              required
+            ></v-text-field>
+          </v-col>
+        </v-row>
+
+        <v-row class="mb-0 pb-0 mt-n5 pt-0">
+          <v-col cols="12">
             <v-text-field
               cols="2"
               v-model="payload.document"
               :rules="identificationRules"
               :label="$t('labels.idNumber')"
-              required
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field
-              v-model="payload.useremail"
-              :rules="emailRules"
-              :label="$t('labels.email')"
+              placeholder="123456789"
+              v-mask="'#########'"
+              outlined
               required
             ></v-text-field>
           </v-col>
         </v-row>
 
-        <v-row>
-          <v-col cols="12" md="6">
-            <v-text-field
-              v-model="payload.password"
-              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="[rules.required, rules.min]"
-              :type="show1 ? 'text' : 'password'"
-              name="password"
-              :label="$t('labels.password')"
-              hint="Al menos 6 caracteres"
-              counter
-              @click:append="show1 = !show1"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-text-field
-              v-model="repeat_password"
-              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="[rules.required, rules.min]"
-              :type="show1 ? 'text' : 'password'"
-              name="repeat_password"
-              :label="$t('labels.confirmPassword')"
-              hint="Al menos 6 caracteres"
-              counter
-              @click:append="show1 = !show1"
-            ></v-text-field>
-          </v-col>
-        </v-row>
-
-        <v-row>
-          <v-col md="2" cols="5">
-            <v-text-field
-              v-model="payload.phone_code"
-              :rules="phoneCodeRules"
-              :label="$t('labels.areaCode')"
-            ></v-text-field>
-          </v-col>
-          <v-col md="4" cols="7">
+        <v-row class="mb-0 pb-0 mt-n5 pt-0">
+          <v-col md="12">
             <v-text-field
               v-model="payload.phone_number"
               :rules="phoneNumberRules"
               :label="$t('labels.phoneNumber')"
+              placeholder="123-4567"
+              v-mask="'###-####'"
+              outlined
             ></v-text-field>
           </v-col>
-          <v-col md="6" cols="12">
+        </v-row>
+
+        <v-row class="mb-0 pb-0 mt-n5 pt-0">
+          <v-col cols="12">
             <!-- Modal para la fecha -->
             <v-menu
               ref="menu1"
@@ -136,37 +124,52 @@
                 <v-text-field
                   v-model="date"
                   :label="$t('registry.birthDate')"
-                  :hint="dateFormat"
+                  outlined
+                  :placeholder="dateFormat"
                   persistent-hint
-                  prepend-icon="event"
+                  readonly
+                  required
+                  :rules="[rules.required]"
                   v-on="on"
                 ></v-text-field>
               </template>
               <v-date-picker
                 v-model="date"
                 no-title
+                :max="maxDate()"
                 @input="menu1 = false"
               ></v-date-picker>
             </v-menu>
           </v-col>
         </v-row>
 
-        <v-row>
-          <v-col md="6" cols="12">
+        <v-row class="mb-0 pb-0 mt-n5 pt-0">
+          <v-col cols="12">
             <label for="gender">{{ $t("registry.gender") }}</label>
-            <v-radio-group v-model="payload.gender" row name="gender">
+            <v-radio-group
+              v-model="payload.gender"
+              row
+              required
+              :rules="[rules.required]"
+              name="gender"
+              class="mt-2 pt-0"
+            >
               <v-radio :label="$t('registry.male')" value="M"></v-radio>
               <v-radio :label="$t('registry.female')" value="F"></v-radio>
               <v-radio :label="$t('registry.other')" value="O"></v-radio>
             </v-radio-group>
           </v-col>
+        </v-row>
 
-          <v-col md="6">
+        <v-row class="mb-0 pb-0 mt-n2 pt-0">
+          <v-col cols="12">
             <v-select
               v-model="payload.def_language"
               :items="def_language_items"
-              :rules="[v => !!v || 'Selecciona un lenguaje por defecto.']"
+              :rules="[(v) => !!v || errorMessages[0]]"
               :label="$t('labels.defaultLanguage')"
+              :placeholder="def_language_items[0].name"
+              outlined
               item-text="name"
               item-value="value"
               required
@@ -174,42 +177,102 @@
           </v-col>
         </v-row>
 
-        <v-row>
+        <v-row class="mb-0 pb-0 mt-n5 pt-0">
+          <v-col cols="12" md="6">
+            <v-text-field
+              v-model="payload.password"
+              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+              :rules="[rules.required, rules.min]"
+              :type="show1 ? 'text' : 'password'"
+              name="password"
+              :label="$t('labels.password')"
+              outlined
+              :hint="errorMessages[2]"
+              counter
+              @click:append="show1 = !show1"
+            ></v-text-field>
+          </v-col>
+          <v-col
+            cols="12"
+            md="6"
+            :class="$vuetify.breakpoint.smAndDown ? 'mt-n2 pt-0' : ''"
+          >
+            <v-form
+              ref="password"
+              v-model="valid1"
+              v-on="signinSubmit.prevent"
+              lazy-validation
+            >
+              <v-text-field
+                v-model="repeat_password"
+                :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                :rules="[rules.required, rules.match]"
+                :type="show2 ? 'text' : 'password'"
+                name="repeat_password"
+                :label="$t('labels.confirmPassword')"
+                outlined
+                :hint="errorMessages[2]"
+                counter
+                @click:append="show2 = !show2"
+              ></v-text-field>
+            </v-form>
+          </v-col>
+        </v-row>
+
+        <v-row class="mb-0 pb-0 mt-n5 pt-0">
           <v-col md="6" cols="12">
             <v-checkbox
               v-model="checkbox_terms"
-              :rules="[v => !!v || 'Must agree']"
+              :rules="[(v) => !!v || errorMessages[1]]"
               :label="$t('registry.iAgree')"
               required
             ></v-checkbox>
           </v-col>
 
-          <v-col md="6" cols="12">
+          <v-col
+            md="6"
+            cols="12"
+            :class="$vuetify.breakpoint.smAndDown ? 'mt-n2 pt-0' : ''"
+          >
             <v-checkbox
               v-model="payload.receive_notifications"
               :label="$t('labels.receiveNotifications')"
             ></v-checkbox>
           </v-col>
         </v-row>
-        <v-alert v-model="alertError" type="error" dismissible>
-          <strong>{{ $t("registry.registryErrorMessage") }}</strong>
-        </v-alert>
-        <v-row class="registry-buttons">
-          <v-col class="hidden-sm-and-down"></v-col>
-          <v-col cols="12" sm="5">
+        <v-snackbar
+          v-model="alertError"
+          type="error"
+          top
+          :timeout="-1"
+          color="error"
+        >
+          <strong class="body-1 registry-snackbar font-weight-bold">{{
+            $t("registry.registryErrorMessage")
+          }}</strong>
+          <template v-slot:action="{ attrs }">
             <v-btn
-              :disabled="!valid"
+              dark
+              icon
+              color="white"
+              v-bind="attrs"
+              @click="alertError = false"
+            >
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </template>
+        </v-snackbar>
+        <v-row class="registry-buttons">
+          <v-col cols="12">
+            <v-btn
+              :disabled="!valid || !valid1"
               block
               color="success secondary--text"
               class="mr-4"
               @click="signinSubmit()"
+              :loading="loading"
             >
-              {{ $t("buttons.validateAndSend") }}
-            </v-btn>
-          </v-col>
-          <v-col cols="12" sm="5">
-            <v-btn color="error" block class="mr-4" @click="reset">
-              {{ $t("buttons.resetFields") }}
+              {{ $t("buttons.register") }}
             </v-btn>
           </v-col>
           <v-col class="hidden-sm-and-down"></v-col>
@@ -222,103 +285,123 @@
 <script>
 export default {
   name: "RegistryLogin",
-  data: () => ({
+  data: ($v) => ({
     payload: {
       useremail: null,
       password: "",
-      nationality_type: null,
       document: null,
       first_name: null,
       middle_name: null,
       last_name: null,
       second_last_name: null,
       gender: null,
-      phone_code: "",
       phone_number: "",
       date_of_birth: null,
       def_language: null,
-      receive_notifications: false
+      receive_notifications: false,
     },
-
+    loading: false,
     alertError: false,
     valid: true,
-    firstNameRules: [v => !!v || "El nombre es obligatorio"],
-    emailRules: [
-      v => !!v || "El E-mail es obligatorio",
-      v => /.+@.+\..+/.test(v) || "El E-mail debe ser válido"
+    valid1: true,
+    errorMessages: [
+      $v.$t("errorMessages.input"),
+      $v.$t("errorMessages.agreement"),
+      $v.$t("errorMessages.minCharacters"),
+      $v.$t("errorMessages.validEmail"),
+      $v.$t("errorMessages.notMatchingPasswords"),
+      $v.$t("errorMessages.phoneNumberLength"),
+      $v.$t("errorMessages.idLength"),
     ],
-    lastNameRules: [v => !!v || "El apellido es obligatorio"],
-    phoneCodeRules: [
-      v =>
-        (v && v.length >= 2) ||
-        "El código de área debe tener al menos 2 dígitos."
-    ],
-    phoneNumberRules: [
-      v => (v && v.length == 7) || "El número de teléfono debe tener 7 dígitos."
-    ],
+    emailRules: [(v) => /.+@.+\..+/.test(v) || $v.errorMessages[3]],
+    phoneNumberRules: [(v) => (v && v.length == 8) || $v.errorMessages[5]],
     show1: false,
+    show2: false,
     rules: {
-      required: value => !!value || "La contraseña es obligatoria.",
-      min: v => v.length >= 6 || "Al menos 6 caracteres"
+      required: (value) => !!value || $v.errorMessages[0],
+      min: (v) => v.length >= 6 || $v.errorMessages[2],
+      match: () =>
+        $v.payload.password == $v.repeat_password || $v.errorMessages[4],
     },
     repeat_password: "",
-    repeatPasswordRules: [
-      v =>
-        (v && v.length >= 5) || "La contraseña debe tener al menos 5 dígitos."
-    ],
-    identificationRules: [
-      v => !!v || "El documento de identidad es obligatorio"
-    ],
-    identification_type: "V",
-    identification_type_items: ["V", "J", "E"],
+    identificationRules: [(v) => (v && v.length == 9) || $v.errorMessages[6]],
     def_language_items: [
       {
         name: "Español",
-        value: "es"
+        value: "ES",
       },
       {
         name: "English",
-        value: "en"
-      }
+        value: "EN",
+      },
     ],
     checkbox_terms: false,
     date: null,
     dateFormat: "yyyy-mm-dd",
-    menu1: false
+    menu1: false,
+    confirmationPasswordChanged: false,
   }),
 
   methods: {
     async signinSubmit() {
-      if (this.$refs.sigin_form.validate() && this.passwordMatch()) {
-        const userData = this.payload;
+      let mainForm = this.$refs.sigin_form.validate();
+      let passwordForm = this.$refs.password.validate();
+      if (mainForm && passwordForm && this.passwordMatch()) {
+        this.loading = true;
+        let userData = this.payload;
+        userData.phone_number = userData.phone_number.replace("-", "");
         await this.$store.dispatch("users/signup", userData);
         this.error = this.$store.getters["users/getError"].error;
+        this.loading = false;
         if (this.error !== "") this.alertError = true;
         else this.$router.push("/HomeUser");
+        await this.$store.dispatch("users/resetError");
       }
     },
-    signinCommit(data) {
-      this.$store.commit("login", { token: data.token, user: data.userdata });
+    maxDate() {
+      let date = new Date();
+      return (
+        date.getFullYear() -
+        18 +
+        "-" +
+        (date.getMonth() + 1 < 10 ? "0" : "") +
+        (date.getMonth() + 1) +
+        "-" +
+        date.getDate()
+      );
     },
     passwordMatch() {
       return this.payload.password == this.repeat_password;
     },
-    reset() {
-      this.$refs.sigin_form.reset();
+    validatePassword() {
+      this.$refs.password.validate();
     },
-    resetValidation() {
-      this.$refs.sigin_form.resetValidation();
-    }
   },
-
+  computed: {
+    password() {
+      return this.payload.password;
+    },
+  },
   watch: {
     date() {
       this.payload.date_of_birth = this.date;
-    }
-  }
+    },
+    password() {
+      if (this.confirmationPasswordChanged) {
+        this.validatePassword();
+      }
+    },
+    repeat_password() {
+      this.confirmationPasswordChanged = true;
+    },
+  },
 };
 </script>
 
 <style lang="scss">
 @import "../styles/main.scss";
+#RegistryForm {
+  background-image: url("../assets/dashboard/colorful-background.jpg");
+  background-size: cover;
+}
 </style>

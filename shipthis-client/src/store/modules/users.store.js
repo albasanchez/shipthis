@@ -72,6 +72,9 @@ const actions = {
   changeLanguage({ commit }, payload) {
     commit("set_language", payload);
   },
+  resetError({ commit }) {
+    commit("set_error_message", "");
+  },
 };
 
 export default {

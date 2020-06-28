@@ -10,7 +10,9 @@
   display: flex;
   justify-content: center;
 }
-
+.registry-snackbar {
+  color: white !important;
+}
 @media screen and (max-width: 7200px) {
   .registry-form {
     width: 60%;

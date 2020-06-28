@@ -121,9 +121,7 @@ export default {
     },
 
     async Update(item) {
-      console.log(item);
       if (item.id == 1) {
-        console.log("hola");
         this.currentPrices.base_price = parseFloat(item.items[0].value);
         this.currentPrices.price_km = parseFloat(item.items[1].value);
 
