@@ -30,4 +30,9 @@ export class UserdataController {
       return await this._userdataService.deleteReceiver(id);
     }
 
+    @Get('users')
+    async getAllUsersInfo() {
+      return await this._userdataService.getAllUsersInfo();
+    }
+
 }

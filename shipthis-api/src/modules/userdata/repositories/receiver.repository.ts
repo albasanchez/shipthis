@@ -15,6 +15,12 @@ export class ReceiverRepository extends Repository<Receiver> {
           });
         }
 
+      async getReceiverByIdAndStatus(id: number, status: string): Promise<Receiver[]> {
+          return this.find({
+            where: { user: id, status: status },
+          });
+        }
+
       async createReceiver(newReceiver: CreateReceiverDto, user: Userdata) : Promise<any> {
 
         const rec: Receiver = new Receiver();

@@ -8,4 +8,8 @@ export class UserDataRepository extends Repository<Userdata> {
         return this.findOne({ user_id: id });
       }
 
+   async getAllUsers(): Promise<Userdata[]> {
+        return this.find();
+      }
+
 }

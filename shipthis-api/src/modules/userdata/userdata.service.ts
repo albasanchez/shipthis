@@ -7,11 +7,13 @@ import { Receiver } from './entities/receiver.entity';
 import { ReceiverInfoDto} from './dto/receiverInfo.dto';
 import { UpdateReceiverDto} from './dto/update-receiver.dto';
 import { CreateReceiverDto} from './dto/create-receiver.dto';
+import { UserInfoDto} from './dto/user-info.dto';
 import { ReceiverNotFoundException } from 'src/common/exceptions/receiver-not-found.exception';
 import { UserNotFoundException } from 'src/common/exceptions/user-not-found.exception';
 import { AppLoggerService } from 'src/log/applogger.service';
 import { ReceiverStatus } from './constants/receiver-status.enum';
 import { MapperReceiver } from '../../mapper/mapper-receiver';
+import { MapperUser } from '../../mapper/mapper-user';
 
 @Injectable()
 export class UserdataService {
@@ -28,16 +30,18 @@ export class UserdataService {
         if (!userid) {
           throw new BadRequestException('Userid is expected');
         }
+
+        this._appLogger.log('Handling New Request: Consulting receivers Service');
     
-        const receivers: Receiver[] = await this._receiverRepository.find({
-            where: { user: userid, status: ReceiverStatus.ACTIVE },
-          });
+        const receivers: Receiver[] = await this._receiverRepository.getReceiverByIdAndStatus(userid, ReceiverStatus.ACTIVE);
 
         const receiversInfo: ReceiverInfoDto[] = [];
 
         receivers.forEach(rec => {
             receiversInfo.push(MapperReceiver.ReceiverToReceiverInfo(rec))
           });
+
+        this._appLogger.log('Receivers has been consulted sucessfully');
     
         return receiversInfo;
       } 
@@ -76,7 +80,7 @@ export class UserdataService {
       return response;
    } 
 
-     async deleteReceiver(id: number): Promise<any> {
+    async deleteReceiver(id: number): Promise<any> {
 
       this._appLogger.log('Handling New Request: Delete Receiver Service');
 
@@ -92,5 +96,22 @@ export class UserdataService {
        
       return response;
    } 
+
+   async getAllUsersInfo(): Promise<UserInfoDto[]> {
+
+      this._appLogger.log('Handling New Request: Consulting Users Service');
+
+      const users: Userdata[] = await this._userdataRepository.getAllUsers();
+
+      const usersInfo: UserInfoDto[] = [];
+
+      users.forEach(user => {
+          usersInfo.push(MapperUser.userdataToUserInfo(user))
+        });
+      
+      this._appLogger.log('Users has been consulted sucessfully');
+
+      return usersInfo;
+  } 
    
 }
