@@ -61,6 +61,17 @@ const actions = {
       commit("set_error_message", e);
     }
   },
+  async adminSignup({ commit }, payload) {
+    try {
+      const response = await AuthorizeRepository.admin_registration(payload);
+      jwt.saveToken(response.token);
+    } catch (e) {
+      commit("set_error_message", e);
+    }
+  },
+  resetError({ commit }) {
+    commit("set_error_message", "");
+  },
 };
 
 export default {

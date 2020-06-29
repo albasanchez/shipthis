@@ -27,7 +27,11 @@ export default {
   name: "Dashboard",
   data: () => ({
     dashItems: [
-      { id: 1, name: "Users", desc: "", icon: "mdi-account-group", route: "" },
+      { id: 1, 
+        name: "Users", 
+        desc: "", 
+        icon: "mdi-account-group", 
+        route: "Users" },
       {
         id: 2,
         name: "Shipments",

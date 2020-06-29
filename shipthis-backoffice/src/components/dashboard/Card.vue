@@ -1,7 +1,7 @@
 <template>
   <v-card class="pa-4 mb-2 dashboard-card__item" @click="goRoute(route)">
     <div class="dashboard-card__info text-center">
-      <v-icon class="dashboard-card__info" size="70px">{{ icon }}</v-icon>
+      <v-icon class="dashboard-card__info-icon" size="70px">{{ icon }}</v-icon>
       <h4 class="dashboard-card__info-title">{{ name }}</h4>
     </div>
   </v-card>

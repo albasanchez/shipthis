@@ -16,9 +16,27 @@ const routes = [
     },
   },
   {
+    path: "/Users",
+    name: "UsersView",
+    component: () => import ('../views/UsersView.vue'),
+    meta: {
+      requiresAuth: true,
+      hideBasicComponents: false,
+    },
+  },
+  {
     path: "/Shipments",
     name: "ShipmentsView",
-    component: () => import("../views/ShipmentsView.vue"),
+    component: () => import ('../views/ShipmentsView.vue'),
+    meta: {
+      requiresAuth: true,
+      hideBasicComponents: false,
+    },
+  },
+  {
+    path: "/Users/CreateUser",
+    name: "CreateUser",
+    component: () => import ('../views/Users/CreateUser.vue'),
     meta: {
       requiresAuth: true,
       hideBasicComponents: false,

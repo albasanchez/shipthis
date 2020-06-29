@@ -70,5 +70,6 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../styles/abstracts/variables.scss";
 @import "../styles/main.scss";
 </style>

@@ -8,8 +8,8 @@
     <!-- Componente con links de navegación -->
     <SectionsList class="d-none d-md-flex" :loggedIn="loggedIn"></SectionsList>
 
-    <div class="hidden-md-and-up">
-      <v-menu bottom>
+    <div class="hidden-sm-and-up">
+      <v-menu bottom :close-on-content-click="closeOnContentClick">
         <template v-slot:activator="{ on, attrs }">
           <v-btn color="primary" dark v-bind="attrs" v-on="on">
             <v-icon class="white--text">mdi-menu</v-icon>
@@ -44,7 +44,7 @@ export default {
     linkToHome: "",
     drawer: false,
     sections: [
-      { id: "1", name: "Dashboard", link: "" },
+      { id: "1", name: "Dashboard", link: "#" },
       { id: "2", name: "Users", link: "Users" },
       { id: "3", name: "Shipments", link: "Shipments" },
       { id: "4", name: "Emails", link: "Emails" },
