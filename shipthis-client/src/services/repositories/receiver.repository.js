@@ -9,5 +9,28 @@ export default {
       jwt.getAuthHeaderToken()
     );
     return response;
-  }
+  },
+  async createReceiver(receiver){
+    let response = await conn.post(
+      `${resource}/create-receiver`,
+      receiver,
+      jwt.getAuthHeaderToken()
+    );
+    return response;
+  },
+  async updateReceiver(receiverId,receiver) {
+    let response = await conn.patch(
+      `${resource}/update-receiver/${receiverId}`,
+      receiver,
+      jwt.getAuthHeaderToken()
+    );
+    return response;
+  },
+  async deleteReceiver(receiverId) {
+    let response = await conn.delete(
+      `${resource}/delete-receiver/${receiverId}`,
+      jwt.getAuthHeaderToken()
+    );
+    return response;
+  },
 };

@@ -101,8 +101,8 @@
               v-model="payload.phone_number"
               :rules="phoneNumberRules"
               :label="$t('labels.phoneNumber')"
-              placeholder="123-4567"
-              v-mask="'###-####'"
+              placeholder="+1 (123) 456-7890"
+              v-mask="'+1 (###) ###-####'"
               outlined
             ></v-text-field>
           </v-col>
@@ -244,7 +244,7 @@
           v-model="alertError"
           type="error"
           top
-          :timeout="-1"
+          :timeout="timeout"
           color="error"
         >
           <strong class="body-1 registry-snackbar font-weight-bold">{{
@@ -289,6 +289,7 @@ export default {
     payload: {
       useremail: null,
       password: "",
+      timeout:4000,
       document: null,
       first_name: null,
       middle_name: null,
@@ -314,7 +315,7 @@ export default {
       $v.$t("errorMessages.idLength"),
     ],
     emailRules: [(v) => /.+@.+\..+/.test(v) || $v.errorMessages[3]],
-    phoneNumberRules: [(v) => (v && v.length == 8) || $v.errorMessages[5]],
+    phoneNumberRules: [(v) => (v && v.length == 17) || $v.errorMessages[5]],
     show1: false,
     show2: false,
     rules: {
@@ -349,7 +350,6 @@ export default {
       if (mainForm && passwordForm && this.passwordMatch()) {
         this.loading = true;
         let userData = this.payload;
-        userData.phone_number = userData.phone_number.replace("-", "");
         await this.$store.dispatch("users/signup", userData);
         this.error = this.$store.getters["users/getError"].error;
         this.loading = false;
