@@ -1,7 +1,7 @@
 <template>
-  <v-app-bar elevation="1" app class="navbar-color">
+  <v-app-bar elevation="1" app class="navbar-color px-12">
     <!-- Logo -->
-    <v-img src="../../assets/logoPositive.png" id="imgNavbar" @click="goRoute(linkToHome)"></v-img>
+    <v-img src="../../assets/logo_bo_white.png" id="imgNavbar" @click="goRoute('Home')"></v-img>
 
     <v-spacer></v-spacer>
 
@@ -9,7 +9,7 @@
     <SectionsList class="d-none d-md-flex" :loggedIn="loggedIn"></SectionsList>
 
     <div class="hidden-sm-and-up">
-      <v-menu bottom :close-on-content-click="closeOnContentClick">
+      <v-menu bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn color="primary" dark v-bind="attrs" v-on="on">
             <v-icon class="white--text">mdi-menu</v-icon>
@@ -52,6 +52,11 @@ export default {
         id: "5",
         name: "Configuration",
         link: "Configuration"
+      },
+      {
+        id: "6",
+        name: "Sign Out",
+        link: ""
       }
     ]
   }),
@@ -63,8 +68,14 @@ export default {
   },
   methods: {
     goRoute(route) {
-      this.$router.push("/" + route);
-      EventBus.$emit("emit-route", "/" + route);
+      if (route == "") {
+        this.$store.dispatch("logout");
+        this.$router.push("/");
+        EventBus.$emit("emit-route", "/");
+      } else {
+        this.$router.push("/" + route);
+        EventBus.$emit("emit-route", "/" + route);
+      }
     }
   }
 };

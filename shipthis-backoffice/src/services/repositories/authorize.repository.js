@@ -7,7 +7,7 @@ export default {
     return response;
   },
   async recoverUser(userRecoveryData) {
-    let response = await conn.post(`${resource}/recoveruser`, userRecoveryData);
+    let response = await conn.post(`${resource}/user-recovery`, userRecoveryData);
     return response;
   },
   async registration(userData) {
@@ -17,5 +17,9 @@ export default {
   async admin_registration(adminData) {
     let response = await conn.post(`${resource}/admin-registration`, adminData);
     return response;
-  }
+  },
+  async admin_authorize(user) {
+    let response = await conn.post(`${resource}/admin-login`, user);
+    return response;
+  },
 };

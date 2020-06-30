@@ -2,7 +2,7 @@
   <v-list id="sections-list" class="pa-0 ma-0">
     <v-list-item v-for="section in sections" :key="section.id">
       <!-- Condicional para saber si el usuario está logueado o no -->
-      <div>
+      <div class="section-space text-center">
         <a
           @click="goRoute(section.link)"
           v-if="section.link == route"
@@ -26,7 +26,7 @@ export default {
     route: "",
     URLactual: "",
     sections: [
-      { id: "1", name: "Dashboard", link: "/" },
+      { id: "1", name: "Dashboard", link: "/Home" },
       { id: "2", name: "Users", link: "/Users" },
       { id: "3", name: "Shipments", link: "/Shipments" },
       { id: "4", name: "Emails", link: "/Emails" },
@@ -34,6 +34,11 @@ export default {
         id: "5",
         name: "Configuration",
         link: "/Configuration"
+      },
+      {
+        id: "6",
+        name: "Sign Out",
+        link: ""
       }
     ]
   }),
@@ -56,12 +61,21 @@ export default {
   },
   methods: {
     goRoute(route) {
-      this.route = route;
-      this.$router.push(route);
+      if (route == "") {
+        this.$store.dispatch("logout");
+        this.$router.push("/");
+      } else {
+        this.route = route;
+        this.$router.push("" + route);
+      }
     }
   }
 };
 </script>
 <style lang="scss">
 @import "../../styles/main.scss";
+.section-space{
+  min-width: 70px;
+  margin: 0 auto;
+}
 </style>

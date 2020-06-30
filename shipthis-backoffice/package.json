@@ -20,7 +20,8 @@
     "vuelidate": "^0.7.5",
     "vue-easy-jwt": "^2.0.1",
     "vuetify": "^2.2.11",
-    "vuex": "^3.4.0"
+    "vuex": "^3.4.0",
+    "vuex-persistedstate": "^3.0.1"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",

@@ -1,15 +1,23 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
-
+import jwt from "../common/jwt.service";
+import store from "../store/index.js";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
+    name: "Login",
+    component: () => import ('../views/Login.vue'),
+    meta: {
+      hideBasicComponents: true,
+    },
+  },
+  {
+    path: "/Home",
     name: "Home",
-    component: Home,
+    component: () => import ('../views/Home.vue'),
     meta: {
       requiresAuth: true,
       hideBasicComponents: false,
@@ -66,6 +74,22 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  to.matched.some((route) => {
+    if (!jwt.isTokenValid()) {
+      store.dispatch("logout");
+      if (route.meta.requiresAuth) {
+        jwt.destroyToken();
+        next({ name: "Login" });
+      } else {
+        next();
+      }
+    } else {
+      next();
+    }
+  });
 });
 
 export default router;

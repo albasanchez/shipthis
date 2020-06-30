@@ -52,6 +52,15 @@ const actions = {
       commit("set_error_message", e);
     }
   },
+  async admin_authorize({ commit }, payload) {
+    try {
+      const response = await AuthorizeRepository.admin_authorize(payload);
+      jwt.saveToken(response.token);
+      commit("set_user", response.userdata);
+    } catch (e) {
+      commit("set_error_message", e);
+    }
+  },
   async signup({ commit }, payload) {
     try {
       const response = await AuthorizeRepository.registration(payload);

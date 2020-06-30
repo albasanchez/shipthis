@@ -4,12 +4,13 @@
 }
 .sections-list__item {
   color: $second-color !important;
+  min-width: 50px;
   text-decoration: none;
   // padding-bottom: 8px;
   transition: 0.3s;
 }
 .sections-list__item:hover {
-  color: $second-color !important;
+  color: $success-color !important;
   cursor: pointer;
 }
 .sections-list__itemactive {
