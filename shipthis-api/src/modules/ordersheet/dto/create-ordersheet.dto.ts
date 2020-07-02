@@ -6,11 +6,12 @@ import {
   IsNumber,
   IsBoolean,
   IsArray,
+  ValidateNested,
 } from 'class-validator';
 import { CreateItemDto } from './create-item.dto';
 
 export class CreateOrdersheetDto {
-  @IsOptional()
+  @IsNotEmpty()
   @IsBoolean()
   ignore_hollydays: boolean;
 
@@ -44,5 +45,6 @@ export class CreateOrdersheetDto {
   destination_address: string;
 
   @IsArray()
+  @ValidateNested()
   items: CreateItemDto[];
 }

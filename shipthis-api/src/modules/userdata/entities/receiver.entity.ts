@@ -7,7 +7,7 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
-  Check
+  Check,
 } from 'typeorm';
 import { Userdata } from './userdata.entity';
 
@@ -35,7 +35,7 @@ export class Receiver extends BaseEntity {
   @ManyToOne(
     type => Userdata,
     userdata => userdata.receivers,
-    { nullable: false },
+    { nullable: false, eager: true },
   )
   @JoinColumn({ name: 'user_fk', referencedColumnName: 'user_id' })
   user: Userdata;

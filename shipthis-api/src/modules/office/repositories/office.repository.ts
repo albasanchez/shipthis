@@ -9,4 +9,13 @@ export class OfficeReposiroty extends Repository<Office> {
       where: { status: OfficeStatus.ACTIVE },
     });
   }
+
+  async fetchOffice(id: number): Promise<Office> {
+    return this.findOne({
+      where: {
+        office_id: id,
+        status: OfficeStatus.ACTIVE,
+      },
+    });
+  }
 }

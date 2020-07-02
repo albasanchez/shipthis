@@ -148,7 +148,7 @@ export class Ordersheet extends BaseEntity {
     name: 'item_price_hist_fk',
     referencedColumnName: 'item_price_hist_id',
   })
-  item_price_hist: OrderPriceHist;
+  item_price_hist: ItemPriceHist;
 
   @OneToMany(
     type => Item,

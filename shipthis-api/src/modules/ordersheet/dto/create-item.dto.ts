@@ -1,4 +1,11 @@
-import { IsOptional, IsString, IsNotEmpty, IsNumber } from 'class-validator';
+import { Characteristic } from './../../item-type/entities/characteristic.entity';
+import {
+  IsOptional,
+  IsString,
+  IsNotEmpty,
+  IsNumber,
+  IsArray,
+} from 'class-validator';
 export class CreateItemDto {
   @IsOptional()
   @IsString()
@@ -19,4 +26,7 @@ export class CreateItemDto {
   @IsNotEmpty()
   @IsNumber()
   item_height: number;
+
+  @IsArray()
+  characteristics: Characteristic[];
 }

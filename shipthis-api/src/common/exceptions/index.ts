@@ -1,3 +1,5 @@
+export { DiscountNotFoundException } from './discount-not-found.exception';
+export { InvalidDiscountException } from './invalid-discount.exception';
 export { BlockedUserException } from './blocked-user.exception';
 export { RolNotFoundException } from './rol-not-found.exception';
 export { UserAlreadyRegisteredException } from './user-already-registered.exception';
@@ -14,3 +16,6 @@ export { OrdersheetNotFoundException } from './ordersheet-not-found.exception';
 export { POEditorConnectionException } from './poeditor-connection.exception';
 export { WrongRoleTypeAccessException } from './wrong-rote-type-access.exception';
 export { UserNotActiveException } from './user-not-active.exception';
+export { InvalidAddressException } from './invalid-address.exception';
+export { InvalidReceiverException } from './invalid-receiver.exception';
+export { LocatorConectionException } from './locator-conection.exception';

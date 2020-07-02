@@ -24,4 +24,5 @@ export enum Configuration {
   POE_ID = 'POE_ID',
   POE_TYPE = 'POE_TYPE',
   POE_URL = 'POE_URL',
+  LOCATION_IQ_TOKEN = 'LOCATION_IQ_TOKEN',
 }
