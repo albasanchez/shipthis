@@ -22,7 +22,7 @@ import ShipmentCard from "../components/Shipments/ShipmentCard.vue";
 import ShipmentsTable from "../components/Shipments/ShipmentsTable.vue";
 
 export default {
-  name: "Shipments",
+  name: "ShipmentsView",
   data: () => ({
     deliveryStatus: [
       {

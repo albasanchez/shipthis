@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row align="center" justify="center" v-for="(item, key) in ConfigurationItems" :key="key">
+    <v-row align="center" justify="center">
       <v-col cols="12" sm="6">
         <v-card>
           <v-expansion-panels>
@@ -8,140 +8,171 @@
               <v-expansion-panel-header>
                 <template>
                   <v-row no-gutters>
-                    <v-col cols="6">
-                      <v-icon size="50px" class="primary--text d-flex">
-                        {{
-                        item.icon
-                        }}
-                      </v-icon>
+                    <v-col cols="4">
+                      <v-icon size="50px" class="primary--text d-flex">{{ item.icon }}</v-icon>
                     </v-col>
-                    <v-col cols="6" class="mt-4">
+                    <v-col cols="8" class="mt-4">
                       <span
                         key="0"
-                        class="font-weight-black primary--text text-center general-title ml-1"
+                        class="font-weight-black primary--text text-center ml-1 general-title"
                       >{{ item.name }}</span>
                     </v-col>
                   </v-row>
                 </template>
               </v-expansion-panel-header>
-              <v-expansion-panel-content align="center">
+              <v-expansion-panel-content align="center" v-if="item.form === 1">
                 <div v-for="(item, key) in item.items" :key="key">
                   <v-text-field
                     v-model="item.value"
                     :label="item.label"
                     outlined
+                    @keydown="
+                      $event.key === '-' ? $event.preventDefault() : null
+                    "
+                    v-money="money"
                     :rules="rules.item"
                     :value="item.value"
+                    :suffix="item.suffix"
+                    :prefix="item.prefix"
                   ></v-text-field>
                 </div>
-                <v-btn class="success mb-2 mt-2" @click="Update(item)">Save</v-btn>
+                <v-btn class="success mb-2 mt-2" @click="Update(item)">Update</v-btn>
+              </v-expansion-panel-content>
+              <v-expansion-panel-content align="center" v-if="item.form === 0">
+                <div v-for="(item, key) in item.items" :key="key">
+                  <v-text-field
+                    v-model="item.value"
+                    :label="item.label"
+                    outlined
+                    v-mask="'#########'"
+                    :rules="rules.item"
+                    :value="item.value"
+                    :suffix="item.suffix"
+                    :prefix="item.prefix"
+                  ></v-text-field>
+                </div>
+                <v-btn class="success mb-2 mt-2" @click="Update(item)">Update</v-btn>
+              </v-expansion-panel-content>
+
+              <v-expansion-panel-content align="center" v-if="item.form === 2">
+                <div v-for="(char, key) in item.items" :key="key">
+                  <v-row>
+                    <v-col cols="12" lg="9" xl="10" class="pa-0">
+                      <v-text-field
+                        v-model="char.value"
+                        :label="char.label"
+                        outlined
+                        v-mask="'#########'"
+                        :rules="rules.item"
+                        :value="char.value"
+                        :suffix="char.suffix"
+                        :prefix="char.prefix"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" lg="3" xl="2">
+                      <v-btn class="success ma-0" @click="UpdateCharacteristic(char)">Update</v-btn>
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-expansion-panel-content>
+
+              <v-expansion-panel-content align="center" v-if="item.form === 3">
+                <div v-for="(char, order_type_id) in item.items" :key="order_type_id">
+                  <v-expansion-panels class="mb-2">
+                    <v-expansion-panel>
+                      <v-expansion-panel-header>
+                        <v-row>
+                          <h4 class="mt-2">{{ char.name }}</h4>
+                        </v-row>
+                      </v-expansion-panel-header>
+                      <v-expansion-panel-content>
+                        <v-row>
+                          <v-col cols="12" md="4">
+                            <v-text-field
+                              v-model="char.holidays_tax_value"
+                              label="Holidays tax"
+                              v-mask="'#########'"
+                              outlined
+                              :rules="rules.item"
+                              :value="char.value"
+                              :suffix="char.perc_suffix"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col cols="12" md="4">
+                            <v-text-field
+                              v-model="char.destination_tax_value"
+                              label="Specific destination tax"
+                              v-mask="'#########'"
+                              outlined
+                              :rules="rules.item"
+                              :value="char.destination_tax_value"
+                              :suffix="char.perc_suffix"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col cols="12" md="4">
+                            <v-text-field
+                              v-model="char.time_tax_value"
+                              label="Time tax"
+                              outlined
+                              v-mask="'#########'"
+                              :rules="rules.item"
+                              :value="char.time_tax_value"
+                              :suffix="char.perc_suffix"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                        <v-row justify="center">
+                          <v-btn class="success" @click="UpdateType(char)">Update</v-btn>
+                        </v-row>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+                  </v-expansion-panels>
+                </div>
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
         </v-card>
       </v-col>
-      <v-snackbar v-model="snackbarerror" color="red">
-        {{ snackError }}
-        <v-btn dark text @click="snackbarerror = false">{{ close }}</v-btn>
-      </v-snackbar>
-      <v-snackbar v-model="snackbarsuccess" color="green">
-        {{ snackSuccess }}
-        <v-btn dark text @click="snackbarsuccess = false">{{ close }}</v-btn>
-      </v-snackbar>
     </v-row>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import Repository from "../../services/repositories/repositoryFactory";
-const ConfigurationRepository = Repository.get("configuration");
+import { EventBus } from "../../main.js";
+import { VMoney } from "v-money";
 export default {
   name: "Configuration",
+  props: ["item"],
   data: () => ({
-    close: "Close",
-    configTime: null,
-    ConfigurationItems: [],
-    currentPrices: null,
-    id: 1,
-    items: [],
-    ItemValidation: "This Item is required",
     rules: {
       required: value =>
         (!!value && value !== "" && value !== undefined) || "Required",
 
-      item: [
-        v => !!v || "This Item is required",
-        v => v > 0 || "Zero is not valid data"
-      ]
+      item: [v => !!v || "This Item is required"]
     },
-    snackbarerror: false,
-    snackError: "There was been an error. Please check",
-    snackbarsuccess: false,
-    snackSuccess: "The actualization have been successfully",
-    ZeroValidation: "Zero is not valid data"
-  }),
-  components: {},
-  async mounted() {
-    await this.loadCurrentPrices();
-    await this.loadConfigTime();
-  },
-  methods: {
-    async loadCurrentPrices() {
-      let response;
-      response = await ConfigurationRepository.getPrices();
-      this.currentPrices = response;
-      this.fillItems("Base Cost", this.currentPrices.base_price);
-      this.fillItems("Price_km", this.currentPrices.price_km);
-      this.fillConfigurationItems("Costs", "mdi-currency-usd", this.items);
-    },
-    async loadConfigTime() {
-      let response;
-      response = await ConfigurationRepository.getConfigTime();
-      this.configTime = response;
-      this.fillItems("Algorithm's Time", this.configTime.config_time);
-      this.fillConfigurationItems("Simulation", "mdi-routes", this.items);
-    },
-
-    fillItems(label, value) {
-      this.items.push({
-        label: label,
-        value: value
-      });
-    },
-    fillConfigurationItems(name, icon, items) {
-      this.ConfigurationItems.push({
-        name: name,
-        icon: icon,
-        id: this.id,
-        items: items
-      });
-      this.id++;
-      this.items = [];
-    },
-
-    async Update(item) {
-      if (item.id == 1) {
-        this.currentPrices.base_price = parseFloat(item.items[0].value);
-        this.currentPrices.price_km = parseFloat(item.items[1].value);
-
-        try {
-          await ConfigurationRepository.updatePrices(this.currentPrices);
-          this.snackbarsuccess = true;
-        } catch {
-          this.snackbarerror = true;
-        }
-      } else if (item.id == 2) {
-        try {
-          this.configTime.config_time = parseFloat(item.items[0].value);
-          await ConfigurationRepository.updateTime(this.configTime);
-          this.snackbarsuccess = true;
-        } catch {
-          this.snackbarerror = true;
-        }
-      }
+    money: {
+      decimal: ".",
+      precision: 2,
+      masked: false,
+      min: 0,
+      max: 10000000
     }
-  }
+  }),
+  methods: {
+    Update(item) {
+      EventBus.$emit("Update", item);
+    },
+
+    UpdateCharacteristic(item) {
+      EventBus.$emit("UpdateCharacteristic", item);
+    },
+
+    UpdateType(item) {
+      EventBus.$emit("UpdateType", item);
+    }
+  },
+  directives: { money: VMoney }
 };
 </script>
 

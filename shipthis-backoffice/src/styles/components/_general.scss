@@ -9,8 +9,15 @@
   font-size: 22px;
 }
 
-@media only screen and (max-width: 720px) {
+
+
+@media only screen and (max-width: 840px) {
   .general-title {
-    font-size: 15px;
+    font-size: 18px;
+  }
+  @media only screen and (max-width: 750px) {
+    .general-title {
+      font-size: 14px;
+    }
   }
 }

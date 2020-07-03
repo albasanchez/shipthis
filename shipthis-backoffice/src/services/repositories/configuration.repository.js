@@ -34,4 +34,19 @@ export default {
     );
     return response;
   },
+  async getCharacteristics() {
+    let response = await conn.get(
+      `${resource}/characteristics`,
+      jwt.getAuthHeaderToken()
+    );
+    return response;
+  },
+  async updateCharacteristic(characteristic) {
+    let response = await conn.post(
+      `${resource}/updateCharHistory`,
+      characteristic,
+      jwt.getAuthHeaderToken()
+    );
+    return response;
+  },
 };
