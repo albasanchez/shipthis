@@ -8,6 +8,8 @@ export class BillDto {
   order_type: string;
   ignore_holidays: boolean;
   discount: number;
+  subtotal: number;
+  additional_taxes: number;
   facturation_amount: number;
   shipper: PersonInfoDto;
   receiver: PersonInfoDto;

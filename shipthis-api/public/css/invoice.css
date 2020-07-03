@@ -1,0 +1,74 @@
+html {
+  zoom: 0.7;
+}
+
+.logo {
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 5px;
+}
+
+.cell-title {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.cell-description {
+  font-size: 11px;
+}
+
+.invoice-box {
+  width: 800px;
+  margin: auto;
+  padding: 30px;
+  font-size: 14px;
+  line-height: 24px;
+  font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+  color: #555;
+}
+
+.invoice-box table {
+  table-layout: fixed;
+  width: 100%;
+  line-height: inherit;
+  text-align: left;
+}
+
+.invoice-box table td {
+  padding: 5px;
+  vertical-align: top;
+}
+
+.invoice-box table tr.heading td {
+  background: #ddd;
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
+  font-size: 12px;
+  padding: 1px 5px;
+}
+
+.invoice-box table tr.section-heading td {
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 0;
+  padding-top: 10px;
+}
+
+.invoice-box table tr.item td {
+  border-bottom: 1px solid #eee;
+}
+
+.invoice-box table tr.total td:nth-child(2) {
+  border-top: 2px solid #eee;
+  font-weight: bold;
+}
+
+p {
+  margin-bottom: -8px !important;
+}
+
+.qrCode {
+  width: 125px;
+  height: 125px;
+}

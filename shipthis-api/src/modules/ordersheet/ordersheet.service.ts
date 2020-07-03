@@ -48,8 +48,9 @@ import { DaoFactoryConstans } from '../dao/factories/constants/dao-factory-const
 import { Receiver } from '../userdata/entities/receiver.entity';
 import { ItemPriceHistRepository } from '../item-type/repositories/item-price-hist.repository';
 import { ItemPriceHist } from '../item-type/entities/item-price-hist.entity';
-import { max } from 'class-validator';
 import { MapperBill } from 'src/mapper/mapper-bill';
+import { Response } from 'express';
+import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class OrdersheetService {
@@ -71,6 +72,7 @@ export class OrdersheetService {
     @InjectRepository(ItemPriceHistRepository)
     private readonly _itemPriceRepo: ItemPriceHistRepository,
     private readonly _appLogger: AppLoggerService,
+    private readonly _emailService: EmailService,
   ) {}
 
   async addressConfirmation(address: string): Promise<Place> {
@@ -85,12 +87,14 @@ export class OrdersheetService {
     return this.generateBill(new_order);
   }
 
-  async registerOrder(order: CreateOrdersheetDto): Promise<any> {
+  async registerOrder(order: CreateOrdersheetDto, res: Response): Promise<any> {
     this._appLogger.log('Handling New Request: order registration Service');
     const new_order: Ordersheet = await this.validateOrder(order);
     this.setPricesOnOrder(new_order);
     const saved_order = await this._ordersheetRepo.registerOrder(new_order);
-    return this.generateBill(saved_order);
+    const bill = this.generateBill(saved_order);
+    this._emailService.generateInvoice(bill, res);
+    return bill;
   }
 
   async consultBill(tracking_id: string): Promise<BillDto> {
@@ -118,13 +122,13 @@ export class OrdersheetService {
 
   private setPricesOnOrder(order: Ordersheet): void {
     const distance_km: number = Number(order.trajectories.distance) / 1000;
-    const base_price: number = Number(order.item_price_hist.base_price);
+    const base_price = Number(order.item_price_hist.base_price);
     const price_gr_km: number = Number(order.item_price_hist.price_km) / 1000;
 
-    let order_base_cost: number = 0;
+    let order_base_cost = 0;
 
     order.items.map(item => {
-      let item_total_tax: number = 0;
+      let item_total_tax = 0;
       for (const char of item.characteristics) {
         item_total_tax += Number(char.tax);
       }
@@ -139,8 +143,8 @@ export class OrdersheetService {
       order_base_cost += Number(item_cost.toFixed(2));
     });
 
-    let order_total_tax: number = Number(order.order_price_hist.time_tax);
-    order_total_tax += order.ignore_hollydays
+    let order_total_tax = Number(order.order_price_hist.time_tax);
+    order_total_tax += order.ignore_holidays
       ? Number(order.order_price_hist.holidays_tax)
       : 0;
     order_total_tax += order.destination_place
@@ -202,7 +206,7 @@ export class OrdersheetService {
     }
 
     //validate items
-    let itemsToInsert: Item[] = await this.validateItems(order.items);
+    const itemsToInsert: Item[] = await this.validateItems(order.items);
 
     //create ordersheet
     const newOrdersheet: Ordersheet = new Ordersheet();
@@ -212,7 +216,7 @@ export class OrdersheetService {
     newOrdersheet.creation_date = new Date();
     newOrdersheet.status = OrdersheetStatus.DELIVERY;
     newOrdersheet.receiver = receiver;
-    newOrdersheet.ignore_hollydays = order.ignore_hollydays;
+    newOrdersheet.ignore_holidays = order.ignore_holidays;
     newOrdersheet.destination_office = dest_office;
     newOrdersheet.destination_place = dest_address;
     newOrdersheet.discount = discount;
@@ -391,7 +395,7 @@ export class OrdersheetService {
   }
 
   private async validateItems(item_list: any[]): Promise<Item[]> {
-    let itemsToInsert: Item[] = [];
+    const itemsToInsert: Item[] = [];
     const active_charateristics: Characteristic[] = await this._charRepo.getAllCharacteristics();
 
     let newItem: Item;

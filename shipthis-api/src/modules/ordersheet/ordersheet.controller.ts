@@ -9,7 +9,9 @@ import {
   Post,
   Body,
   Get,
+  Res,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { OrderDetailDto } from './dto/order-detail.dto';
 
 @Controller('ordersheet')
@@ -24,8 +26,11 @@ export class OrdersheetController {
 
   @Post('register-order')
   @UsePipes(ValidationPipe)
-  async registerOrdersheet(@Body() newOrder: CreateOrdersheetDto) {
-    return this._orderSheetService.registerOrder(newOrder);
+  async registerOrdersheet(
+    @Body() newOrder: CreateOrdersheetDto,
+    @Res() res: Response,
+  ) {
+    return this._orderSheetService.registerOrder(newOrder, res);
   }
 
   @Post('order-bill')

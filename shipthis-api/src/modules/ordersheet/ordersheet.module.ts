@@ -15,6 +15,7 @@ import { OrdersheetController } from './ordersheet.controller';
 import { OrdersheetService } from './ordersheet.service';
 import { AppLoggerModule } from 'src/log/applogger.module';
 import { ItemPriceHistRepository } from '../item-type/repositories/item-price-hist.repository';
+import { EmailModule } from '../email/email.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { ItemPriceHistRepository } from '../item-type/repositories/item-price-hi
       ItemPriceHistRepository,
     ]),
     AppLoggerModule,
+    EmailModule,
   ],
   controllers: [OrdersheetController],
   providers: [OrdersheetService],

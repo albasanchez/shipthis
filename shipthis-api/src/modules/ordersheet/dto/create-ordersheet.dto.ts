@@ -13,7 +13,7 @@ import { CreateItemDto } from './create-item.dto';
 export class CreateOrdersheetDto {
   @IsNotEmpty()
   @IsBoolean()
-  ignore_hollydays: boolean;
+  ignore_holidays: boolean;
 
   @IsNotEmpty()
   @IsNumber()

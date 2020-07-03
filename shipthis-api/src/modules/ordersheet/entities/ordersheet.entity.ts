@@ -45,9 +45,9 @@ export class Ordersheet extends BaseEntity {
     type: 'boolean',
     nullable: true,
     default: false,
-    name: 'ignore_hollydays',
+    name: 'ignore_holidays',
   })
-  ignore_hollydays: boolean;
+  ignore_holidays: boolean;
 
   @Column({ type: 'numeric', nullable: true, name: 'facturation_amount' })
   facturation_amount: number;
