@@ -7,8 +7,8 @@
           <!-- Slide 1: Inicio de sesión -->
           <v-window-item class="ma-0" :value="1">
             <v-row class="ma-0">
-              <v-col cols="8" class="ma-0">
-                <v-card-text class="mt-3">
+              <v-col cols="12" sm="8" class="ma-0">
+                <v-card-text class="mt-3 text-center">
                   <!--Alerts -->
                   <v-alert v-model="alertError" type="error" dismissible>
                     <strong>{{ $t("login.logginErrorMessage") }}</strong>
@@ -17,9 +17,20 @@
                     {{ $t("login.loginTitle") }}
                   </h1>
 
-                  <h4 class="text-center mt-4">
-                    {{ $t("login.loginInstruction") }}
+                  <h4 class="text-center mt-3">
+                    {{ $t("login.loginSocialNetworks") }}
                   </h4>
+                  <v-card-actions class="justify-center">
+                    <v-btn @click="loginFacebook" rounded dark block color="#3b5998">
+                      <v-icon left color="white">mdi-facebook</v-icon>FACEBOOK
+                    </v-btn>
+                  </v-card-actions>
+                  <v-card-actions class="justify-center">
+                    <v-btn @click="loginGoogle" rounded dark block color="#ea4335">
+                      <v-icon left color="white">mdi-google</v-icon>GOOGLE
+                    </v-btn>
+                  </v-card-actions>
+                  <vs-divider class="mt-6" color="dark"><h4>{{ $t("login.loginCredentials") }}</h4></vs-divider>
                   <v-form ref="login_form" v-on:submit.prevent>
                     <v-text-field
                       :label="$t('labels.email')"
@@ -40,24 +51,20 @@
                       color="primary accent-3"
                       :rules="[rules.required]"
                     />
-
-                    <div class="text-center my-3">
-                      <v-btn
-                        @click="loginSubmit"
-                        rounded
-                        type="submit"
-                        color="success accent-3 accent--text"
-                        dark
-                        >{{ $t("buttons.enter") }}</v-btn
-                      >
-                    </div>
-
-                    <h3
-                      class="text-center mt-3 secondary--text forgotPassword"
-                      @click="step++"
-                    >
-                      {{ $t("login.forgotMyPassword") }}
-                    </h3>
+                    <v-btn
+                      @click="loginSubmit"
+                      rounded
+                      type="submit"
+                      color="success accent-3 accent--text"
+                      dark
+                      block
+                      >{{ $t("buttons.login") }}
+                    </v-btn>
+                    <v-card-actions width="400" class="text-center mt-3">
+                      <p class="textButton" @click="step++">{{ $t("login.forgotMyPassword") }}</p>
+                      <v-spacer></v-spacer>
+                      <p class="textButton" @click="goRegistry">{{$t("buttons.newHere")+ ' ' + $t("buttons.signUp") }}</p>
+                    </v-card-actions>
                   </v-form>
                 </v-card-text>
               </v-col>
@@ -65,12 +72,12 @@
               <v-col
                 cols="4"
                 md="4"
-                class="primary accent-3 center-img"
+                class="primary accent-3 center-img d-none d-sm-flex"
                 justify="center"
                 align="center"
               >
                 <img class="login-logo" src="../assets/home/logo.png" alt />
-                <h3 class="success--text mt-4 mb-2" @click="step--">
+                <h3 class="success--text mt-4" @click="step--">
                   {{ $t("login.noAccountQuestion") }}
                 </h3>
                 <div class="text-center my-6">
@@ -79,7 +86,7 @@
                     @click="goRegistry"
                     color="success accent-3 accent--text"
                     outlined
-                    >{{ $t("buttons.signIn") }}</v-btn
+                    >{{ $t("buttons.signUp") }}</v-btn
                   >
                 </div>
               </v-col>
@@ -93,7 +100,7 @@
               <v-col
                 cols="4"
                 md="4"
-                class="primary accent-3 center-img"
+                class="primary accent-3 center-img d-none d-sm-flex"
                 justify="center"
                 align="center"
               >
@@ -107,11 +114,11 @@
                     @click="goRegistry"
                     color="success accent-3 accent--text"
                     outlined
-                    >{{ $t("buttons.signIn") }}</v-btn
+                    >{{ $t("buttons.signUp") }}</v-btn
                   >
                 </div>
               </v-col>
-              <v-col cols="8" class="ma-0">
+              <v-col cols="12" sm="8" class="ma-0">
                 <!--Alerts -->
                 <v-card-text class="mt-3">
                   <v-alert
@@ -193,9 +200,11 @@ export default {
     alertError: false,
     error: "",
 
-    user_email: null,
-    user_password: "",
-    document: null,
+    user_email: '',
+    user_password: '',
+    document: '',
+
+    newUser: '',
 
     rules: {
       required: value => !!value || "This field cannot be empty."
@@ -211,6 +220,9 @@ export default {
   },
   methods: {
     async loginSubmit() {
+      await this.$store.dispatch("users/resetError");
+      this.error = ''
+      this.alertError = false;
       if (this.$refs.login_form.validate()) {
         const user = {
           useremail: this.user_email,
@@ -219,6 +231,45 @@ export default {
         await this.$store.dispatch("users/authorize", user);
         this.error = this.$store.getters["users/getError"].error;
         if (this.error !== "") this.alertError = true;
+        else {
+          this.$emit('update',false)
+          this.newUser = this.$store.getters["users/getNewUser"];
+          if (this.newUser && this.newUser === true) {
+            this.$router.push("/UserProfile");
+          }
+          else this.$router.push("/HomeUser");
+        }
+      }
+    },
+    async loginGoogle() {
+      await this.$store.dispatch("users/resetError");
+      this.error = ''
+      this.alertError = false;
+      await this.$store.dispatch('users/authorizeGoogle');
+      this.error = this.$store.getters["users/getError"].error;
+      if (this.error !== "") this.alertError = true;
+      else {
+        this.$emit('update',false)
+        this.newUser = this.$store.getters["users/getNewUser"];
+        if (this.newUser && this.newUser === true) {
+          this.$router.push("/UserProfile");
+        }
+        else this.$router.push("/HomeUser");
+      }
+    },
+    async loginFacebook() {
+      await this.$store.dispatch("users/resetError");
+      this.error = ''
+      this.alertError = false;
+      await this.$store.dispatch('users/authorizeFacebook');
+      this.error = this.$store.getters["users/getError"].error;
+      if (this.error !== "") this.alertError = true;
+      else {
+        this.$emit('update',false)
+        this.newUser = this.$store.getters["users/getNewUser"];
+        if (this.newUser && this.newUser === true) {
+          this.$router.push("/UserProfile");
+        }
         else this.$router.push("/HomeUser");
       }
     },
@@ -237,6 +288,7 @@ export default {
       }
     },
     goRegistry() {
+      this.$emit('update',false)
       this.$router.push("/Registry");
     },
     loginCommit(data) {

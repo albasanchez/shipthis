@@ -56,18 +56,18 @@
       class="ma-0"
       width="750"
     >
-      <LoginForm></LoginForm>
+      <LoginForm :activateLogin="activateLogin" @update="updateDialog"></LoginForm>
     </v-dialog>
   </div>
 </template>
 
 <script>
 import LoginForm from "../Login.vue";
-import { mapState } from "vuex";
 export default {
   name: "SectionsList",
   data: () => ({
     activateLogin: false,
+    userLoggedIn: false,
     sections: [
       { id: "1", name: "home", link: "#", activateLogin: false },
       { id: "2", name: "us", link: "#Us", activateLogin: false },
@@ -86,9 +86,13 @@ export default {
   components: {
     LoginForm,
   },
-  computed: mapState({
-    userLoggedIn: (state) => state.users.user.user_id != null,
-  }),
+  created(){
+    this.fetchData()
+  },
+  watch: {
+    // call again the method if the route changes
+    '$route': 'fetchData'
+  },
   methods: {
     goRoute(route) {
       this.$router.push("/" + route);
@@ -96,6 +100,14 @@ export default {
     loginDialog(activate) {
       this.activateLogin = activate;
     },
+    updateDialog(newData){
+      this.activateLogin = newData;
+      this.userLoggedIn = true
+    },
+    fetchData(){
+      let res = this.$store.getters["users/getUser"];
+      this.userLoggedIn = res.user_id != null;
+    }
   },
 };
 </script>

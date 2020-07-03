@@ -51,6 +51,8 @@
 </template>
 
 <script>
+import jwt from '../../common/jwt.service';
+
 export default {
   data() {
     return {
@@ -73,7 +75,8 @@ export default {
   methods: {
     goRoute(route) {
       if (route == "") {
-        this.$store.dispatch("logout");
+        jwt.destroyToken();
+        this.$store.dispatch('users/reset');
         this.$router.push("/");
       } else {
         this.$router.push("/" + route);
