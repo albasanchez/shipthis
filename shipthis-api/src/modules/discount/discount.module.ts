@@ -1,3 +1,4 @@
+import { UserDataRepository } from './../userdata/repositories/userdata.repository';
 import { AppLoggerModule } from './../../log/applogger.module';
 import { DiscPerRepository } from './repositories/disc-per.repository';
 import { Module } from '@nestjs/common';
@@ -8,7 +9,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([DiscountRepository, DiscPerRepository]),
+    TypeOrmModule.forFeature([
+      DiscountRepository,
+      DiscPerRepository,
+      UserDataRepository,
+    ]),
     AppLoggerModule,
   ],
   providers: [DiscountService],

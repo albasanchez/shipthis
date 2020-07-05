@@ -22,10 +22,21 @@ export class DiscPerRepository extends Repository<DiscPer> {
     user_id: number,
   ): Promise<DiscPer> {
     return this.createQueryBuilder('dp')
+      .innerJoinAndSelect(
+        'dp.discount',
+        'discount',
+        `discount.discount_id = ${discount_id}`,
+      )
       .leftJoinAndSelect('dp.ordersheet', 'ordersheet')
-      .leftJoinAndSelect('dp.discount', 'discount')
-      .where('dp.discount_fk = :fk', { fk: discount_id })
-      .andWhere('dp.user_fk = :fk', { fk: user_id })
+      .where('dp.user_fk = :fk', { fk: user_id })
       .getOne();
+  }
+
+  async fetchAssignedDiscoust(user_id: number): Promise<DiscPer[]> {
+    return this.createQueryBuilder('dp')
+      .innerJoinAndSelect('dp.discount', 'discount')
+      .leftJoinAndSelect('dp.ordersheet', 'ordersheet')
+      .where('dp.user_fk = :fk', { fk: user_id })
+      .getMany();
   }
 }
