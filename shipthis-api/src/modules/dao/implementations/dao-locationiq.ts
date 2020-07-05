@@ -15,7 +15,7 @@ export class DaoLocationIq implements IDaoLocation {
     const _configService: ConfigService = new ConfigService(
       new AppLoggerService(),
     );
-    let route = { geometry: null, distance: null };
+    let route = { middle_points: null, distance: null };
     let trajectory: Trajectory = null;
     await axios
       .get(
@@ -26,24 +26,31 @@ export class DaoLocationIq implements IDaoLocation {
         )}&steps=${true}&annotations=${true}&geometries=geojson`,
       )
       .then(res => {
-        route.geometry = res.data.routes[0].geometry;
+        const possible_point = res.data.routes[0].legs[0].steps;
+        route.middle_points = [];
+        possible_point.map(point => {
+          if (point.name) route.middle_points.push(point);
+        });
         route.distance = res.data.routes[0].distance;
       })
       .catch();
 
-    if (route.geometry) {
+    if (route.middle_points) {
       let ratio = 1;
       let step = 0;
       const cpArray: CheckPoint[] = [];
       let cpPlace: Place;
       let cpCheckPoint: CheckPoint;
-      if (route.geometry.coordinates.length - 2 > 8) {
-        ratio = (route.geometry.coordinates.length - 2) / 8;
+      if (route.middle_points.length - 2 > 8) {
+        ratio = (route.middle_points.length - 2) / 8;
       }
-      for (let i = 1; i < route.geometry.coordinates.length - 1; i += ratio) {
+      for (let i = 1; i < route.middle_points.length - 1; i += ratio) {
         cpPlace = new Place();
-        cpPlace.position_long = route.geometry.coordinates[Math.trunc(i)][0];
-        cpPlace.position_lat = route.geometry.coordinates[Math.trunc(i)][1];
+        cpPlace.address = route.middle_points[Math.trunc(i)].name;
+        cpPlace.position_long =
+          route.middle_points[Math.trunc(i)].maneuver.location[0];
+        cpPlace.position_lat =
+          route.middle_points[Math.trunc(i)].maneuver.location[1];
         cpCheckPoint = new CheckPoint();
         cpCheckPoint.place = cpPlace;
         cpCheckPoint.check_point_order = step + 1;
