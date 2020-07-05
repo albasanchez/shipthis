@@ -1,13 +1,14 @@
 import {
     IsNotEmpty,
-    IsString,
-    IsOptional,
-    IsIn,
-    IsNumber,
-  } from 'class-validator';
+    IsInt,
+    Max,
+    Min,
+} from 'class-validator';
   
   export class NewConfigTimeDto {
     @IsNotEmpty()
-    @IsNumber()
+    @IsInt()
+    @Min(1)
+    @Max(59)
     config_time: number;
   }

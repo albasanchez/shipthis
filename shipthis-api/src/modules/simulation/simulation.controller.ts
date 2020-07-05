@@ -1,4 +1,4 @@
-import { Controller, Get, Patch, UsePipes, ValidationPipe, Body, Post} from '@nestjs/common';
+import { Controller, Get, UsePipes, ValidationPipe, Body, Post} from '@nestjs/common';
 import { SimulationService } from './simulation.service';
 import { NewConfigTimeDto } from './dto/new-config-time.dto';
 

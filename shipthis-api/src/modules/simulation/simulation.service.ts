@@ -3,29 +3,48 @@ import { CheckPoint } from '../ordersheet/entities/check-point.entity';
 import { OrdersheetStatus } from './../ordersheet/constants/ordersheet-status.enum';
 import { OrdersheetRepository } from '../ordersheet/repositories/ordersheet.repository';
 import { Injectable } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import { Cron, CronExpression, Timeout, SchedulerRegistry } from '@nestjs/schedule';
 import { Ordersheet } from '../ordersheet/entities/ordersheet.entity';
-import { getConnection, Not } from 'typeorm';
 import { AppLoggerService } from 'src/log/applogger.service';
 import { Simulation } from './entities/simulation.entity';
 import { SimulationRepository } from './repositories/simulation.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NewConfigTimeDto } from './dto/new-config-time.dto';
+import { CronTime } from "cron";
 
 @Injectable()
 export class SimulationService {
   constructor(private readonly _appLogger: AppLoggerService,
     @InjectRepository (SimulationRepository)
-    private readonly _simulationRepo: SimulationRepository,) {}
+    private readonly _simulationRepo: SimulationRepository,
+    @InjectRepository (OrdersheetRepository)
+    private readonly _ordersheetRepo: OrdersheetRepository,
+    @InjectRepository (CheckPointRepository)
+    private readonly _checkPointRepo: CheckPointRepository,
+    private schedulerRegistry: SchedulerRegistry,
+  ) {}
 
-  @Cron(CronExpression.EVERY_5_MINUTES)
+  @Timeout(1000)
+  async getExcutionTime() {
+    this._appLogger.log('UNATTENDED SERVICE: Setting execution time');
+    const config : Simulation = await this.getCurrentConfigTime()
+    const time : CronTime = new CronTime(`0 */${config.config_time} * * * *`,'','');
+    const job = this.schedulerRegistry.getCronJob('simulation');
+    job.setTime(time);
+    job.start()
+    this._appLogger.log(`UNATTENDED SERVICE: Execution set to run every ${config.config_time}  minute(s)`);
+  }
+
+  @Cron(CronExpression.EVERY_5_MINUTES,{
+    name: 'simulation',
+  })
   async handleCron() {
     this._appLogger.log('UNATTENDED SERVICE: simulating order movement');
     //search all orders with status different from DELIVERED
-    const interestOrders: Ordersheet[] = await this.searchNotDeliveredOrders();
+    const interestOrders: Ordersheet[] = await this.searchNotDeliveredOrders()
     //Modify ordersheets
     this._appLogger.log(
-      `UNATTENDED SERVICE: modifitying ${interestOrders.length} order(s)`,
+      `UNATTENDED SERVICE: modifiying ${interestOrders.length} order(s)`,
     );
     for await (const order of interestOrders) {
       if (order.status === OrdersheetStatus.DELIVERY) {
@@ -58,10 +77,7 @@ export class SimulationService {
   }
 
   private async searchNotDeliveredOrders(): Promise<Ordersheet[]> {
-    const ordersheetRepo: OrdersheetRepository = new OrdersheetRepository()
-    return await ordersheetRepo.find({
-      where: { status: Not(OrdersheetStatus.DELIVERED) },
-    });
+    return await this._ordersheetRepo.searchNotDeliveredOrders()
   }
 
   private async updateOrdersheetStatus(
@@ -70,25 +86,11 @@ export class SimulationService {
   ): Promise<void> {
     const date: Date =
       newStatus === OrdersheetStatus.DELIVERED ? new Date() : null;
-    const ordersheetRepo: OrdersheetRepository = new OrdersheetRepository()
-    await ordersheetRepo
-      .createQueryBuilder()
-      .update()
-      .set({ status: newStatus, delivery_date: date })
-      .where({ ordersheet_id: order.ordersheet_id })
-      .execute();
+    await this._ordersheetRepo.updateOrdersheetStatus(order.ordersheet_id, newStatus, date)
   }  
 
   private async updateCheckPoint(checkPoint: CheckPoint): Promise<void> {
-    const checkPointRepo: CheckPointRepository = getConnection().getRepository(
-      CheckPoint,
-    );
-    await checkPointRepo
-      .createQueryBuilder()
-      .update()
-      .set({ time_mark: new Date(Date.now()).toISOString() })
-      .where({ check_point_id: checkPoint.check_point_id })
-      .execute();
+    await this._checkPointRepo.updateCheckPoint(checkPoint.check_point_id)
   }
 
   async getCurrentConfigTime(): Promise<Simulation> {
@@ -96,6 +98,8 @@ export class SimulationService {
   }
 
   async updateConfigTime(newRegister: NewConfigTimeDto): Promise<NewConfigTimeDto> {
-    return this._simulationRepo.updateConfigTime(newRegister);
- } 
+    const newConfig : NewConfigTimeDto = await this._simulationRepo.updateConfigTime(newRegister);
+    await this.getExcutionTime();
+    return newConfig;
+  } 
 }
