@@ -39,10 +39,16 @@ export class OrdersheetController {
     return this._orderSheetService.consultBill(orderDetail.tracking_id);
   }
 
-  @Post('history')
+  @Post('history-order')
   @UsePipes(ValidationPipe)
-  async searchHistory(@Body() historyRef: OrderHistoryDto) {
-    return this._orderSheetService.searchHistory(historyRef);
+  async searchHistoryOrder(@Body() historyRef: OrderHistoryDto) {
+    return this._orderSheetService.searchHistoryOrder(historyRef);
+  }
+
+  @Post('history-bill')
+  @UsePipes(ValidationPipe)
+  async searchHistoryBill(@Body() historyRef: OrderHistoryDto) {
+    return this._orderSheetService.searchHistoryBill(historyRef);
   }
 
   @Post('detail')

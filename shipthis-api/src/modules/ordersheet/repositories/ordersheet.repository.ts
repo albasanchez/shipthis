@@ -1,3 +1,4 @@
+import { Userdata } from './../../userdata/entities/userdata.entity';
 import { Repository, EntityRepository } from 'typeorm';
 import { Ordersheet } from '../entities/ordersheet.entity';
 
@@ -13,5 +14,9 @@ export class OrdersheetRepository extends Repository<Ordersheet> {
 
   async fetchOrder(track_id: string): Promise<Ordersheet> {
     return this.findOne(track_id);
+  }
+
+  async getUserHistory(user: Userdata): Promise<Ordersheet[]> {
+    return this.find({ where: { user: user } });
   }
 }

@@ -238,20 +238,34 @@ export class OrdersheetService {
     return newOrdersheet;
   }
 
-  async searchHistory(info: OrderHistoryDto): Promise<any> {
-    this._appLogger.log('Search user history orders service');
-    //Validate user
-    const user: Userdata = await this.validateUser(info.useremail);
-    const hist: Ordersheet[] = await this._ordersheetRepo.find({
-      where: { user: user },
+  async searchHistoryBill(data: OrderHistoryDto): Promise<BillDto[]> {
+    this._appLogger.log('Search user history bills service');
+    const user: Userdata = await this.validateUser(data.useremail);
+    const order_history: Ordersheet[] = await this._ordersheetRepo.getUserHistory(
+      user,
+    );
+    const bill_history: BillDto[] = [];
+    order_history.map(order => {
+      bill_history.push(MapperBill.generateBillFromOrder(order));
     });
 
-    hist.map(a => {
+    return bill_history;
+  }
+
+  async searchHistoryOrder(data: OrderHistoryDto): Promise<any> {
+    this._appLogger.log('Search user history orders service');
+    const user: Userdata = await this.validateUser(data.useremail);
+    const order_history: Ordersheet[] = await this._ordersheetRepo.getUserHistory(
+      user,
+    );
+
+    order_history.map(a => {
       delete a.user;
       delete a.trajectories.check_points;
+      delete a.receiver.user;
     });
 
-    return hist;
+    return order_history;
   }
 
   async gelAllOrders(): Promise<OrdersDetailsDto[]> {
