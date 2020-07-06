@@ -5,6 +5,8 @@ import { CommercialAllyController } from './commercial-ally.controller';
 import { CommercialAllyRepository } from './repositories/commercial-ally.repository';
 import { PickupRepository } from './repositories/pickup.repository';
 import { WarehouseRepository } from './repositories/warehouse.repository';
+import { PlaceRepository } from '../ordersheet/repositories/place.repository';
+import { AppLoggerModule } from 'src/log/applogger.module';
 
 @Module({
   imports: [
@@ -12,7 +14,9 @@ import { WarehouseRepository } from './repositories/warehouse.repository';
       CommercialAllyRepository,
       PickupRepository,
       WarehouseRepository,
+      PlaceRepository,
     ]),
+    AppLoggerModule,
   ],
   providers: [CommercialAllyService],
   controllers: [CommercialAllyController],

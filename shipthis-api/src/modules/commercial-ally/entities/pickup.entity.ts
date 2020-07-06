@@ -19,7 +19,7 @@ import { PickupStatus } from '../constants/pickup-status.enum';
 @Entity('pickup')
 @Check(`pickup_status IN ('DELIVERY','TRANSIT','DELIVERED')`)
 export class Pickup extends BaseEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   pickup_id: number;
 
   @Column({ name: 'rec_name', type: 'varchar', nullable: false })

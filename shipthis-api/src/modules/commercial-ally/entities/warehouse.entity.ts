@@ -6,11 +6,13 @@ import {
   JoinColumn,
   Column,
   OneToMany,
+  Check,
 } from 'typeorm';
 import { Place } from './../../ordersheet/entities/place.entity';
 import { CommercialAlly } from './commercial-ally.entity';
 import { Pickup } from './pickup.entity';
 
+@Check(`status IN ('ACTIVE','DELETED')`)
 @Entity('warehouse')
 export class Warehouse extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -19,11 +21,13 @@ export class Warehouse extends BaseEntity {
   @Column({ name: 'name', type: 'varchar', nullable: false })
   name: string;
 
+  @Column({ name: 'status', type: 'varchar', nullable: false })
+  status: string;
+
   @ManyToOne(
     type => CommercialAlly,
     commercialAlly => commercialAlly.warehouses,
     {
-      eager: true,
       onDelete: 'CASCADE',
       nullable: false,
     },
@@ -38,6 +42,7 @@ export class Warehouse extends BaseEntity {
     eager: true,
     onDelete: 'CASCADE',
     nullable: false,
+    cascade: true,
   })
   @JoinColumn({ name: 'place_fk', referencedColumnName: 'place_id' })
   place: Place;

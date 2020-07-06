@@ -12,9 +12,10 @@ import {
 import { Warehouse } from './warehouse.entity';
 
 @Entity('commercial_ally')
+@Check(`status IN ('ACTIVE','DELETED')`)
 export class CommercialAlly extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  commercial_ally_id: number;
+  @PrimaryGeneratedColumn('uuid')
+  commercial_ally_id: string;
 
   @Column({ name: 'name', type: 'varchar', nullable: false })
   name: string;
@@ -34,9 +35,13 @@ export class CommercialAlly extends BaseEntity {
   @Column({ name: 'description', type: 'varchar', nullable: false })
   description: string;
 
+  @Column({ name: 'status', type: 'varchar', nullable: false })
+  status: string;
+
   @OneToMany(
     type => Warehouse,
     warehouse => warehouse.commercial_ally,
+    { cascade: true, eager: true },
   )
   warehouses: Warehouse[];
 }
