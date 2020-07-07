@@ -43,9 +43,26 @@ export class EmailService {
     );
   }
 
-  async generateInvoice(bill: BillDto, res: Response): Promise<void> {
-    const trackingUrl =
-      this._config.get(Configuration.TRACKING_URL) + bill.ordersheet_id;
+  async generateInvoice(
+    bill: BillDto,
+    res: Response,
+    type: string,
+  ): Promise<void> {
+    let trackingUrl: string = null;
+    let destination_person_email: string = null;
+    let destination_person_name: string = null;
+    if (type === 'order') {
+      trackingUrl =
+        this._config.get(Configuration.TRACKING_URL) + bill.ordersheet_id;
+      destination_person_email = bill.shipper.email;
+      destination_person_name = bill.shipper.fullname;
+    } else if (type === 'pickup') {
+      trackingUrl =
+        this._config.get(Configuration.PICKUP_URL) + bill.ordersheet_id;
+      destination_person_email = bill.receiver.email;
+      destination_person_name = bill.receiver.fullname;
+    }
+
     const code = await qrcode.toDataURL(`${trackingUrl}`);
     res.render('invoice.hbs', { bill, code }, (err, html) => {
       const options = {
@@ -56,8 +73,8 @@ export class EmailService {
       pdf.create(html, options).toBuffer((err, data) => {
         this.sendInvoiceByEmail(
           data,
-          bill.shipper.email,
-          bill.shipper.fullname,
+          destination_person_email,
+          destination_person_name,
           trackingUrl,
         );
       });

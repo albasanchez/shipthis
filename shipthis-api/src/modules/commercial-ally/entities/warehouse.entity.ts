@@ -30,6 +30,7 @@ export class Warehouse extends BaseEntity {
     {
       onDelete: 'CASCADE',
       nullable: false,
+      eager: true,
     },
   )
   @JoinColumn({

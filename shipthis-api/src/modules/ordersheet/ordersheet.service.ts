@@ -1,3 +1,5 @@
+import { OrderResumeDto } from './dto/order-resume.dto';
+import { MapperOrderResume } from './../../mapper/mapper-order-resume';
 import { BillDto } from './dto/bill.dto';
 import { DiscPerRepository } from './../discount/repositories/disc-per.repository';
 import { DiscPer } from './../discount/entities/disc-per.entity';
@@ -93,7 +95,7 @@ export class OrdersheetService {
     this.setPricesOnOrder(new_order);
     const saved_order = await this._ordersheetRepo.registerOrder(new_order);
     const bill = this.generateBill(saved_order);
-    this._emailService.generateInvoice(bill, res);
+    this._emailService.generateInvoice(bill, res, 'order');
     return bill;
   }
 
@@ -238,18 +240,22 @@ export class OrdersheetService {
     return newOrdersheet;
   }
 
-  async searchHistoryBill(data: OrderHistoryDto): Promise<BillDto[]> {
+  async searchHistoryBill(data: OrderHistoryDto): Promise<OrderResumeDto[]> {
     this._appLogger.log('Search user history bills service');
     const user: Userdata = await this.validateUser(data.useremail);
-    const order_history: Ordersheet[] = await this._ordersheetRepo.getUserHistory(
+    const generated_orders: Ordersheet[] = await this._ordersheetRepo.getUserHistory(
       user,
     );
-    const bill_history: BillDto[] = [];
-    order_history.map(order => {
-      bill_history.push(MapperBill.generateBillFromOrder(order));
+    const order_history: OrderResumeDto[] = [];
+    generated_orders.map(order => {
+      const order_resume = MapperOrderResume.generateOrderResumeFromOrdersheet(
+        order,
+      );
+      order_resume.trajectory = null;
+      order_history.push(order_resume);
     });
 
-    return bill_history;
+    return order_history;
   }
 
   async searchHistoryOrder(data: OrderHistoryDto): Promise<any> {
@@ -306,19 +312,15 @@ export class OrdersheetService {
   }
 
   async searchOrdersheetDetail(orderDetail: OrderDetailDto): Promise<any> {
-    this._appLogger.log('Search order Detail service');
+    this._appLogger.log('Handling New Request: Search order Detail service');
     const order: Ordersheet = await this.validateExistingOrdersheet(
       orderDetail.tracking_id,
     );
-    const person = order.user.person;
-    delete order.user;
-    return { person: person, ...order };
+    return MapperOrderResume.generateOrderResumeFromOrdersheet(order);
   }
 
   private async validateExistingOrdersheet(id: string): Promise<Ordersheet> {
-    const order: Ordersheet = await this._ordersheetRepo.findOne({
-      where: { ordersheet_id: id },
-    });
+    const order: Ordersheet = await this._ordersheetRepo.fetchOrder(id);
 
     if (!order) {
       throw new OrdersheetNotFoundException();

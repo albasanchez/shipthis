@@ -41,7 +41,7 @@ export class CommercialAlly extends BaseEntity {
   @OneToMany(
     type => Warehouse,
     warehouse => warehouse.commercial_ally,
-    { cascade: true, eager: true },
+    { cascade: true },
   )
   warehouses: Warehouse[];
 }

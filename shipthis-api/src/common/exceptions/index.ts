@@ -1,3 +1,4 @@
+export { PickupNotFoundException } from './pickup-not-found.exception';
 export { DiscountNotFoundException } from './discount-not-found.exception';
 export { InvalidDiscountException } from './invalid-discount.exception';
 export { BlockedUserException } from './blocked-user.exception';

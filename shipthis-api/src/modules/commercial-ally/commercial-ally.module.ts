@@ -1,3 +1,6 @@
+import { EmailModule } from './../email/email.module';
+import { ItemPriceHistRepository } from './../item-type/repositories/item-price-hist.repository';
+import { CharacteristicRepository } from './../item-type/repositories/characteristic.repository';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommercialAllyService } from './commercial-ally.service';
@@ -15,8 +18,11 @@ import { AppLoggerModule } from 'src/log/applogger.module';
       PickupRepository,
       WarehouseRepository,
       PlaceRepository,
+      CharacteristicRepository,
+      ItemPriceHistRepository,
     ]),
     AppLoggerModule,
+    EmailModule,
   ],
   providers: [CommercialAllyService],
   controllers: [CommercialAllyController],

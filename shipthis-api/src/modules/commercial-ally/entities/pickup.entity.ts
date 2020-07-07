@@ -66,6 +66,7 @@ export class Pickup extends BaseEntity {
   @ManyToOne(type => Place, {
     eager: true,
     onDelete: 'CASCADE',
+    cascade: true,
     nullable: false,
     primary: false,
   })
