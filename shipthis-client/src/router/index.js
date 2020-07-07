@@ -43,13 +43,20 @@ const routes = [
   {
     path: "/tracking/:id",
     name: "Tracking",
+    meta: { type: "order" },
+    component: () => import("../views/Tracking.vue"),
+  },
+  {
+    path: "/pickup/:id",
+    name: "Pickup",
+    meta: { type: "pickup" },
     component: () => import("../views/Tracking.vue"),
   },
   {
     path: "/receivers/",
     name: "Receivers",
     meta: { requiresAuth: true },
-    component: () => import("../views/Receivers.vue")
+    component: () => import("../views/Receivers.vue"),
   },
   {
     path: "*",

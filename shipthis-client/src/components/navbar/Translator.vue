@@ -42,7 +42,11 @@ export default {
     },
   },
   beforeMount() {
-    this.language = this.selectedLanguage;
+    if (this.selectedLanguage == undefined) {
+      this.language = "EN";
+    } else {
+      this.language = this.selectedLanguage;
+    }
     this.$i18n.locale = this.language;
   },
 };

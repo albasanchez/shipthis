@@ -12,10 +12,10 @@ export default {
   },
   async getOrdersByUser(userEmail) {
     let response = await conn.post(
-      `${resource}/history`,
+      `${resource}/history-bill`,
       userEmail,
       jwt.getAuthHeaderToken()
     );
     return response;
-  }
+  },
 };

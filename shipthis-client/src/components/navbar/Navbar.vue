@@ -8,7 +8,7 @@
       id="imgNavbar"
       @click="goRoute(linkToHome)"
       contain
-      max-width="300"
+      max-width="275"
     ></v-img>
 
     <v-spacer v-if="$vuetify.breakpoint.mdAndUp"></v-spacer>

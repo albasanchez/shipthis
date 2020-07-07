@@ -32,6 +32,8 @@
 <script>
 import Repository from "../../services/repositories/repositoryFactory";
 const OrderRepository = Repository.get("order");
+const CommercialAllyRepository = Repository.get("commercialAlly");
+
 export default {
   name: "TrackingBox",
   data: () => ({
@@ -43,6 +45,9 @@ export default {
     goTracking(id) {
       this.$router.push("./tracking/" + id);
     },
+    goPickup(id) {
+      this.$router.push("./pickup/" + id);
+    },
     async searchOrder(id) {
       const orderId = {
         tracking_id: id,
@@ -51,7 +56,12 @@ export default {
         await OrderRepository.searchOrderDetail(orderId);
         this.goTracking(id);
       } catch {
-        this.alertNoOrder = true;
+        try {
+          await CommercialAllyRepository.searchPickupDetail(orderId);
+          this.goPickup(id);
+        } catch {
+          this.alertNoOrder = true;
+        }
       }
     },
   },

@@ -16,6 +16,8 @@
     "dotenv": "^8.2.0",
     "firebase": "^7.15.1",
     "fs": "0.0.1-security",
+    "mapbox-gl": "^1.11.0",
+    "moment": "^2.27.0",
     "vue": "^2.6.11",
     "vue-easy-jwt": "^2.0.1",
     "vue-form-wizard": "^0.8.4",

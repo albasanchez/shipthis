@@ -7,7 +7,7 @@
 <script>
 import ShippingHistory from "../components/user/ShippingHistory.vue";
 export default {
-  name: "HomeUser",
+  name: "History",
   components: {
     ShippingHistory,
   },
