@@ -54,7 +54,7 @@ export default {
   created() {
     EventBus.$on("emit-route", data => {
       this.route = data;
-    });
+    }); 
   },
   mounted() {
     this.route = window.location.pathname;;

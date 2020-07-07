@@ -1,7 +1,7 @@
 <template>
   <v-row
     id="RegistryForm"
-    class="pt-2"
+    class="pt-0"
     justify="center"
     align="center"
     align-self="center"

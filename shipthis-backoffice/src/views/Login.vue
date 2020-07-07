@@ -6,7 +6,7 @@
 // @ is an alias to /src
 import LoginForm from "../components/login/LoginForm.vue";
 export default {
-  name: "Home",
+  name: "Login",
   components: {
     LoginForm
   }

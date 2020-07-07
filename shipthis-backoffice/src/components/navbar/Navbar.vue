@@ -8,7 +8,7 @@
     <!-- Componente con links de navegación -->
     <SectionsList class="d-none d-md-flex" :loggedIn="loggedIn"></SectionsList>
 
-    <div class="hidden-sm-and-up">
+    <div class="hidden-md-and-up">
       <v-menu bottom>
         <template v-slot:activator="{ on, attrs }">
           <v-btn color="primary" dark v-bind="attrs" v-on="on">

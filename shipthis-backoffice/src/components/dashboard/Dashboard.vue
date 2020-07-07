@@ -5,7 +5,7 @@
         <div
           v-for="dashboard in dashItems"
           :key="dashboard.id"
-          class="dashboard-item ma-0"
+          class="dashboard-item ma-4"
         >
           <!-- Componente de tarjeta de dashboard -->
           <Card
@@ -13,6 +13,7 @@
             :route="dashboard.route"
             :description="dashboard.desc"
             :icon="dashboard.icon"
+            :section="dashboard.section"
             class="text-center py-4"
           ></Card>
         </div>
@@ -31,21 +32,31 @@ export default {
         name: "Users", 
         desc: "", 
         icon: "mdi-account-group", 
-        route: "Users" },
+        route: "Users",
+        section: "Users",
+        },
       {
         id: 2,
         name: "Shipments",
         desc: "",
         icon: "mdi-truck",
         route: "Shipments",
+        section: "Shipments"
       },
-      { id: 3, name: "Emails", desc: "", icon: "mdi-email", route: "Emails" },
+      { id: 3, 
+        name: "Emails", 
+        desc: "", 
+        icon: "mdi-email", 
+        route: "Emails",
+        section: "Emails",
+      },
       {
         id: 4,
         name: "Configuration",
         desc: "",
         icon: "mdi-cog",
         route: "Configuration",
+        section: "Configuration"
       },
     ],
   }),

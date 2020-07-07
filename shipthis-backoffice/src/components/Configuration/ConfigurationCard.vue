@@ -36,7 +36,7 @@
                     :prefix="item.prefix"
                   ></v-text-field>
                 </div>
-                <v-btn class="success mb-2 mt-2" @click="Update(item)">Update</v-btn>
+                <v-btn class="success primary--text mb-2 mt-2" @click="Update(item)">Update</v-btn>
               </v-expansion-panel-content>
               <v-expansion-panel-content align="center" v-if="item.form === 0">
                 <div v-for="(item, key) in item.items" :key="key">
@@ -51,7 +51,7 @@
                     :prefix="item.prefix"
                   ></v-text-field>
                 </div>
-                <v-btn class="success mb-2 mt-2" @click="Update(item)">Update</v-btn>
+                <v-btn class="success primary--text mb-2 mt-2" @click="Update(item)">Update</v-btn>
               </v-expansion-panel-content>
 
               <v-expansion-panel-content align="center" v-if="item.form === 2">
@@ -70,7 +70,7 @@
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" lg="3" xl="2">
-                      <v-btn class="success ma-0" @click="UpdateCharacteristic(char)">Update</v-btn>
+                      <v-btn class="success primary--text ma-0" @click="UpdateCharacteristic(char)">Update</v-btn>
                     </v-col>
                   </v-row>
                 </div>
@@ -122,7 +122,7 @@
                           </v-col>
                         </v-row>
                         <v-row justify="center">
-                          <v-btn class="success" @click="UpdateType(char)">Update</v-btn>
+                          <v-btn class="success primary--text" @click="UpdateType(char)">Update</v-btn>
                         </v-row>
                       </v-expansion-panel-content>
                     </v-expansion-panel>

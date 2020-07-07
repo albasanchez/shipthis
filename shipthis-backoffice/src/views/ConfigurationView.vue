@@ -5,6 +5,13 @@
         <ConfigurationCard v-for="(item, key) in ConfigurationItems" :key="key" :item="item"></ConfigurationCard>
       </v-col>
     </v-row>
+    <v-row class="text-center mt-0">
+          <v-col cols="12">
+              <v-btn class="primary white--text" @click="goRoute('Home')">
+                  Go Back
+              </v-btn>
+          </v-col>
+      </v-row>
     <v-snackbar v-model="snackbarerror" top color="red">
       {{ snackError }}
       <v-btn dark text @click="snackbarerror = false">
@@ -69,7 +76,10 @@ export default {
   },
   methods: {
     //Current-Prices
-
+    goRoute(route) {
+        this.$router.push("/" + route);
+        EventBus.$emit("emit-route", "/" + route);
+        },
     async loadCurrentPrices() {
       let response;
       response = await ConfigurationRepository.getPrices();
@@ -83,7 +93,7 @@ export default {
       let response;
       response = await ConfigurationRepository.getConfigTime();
       this.configTime = response;
-      this.fillItems("Algorithm's Time", this.configTime.config_time, "Seg");
+      this.fillItems("Algorithm's Time", this.configTime.config_time, "Min.");
       this.fillConfigurationItems("Simulation", "mdi-routes", this.items, 0);
     },
 

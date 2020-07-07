@@ -4,13 +4,20 @@
       <v-col cols="1"></v-col>
       <v-col>
       <v-row>
-          <ShipmentCard v-for="(status, key) in deliveryStatus" :key="key" :status="status"></ShipmentCard>
+          <ShipmentsCard v-for="(status, key) in deliveryStatus" :key="key" :status="status"></ShipmentsCard>
       </v-row>
         <ShipmentsTable></ShipmentsTable>
         
       </v-col>
       <v-col cols="1"></v-col>
     </v-row>
+    <v-row class="text-center mt-0">
+          <v-col cols="12">
+              <v-btn class="primary white--text" @click="goRoute('Home')">
+                  Go Back
+              </v-btn>
+          </v-col>
+      </v-row>
   </v-container>
 </template>
 
@@ -18,9 +25,9 @@
 // @ is an alias to /src
 import Repository from "../services/repositories/repositoryFactory";
 const ShipmentsRepository = Repository.get("shipments");
-import ShipmentCard from "../components/Shipments/ShipmentCard.vue";
+import ShipmentsCard from "../components/Shipments/ShipmentCard.vue";
 import ShipmentsTable from "../components/Shipments/ShipmentsTable.vue";
-
+import { EventBus } from "../main.js";
 export default {
   name: "ShipmentsView",
   data: () => ({
@@ -60,12 +67,17 @@ export default {
       this.deliveryStatus[1].value = this.Shipments.inTransit;
       this.deliveryStatus[2].value = this.Shipments.delivered;
       this.deliveryStatus[3].value = this.Shipments.total;
-    }
+    },
+    goRoute(route) {
+        this.$router.push("/" + route);
+        EventBus.$emit("emit-route", "/" + route);
+        }
   },
   components: {
-    ShipmentCard,
+    ShipmentsCard,
     ShipmentsTable
-  }
+  },
+
 };
 </script>
 

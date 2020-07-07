@@ -16,12 +16,13 @@ export default {
     name: String,
     description: String,
     icon: String,
-    route: String
+    route: String,
+    section: String
   },
   methods: {
     goRoute(route) {
       this.$router.push("/" + route);
-      EventBus.$emit("emit-route", "/" + route);
+      EventBus.$emit("emit-route", "/" + this.section);
     }
   },
   data: () => ({})

@@ -1,25 +1,23 @@
 <template>
-  <v-container fluid class="general-container">
-    <v-row>
-      <UserForm></UserForm>
-    </v-row>
+  <v-container fluid class="general-container" :class="$vuetify.breakpoint.smAndDown ? 'px-0' : ''">
+    <UserTable></UserTable>
     <v-row class="text-center mt-0 mb-3">
           <v-col cols="12">
               <v-btn class="primary white--text" @click="goRoute('Users')">
                   Go Back
               </v-btn>
           </v-col>
-    </v-row>
+      </v-row>
   </v-container>
 </template>
 
 <script>
-import UserForm from '../../components/users/UserForm';
+import UserTable from '../../components/users/UserTable';
 import { EventBus } from "../../main.js";
 export default {
-  name: "CreateUser",
+  name: "ConsultUser",
   components: {
-       UserForm
+       UserTable
   },
   methods: {
         goRoute(route) {
@@ -29,8 +27,3 @@ export default {
     },
 };
 </script>
-
-<style lang="scss">
-@import "../../styles/abstracts/variables.scss";
-@import "../../styles/main.scss";
-</style>

@@ -51,6 +51,24 @@ const routes = [
     },
   },
   {
+    path: "/Users/ConsultUser",
+    name: "ConsultUser",
+    component: () => import ('../views/Users/ConsultUser.vue'),
+    meta: {
+      requiresAuth: true,
+      hideBasicComponents: false,
+    },
+  },
+  {
+    path: "/Users/ConsultUser/Orders/:user",
+    name: "ConsultOrder",
+    component: () => import ('../views/Users/ConsultOrder.vue'),
+    meta: {
+      requiresAuth: true,
+      hideBasicComponents: false,
+    },
+  },
+  {
     path: "/Configuration",
     name: "ConfigurationView",
     component: () => import("../views/ConfigurationView.vue"),
@@ -68,6 +86,10 @@ const routes = [
       hideBasicComponents: false,
     },
   },
+  {
+    path: "*",
+    redirect: "/",
+  }
 ];
 
 const router = new VueRouter({
