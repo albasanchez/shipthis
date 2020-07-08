@@ -19,7 +19,7 @@ import { Ordersheet } from './../../ordersheet/entities/ordersheet.entity';
 
 @Entity('userdata')
 @Check(`registration_type IN ('REGULAR','FACEBOOK','GOOGLE')`)
-@Check(`user_status IN ('ACTIVE','BLOCKED','RESETED')`)
+@Check(`user_status IN ('ACTIVE','BLOCKED','RESETED','DELETED')`)
 export class Userdata extends BaseEntity {
   @PrimaryGeneratedColumn()
   user_id: number;

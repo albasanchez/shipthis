@@ -1,16 +1,43 @@
-import { IsNotEmpty, IsString, IsEmail } from 'class-validator';
+import { IsNotEmpty, IsString, IsEmail, IsInt, IsOptional, IsBoolean, IsEnum, NotEquals, isValidationOptions, IsPositive, IsUrl, IsIn } from 'class-validator';
+import { LanguageType } from "../constants/language.enum";
 
-export class UpdateUserDataDto {
+export class UpdateUserDataDTO {
   @IsNotEmpty()
+  @IsInt()
+  @IsPositive()
   user_id: number;
 
   @IsString()
-  @IsEmail()
-  email: String;
+  @IsNotEmpty()
+  first_name: string;
 
   @IsString()
-  userName: String;
+  @IsOptional()
+  middle_name: string;
 
   @IsString()
-  userPassword: String;
+  @IsNotEmpty()
+  last_name: string;
+
+  @IsString()
+  @IsOptional()
+  second_last_name: string;
+
+  @IsString()
+  @IsNotEmpty()
+  phone_number: string;
+
+  @IsNotEmpty()
+  @IsIn([LanguageType.ENGLISH, LanguageType.SPANISH])
+  def_language: LanguageType;
+
+  @IsString()
+  @IsOptional()
+  @IsUrl()
+  picture_url: string;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  receive_notifications: boolean;
+
 }

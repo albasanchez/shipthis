@@ -1,8 +1,10 @@
 import { Controller, Get, Param, ParseIntPipe, Post, UsePipes, ValidationPipe, Body, Delete, Patch} from '@nestjs/common';
-import { UserdataService } from './userdata.service';
-import { ReceiverInfoDto} from './dto/receiverInfo.dto';
+import { UserdataService } from './userdata.service'
 import { CreateReceiverDto} from './dto/create-receiver.dto';
 import { UpdateReceiverDto} from './dto/update-receiver.dto';
+import { ModifyPasswordDTO } from "./dto/modify-password.dto";
+import { UpdateUserDataDTO } from './dto/update-userdata.dto';
+import { UpdateUserStatusDTO } from "./dto/update-user-status.dto";
 
 @Controller('userdata')
 export class UserdataController {
@@ -35,4 +37,23 @@ export class UserdataController {
       return await this._userdataService.getAllUsersInfo();
     }
 
+    @Delete ('users/:id')
+    async deleteUser(@Param('id', ParseIntPipe) id: number) {
+      return await this._userdataService.deleteUser(id);
+    }
+
+    @Patch('users/password')
+    async modifyPassword(@Body() info: ModifyPasswordDTO) {
+      return await this._userdataService.modifyPassword(info);
+    }
+
+    @Patch('users/data')
+    async modifyInfo(@Body() info: UpdateUserDataDTO) {
+      return await this._userdataService.modifyUserdata(info)
+    }
+
+    @Patch('users/status')
+    async updateStatus(@Body() info: UpdateUserStatusDTO){
+      return await this._userdataService.changeUserStatus(info.user_id,info.status)
+    }
 }
