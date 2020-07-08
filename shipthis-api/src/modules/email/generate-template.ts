@@ -6,6 +6,44 @@ import { ConfigService } from '../../config/config.service';
 export class GenerateTemplate {
   constructor(private readonly configService: ConfigService) {}
 
+  recovery(passwordUrl: string, email: string) {
+    return {
+      to: email,
+      from: this.configService.get(Configuration.SEND_GRID_EMAIL),
+      templateId: this.configService.get(
+        Configuration.SEND_GRID_RECOVERY_TEMPLATE,
+      ),
+      dynamicTemplateData: {
+        sender_name: 'Ship This',
+        title: 'Change your Ship This password!',
+        subject: 'Change your Ship This password!',
+        email_body: `Change your <strong>Ship This</strong> clicking the button. <br> If you didn't expect this email, you can ignore it`,
+        thanks: 'Thank you for choosing us!',
+        password: {
+          button: 'Change your password',
+          url: passwordUrl,
+        },
+        column1: {
+          keyword: 'Ship',
+          description: "Anywhere in the US! It's quick and simple",
+        },
+        column2: {
+          keyword: 'Track',
+          description:
+            "Your shipment's delivery process using our Telegram bot",
+        },
+        column3: {
+          keyword: 'Take care',
+          description: 'Stay safe. Leave the rest to us!',
+        },
+        network_name: 'Ship This',
+        network_url: this.configService.get(Configuration.FRONTEND_URL),
+        bot_name: 'Ship This Bot',
+        bot_url: this.configService.get(Configuration.BOT_URL),
+      },
+    };
+  }
+
   welcome(email: string, name: string, lastname: string) {
     return {
       to: email,

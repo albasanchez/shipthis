@@ -5,9 +5,17 @@ import {
   Post,
   UsePipes,
   ValidationPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { SignupDto, LoginDto, RecoverUserDto, SocialNetDto } from './dto';
+import {
+  SignupDto,
+  LoginDto,
+  RecoverRequestDto,
+  SocialNetDto,
+  RecoverUserDto,
+} from './dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -55,9 +63,16 @@ export class AuthController {
     return this._authService.adminLogin(credentials);
   }
 
+  @Post('recovery-request')
+  @UsePipes(ValidationPipe)
+  recoverUserRequest(@Body() recoverData: RecoverRequestDto) {
+    return this._authService.attendRecoveryRequest(recoverData);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
   @Post('user-recovery')
   @UsePipes(ValidationPipe)
-  recoverUser(@Body() recoverData: RecoverUserDto) {
+  recoverUserChange(@Body() recoverData: RecoverUserDto) {
     return this._authService.recoverUser(recoverData);
   }
 }

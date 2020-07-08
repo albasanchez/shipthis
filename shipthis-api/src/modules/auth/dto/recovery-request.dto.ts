@@ -1,5 +1,5 @@
-import { IsNotEmpty, IsString, IsEmail, IsOptional } from 'class-validator';
-export class RecoverUserDto {
+import { IsNotEmpty, IsString, IsEmail } from 'class-validator';
+export class RecoverRequestDto {
   @IsNotEmpty()
   @IsString()
   @IsEmail()

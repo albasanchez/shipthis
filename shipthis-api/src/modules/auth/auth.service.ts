@@ -4,7 +4,7 @@ import { AuthRepository } from './repositories/auth.repository';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { SignupDto, LoginDto, RecoverUserDto } from './dto';
+import { SignupDto, LoginDto, RecoverRequestDto, RecoverUserDto } from './dto';
 import { UserdataRegistrationType } from '../userdata/constants/user-registration.enum';
 import { RolName } from '../rol/constants/rol-name.enum';
 import { IJwtPayload } from './payloads/jwt-payload.interace';
@@ -149,9 +149,22 @@ export class AuthService {
 
     return this.returnUser(user);
   }
-
   async recoverUser(recoverData: RecoverUserDto): Promise<any> {
-    this._appLogger.log('Handling New Request: User Recovery Service');
+    this._appLogger.log('Handling New Request: User Recovery Request Service');
+    const { useremail, password } = recoverData;
+    const user: Userdata = await this._authRepository.fetchUser(useremail);
+
+    if (this.userIsNotRegistered(user)) {
+      throw new UserNotFoundException();
+    }
+
+    await this._authRepository.recoverUSer(useremail, password);
+
+    return { response: 'New password set on user successfully' };
+  }
+
+  async attendRecoveryRequest(recoverData: RecoverRequestDto): Promise<any> {
+    this._appLogger.log('Handling New Request: User Recovery Request Service');
     const { useremail, document } = recoverData;
 
     const user: Userdata = await this._authRepository.fetchUser(useremail);
@@ -172,13 +185,17 @@ export class AuthService {
       throw new WrongRecoveryCredentialsException();
     }
 
-    const { newPassword, saltedPassword } = await this.generatePassword();
-
-    await this._authRepository.resetUser(useremail, saltedPassword);
-
     /* SEND EMAIL HERE */
+    const payload: IJwtPayload = {
+      id: user.user_id,
+      email: user.email,
+      rol: user.rol.name as RolName,
+    };
+    const token: string = await this._jwtService.sign(payload);
 
-    return { response: 'New password set on user successfully' };
+    await this._emailService.sendRecoveryEmail(token, user.email);
+
+    return { response: 'Recovery email sent successfully' };
   }
 
   private async returnUser(

@@ -43,6 +43,14 @@ export class EmailService {
     );
   }
 
+  async sendRecoveryEmail(token: string, email: string) {
+    this._appLoggerService.log('Sending Recovery email');
+    const recovery_url = `${this._config.get(
+      Configuration.FRONTEND_URL,
+    )}RecoverPassword/${token}`;
+    await this.sendEmail(this._generateTemplate.recovery(recovery_url, email));
+  }
+
   async generateInvoice(
     bill: BillDto,
     res: Response,

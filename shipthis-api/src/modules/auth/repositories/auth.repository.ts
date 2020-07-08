@@ -75,10 +75,12 @@ export class AuthRepository extends Repository<Userdata> {
     });
   }
 
-  async resetUser(useremail: string, newPassword: string) {
+  async recoverUSer(useremail: string, password: string) {
+    const salt = await genSalt(10);
+    const salted_password = await hash(password, salt);
     this.createQueryBuilder()
       .update()
-      .set({ password: newPassword, status: UserdataStatus.RESETED })
+      .set({ password: salted_password })
       .where('email = :email', { email: useremail })
       .execute();
   }
