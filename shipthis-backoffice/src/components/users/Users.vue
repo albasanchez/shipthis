@@ -41,6 +41,11 @@ export default {
                 },
         ]
     }),
+    methods: {
+        goRoute(route) {
+        this.$router.push("/" + route);
+        }
+    },
     components: {
         Card,
     }

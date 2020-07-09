@@ -10,4 +10,12 @@ export default {
     );
     return response;
   },
+  async updateStatus(userData) {
+    let response = await conn.patch(
+      `${resource}/users/status`, 
+      userData,
+      jwt.getAuthHeaderToken()
+    );
+    return response;
+  },
 };

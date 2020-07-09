@@ -89,12 +89,24 @@
                             <p class="ma-0"><span class="font-weight-bold">Role/Status: <br></span>{{ item.role }}/{{ item.status }}</p>
                           </v-col>
                         </v-row>
-                        <v-row v-if="item.role!=='ADMIN'">
-                          <v-col cols="12" class="table-field pa-0 ma-0 text-center">
-                          <v-btn class="primary--text orders-btn mb-3" 
-                          outlined @click="showOrders(item.useremail)">
-                            View Orders
-                          </v-btn>
+                        <v-row>
+                          <v-col 
+                            cols="12" 
+                            class="table-field pa-0 ma-0 text-center"       
+                          >
+                            <v-btn class="primary--text orders-btn mb-3 mx-2" v-if="item.role!=='ADMIN'"
+                            outlined @click="showOrders(item.useremail)">
+                              View Orders
+                            </v-btn>
+                            <v-btn color="error" class="white--text block-btn mb-3 mx-2" 
+                            v-if="item.status=='ACTIVE'"
+                            @click="showBlockConfirmation(item.full_name); setUser(item.id)">
+                              Block User
+                            </v-btn>
+                            <v-btn class="primary white--text unlock-btn mb-3 mx-2" v-if="item.status=='BLOCKED'"
+                             @click="showUnlockConfirmation(item.full_name); setUser(item.id)">
+                              Activate User
+                            </v-btn>
                           </v-col>
                         </v-row>
                       </template>                          
@@ -103,7 +115,21 @@
               </v-data-table>
             </v-card>
           </v-col>
-          </v-row>
+        </v-row>
+          <v-dialog v-model="blockConfirmation" max-width="550">
+            <v-card class="pa-4 ma-0">
+              <v-card-text class="text-center">
+                Are you sure you want to<strong> BLOCK </strong>  user {{ this.userToChangeName }}?
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-row class="text-center ma-0">
+                  <v-btn class="primary white--text mr-3" @click="blockUser()">Confirm</v-btn>
+                  <v-btn class="primary--text ml-3" outlined @click="blockConfirmation = false">Cancel</v-btn>
+                </v-row>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
           <v-dialog v-model="noOrdersAlert" max-width="550">
             <v-card class="pa-4 ma-0">
               <v-card-text class="text-center">
@@ -117,8 +143,70 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          </v-col>
-        </v-row>
+          <v-dialog v-model="unlockConfirmation" max-width="550">
+            <v-card class="pa-4 ma-0">
+              <v-card-text class="text-center">
+                Are you sure you want to<strong> UNLOCK </strong>  user {{ this.userToChangeName }}?
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-row class="text-center ma-0">
+                  <v-btn class="primary white--text mr-3" @click="unlockUser()">Confirm</v-btn>
+                  <v-btn class="primary--text ml-3" outlined @click="unlockConfirmation = false">Cancel</v-btn>
+                </v-row>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-snackbar
+            v-model="userBlockedAlert"
+            top
+            :timeout="timeout"
+            color="success"
+            class="primary--text"
+          >
+            <strong class="body-1 registry-snackbar font-weight-bold">
+              Status of user {{ this.userToChangeName }} has been changed to BLOCKED
+            </strong>
+            <v-btn dark text @click="userBlockedAlert = false" class="primary--text"> X </v-btn>
+          </v-snackbar>
+          <v-snackbar
+            v-model="userUnlockedAlert"
+            top
+            :timeout="timeout"
+            color="success"
+            class="primary--text"
+          >
+            <strong class="body-1 registry-snackbar font-weight-bold">
+              Status of user {{ this.userToChangeName }} has been changed to UNLOCKED
+            </strong>
+            <v-btn dark text @click="userUnlockedAlert = false" class="primary--text"> X </v-btn>
+          </v-snackbar>
+          <v-snackbar
+            v-model="errorAlert"
+            top
+            :timeout="timeout"
+            color="error"
+            class="white--text"
+          >
+            <strong class="body-1 registry-snackbar font-weight-bold">
+              Error on changing the status of user {{ this.userToChangeName }}
+            </strong>
+            <v-btn dark text @click="errorAlert = false" class="white--text"> X </v-btn>
+          </v-snackbar>
+          <v-snackbar
+            v-model="actualUserAlert"
+            top
+            :timeout="timeout"
+            color="error"
+            class="white--text"
+          >
+            <strong class="body-1 registry-snackbar font-weight-bold">
+              You are the current user, you can't block yourself.
+            </strong>
+            <v-btn dark text @click="actualUserAlert = false" class="white--text"> X </v-btn>
+          </v-snackbar>
+      </v-col>
+    </v-row>
 </template>
 
 <script lang="ts">
@@ -135,6 +223,16 @@ export default {
     singleExpand: true,
     search: "",
     loading: true,
+    blockConfirmation: false,
+    unlockConfirmation: false,
+    userToChangeName: "",
+    userToChangeID: "",
+    statusToChange: "",
+    userBlockedAlert: false,
+    userUnlockedAlert: false,
+    actualUserAlert: false,
+    errorAlert: false,
+    timeout: 7000,
     noOrdersAlert: false,
     headers: [
       {
@@ -215,9 +313,55 @@ export default {
       } catch {
         this.noOrdersAlert = true;
       }
+    },
+    showBlockConfirmation(user){
+      this.userToChangeName = user;
+      this.blockConfirmation = true;    
+    },
+    showUnlockConfirmation(user){
+      this.userToChangeName = user;
+      this.unlockConfirmation = true;    
+    },
+    setUser(id){
+      this.userToChangeID = id;
+    },
+    async blockUser(){
+      this.blockConfirmation = false;
+      // Verifica que el usuario no sea el actual conectado
+      if (this.userToChangeID !== this.$store.getters["users/getUser"].user_id){
+        const userData = {
+          user_id: this.userToChangeID,
+          status: "BLOCKED"
+        };
+        try{
+          await usersRepository.updateStatus(userData);
+          this.userBlockedAlert = true;
+        } catch {
+          this.errorAlert = true;
+        }
+      } else {
+        this.actualUserAlert = true;
+      }
+      this.loadUsers();
+    },
+    async unlockUser(){
+      this.unlockConfirmation = false;
+      const userData = {
+        user_id: this.userToChangeID,
+        status: "ACTIVE"
+      };
+      try{
+        await usersRepository.updateStatus(userData);
+        this.userUnlockedAlert = true;
+      } catch {
+        this.errorAlert = true;
+      }
+      this.loadUsers();
+    },
+    goRoute(route) {
+      this.$router.push("/" + route);
     }
   },
-  
 };
 </script>
 
@@ -231,7 +375,7 @@ export default {
   background-color: $primary-color;
   font-size: 20px;
 }
-.orders-btn{
+.orders-btn, .block-btn, .unlock-btn{
   transition: 0.5s;
 }
 .orders-btn:hover{

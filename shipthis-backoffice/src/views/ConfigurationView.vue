@@ -24,6 +24,13 @@
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </v-snackbar>
+    <v-row class="text-center mt-0">
+          <v-col cols="12">
+              <v-btn class="primary white--text" @click="goRoute('Home')">
+                  Go Back
+              </v-btn>
+          </v-col>
+      </v-row>
   </div>
 </template>
 
@@ -215,7 +222,7 @@ export default {
       });
       this.id++;
       this.items = [];
-    }
+    },
   }
 };
 </script>
