@@ -23,14 +23,14 @@
               </ul>
             </div>
             <v-text-field
-              label="Email" class="mb-4"
+              label="Email" class="mb-7"
               prepend-inner-icon="email"
               solo style="max-height: 50px;"
               v-model="user_email"
               :rules="[rules.required]"
             ></v-text-field>
             <v-text-field
-              label="Password"
+              label="Password" class="mb-7"
               :type="showPassword ? 'text' : 'password'"
               prepend-inner-icon="mdi-lock-open"
               :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -51,14 +51,14 @@
                 <v-form>
                     <p class="my-3">{{$t("login.insertData")}}</p>
                     <v-text-field
-                    label="Email" class="my-4"
+                    label="Email" class="mb-7 mt-4"
                     prepend-inner-icon="email"
                     solo style="max-height: 50px;"
                     v-model="user_email"
                     :rules="[rules.required]"
                     ></v-text-field>
                     <v-text-field
-                    label="ID Document " class="mb-4"
+                    label="ID Document " class="mb-7"
                     prepend-inner-icon="person"
                     v-mask="'###########'"
                     solo style="max-height: 50px;"
