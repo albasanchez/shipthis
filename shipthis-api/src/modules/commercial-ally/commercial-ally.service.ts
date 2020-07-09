@@ -438,9 +438,9 @@ export class CommercialAllyService {
       throw new CommercialAllyDeletedException();
     }
 
-    this._warehouseRepo.deleteWarehouses(commercial_ally_key);
+    await this._warehouseRepo.deleteWarehouses(commercial_ally_key);
 
-    const response = this._commercialAllyRepo.deleteCommercialAlly(
+    const response = await this._commercialAllyRepo.deleteCommercialAlly(
       commercial_ally_key,
     );
 
@@ -547,7 +547,7 @@ export class CommercialAllyService {
       newWarehouse.place = place;
     }
 
-    const response = this._warehouseRepo.updateWarehouse(id, newWarehouse);
+    const response = await this._warehouseRepo.updateWarehouse(id, newWarehouse);
 
     this._appLogger.log('Warehouse has been updated sucessfully');
 
@@ -559,7 +559,7 @@ export class CommercialAllyService {
 
     await this.validateWarehouse(id);
 
-    const response = this._warehouseRepo.deleteWarehouse(id);
+    const response = await this._warehouseRepo.deleteWarehouse(id);
 
     this._appLogger.log('Warehouse has been deleted sucessfully');
 

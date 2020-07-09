@@ -21,7 +21,8 @@ export class MapperWarehouse {
         const warehouseInfo: WarehousesInfoDto = {
               id: warehouse.warehouse_id,
               name : warehouse.name,
-              place: warehouse.place
+              place: warehouse.place,
+              status: warehouse.status
         };
 
         return warehouseInfo;

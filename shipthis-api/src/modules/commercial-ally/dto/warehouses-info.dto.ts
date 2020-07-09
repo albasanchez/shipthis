@@ -13,5 +13,9 @@ export class WarehousesInfoDto {
 
   @IsNotEmpty()
   place: Place;
+
+  @IsNotEmpty()
+  @IsString()
+  status: string;
   
 }
