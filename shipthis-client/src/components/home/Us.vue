@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import LoginForm from "../Login.vue";
+import LoginForm from "../auth/Login.vue";
 export default {
   name: "Us",
   data: () => ({

@@ -1,5 +1,6 @@
 import conn from "../api-connector";
 import firebase from "firebase";
+import jwt from "../../common/jwt.service";
 const resource = "/auth";
 
 export default {
@@ -22,7 +23,24 @@ export default {
     return conn.post(`${resource}/facebook-login`, payload);
   },
   async recoverUser(userRecoveryData) {
-    let response = await conn.post(`${resource}/user-recovery`, userRecoveryData);
+    let response = await conn.post(
+      `${resource}/recovery-request`,
+      userRecoveryData
+    );
+    return response;
+  },
+  async setPassword(payload) {
+    let token = payload.token;
+    let passwordData = {
+      useremail: jwt.decodeToken(payload.token).email,
+      password: payload.password,
+    };
+
+    let response = await conn.post(
+      `${resource}/user-recovery`,
+      passwordData,
+      jwt.setAuthHeaderToken(token)
+    );
     return response;
   },
   async registration(userData) {

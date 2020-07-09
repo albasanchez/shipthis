@@ -23,6 +23,19 @@ const routes = [
     component: () => import("../views/Registry.vue"),
   },
   {
+    path: "/RecoverPassword/:token",
+    name: "RecoverPassword",
+    beforeEnter(to, from, next) {
+      const token = to.params.token;
+      if (jwt.isValid(token) && !jwt.isTokenValid()) {
+        next();
+      } else {
+        next({ name: "Home" });
+      }
+    },
+    component: () => import("../views/RecoverPassword.vue"),
+  },
+  {
     path: "/UserProfile",
     name: "UserProfile",
     meta: { requiresAuth: true },

@@ -64,7 +64,6 @@ const actions = {
       jwt.saveToken(response.token);
       commit("set_user", response.userdata);
     } catch (e) {
-      console.log('ERROR CON EL BACKEND: ',e.response.data.shipthisMesagge)
       commit("set_error_message", e.response.data.shipthisMesagge);
     }
   },
@@ -122,7 +121,6 @@ const actions = {
       commit('set_new_user', response.newUser);
       jwt.saveToken(response.token);
     } catch (e) {
-      console.log('ERROR CON EL BACKEND: ',e.response.data.shipthisMesagge)
       commit("set_error_message", e.response.data.shipthisMesagge);
     }
   },
@@ -165,12 +163,10 @@ const actions = {
         def_language: 'EN',
         picture_url: response.additionalUserInfo.profile.picture.data.url,
       });
-      console.log('SETEANDO ESTE USUAARIO: ',response.userdata)
       commit('set_user', response.userdata);
       commit('set_new_user', response.newUser);
       jwt.saveToken(response.token);
     } catch (e) {
-      console.log('ERROR CON EL BACKEND: ',e.response.data.shipthisMesagge)
       commit("set_error_message", e.response.data.shipthisMesagge);
     }
   },

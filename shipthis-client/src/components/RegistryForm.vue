@@ -289,7 +289,6 @@ export default {
     payload: {
       useremail: null,
       password: "",
-      timeout:4000,
       document: null,
       first_name: null,
       middle_name: null,
@@ -301,6 +300,7 @@ export default {
       def_language: null,
       receive_notifications: false,
     },
+    timeout:4000,
     loading: false,
     alertError: false,
     valid: true,

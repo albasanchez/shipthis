@@ -7,7 +7,7 @@ export const getToken = () => {
   return localStorage.getItem(ID_TOKEN_KEY);
 };
 
-export const saveToken = token => {
+export const saveToken = (token) => {
   localStorage.setItem(ID_TOKEN_KEY, token);
 };
 
@@ -20,13 +20,31 @@ export const isTokenValid = () => {
   return !!(token && !vueEasyJwt.isExpired(token));
 };
 
+export const isValid = (token) => {
+  return !!(token && !vueEasyJwt.isExpired(token));
+};
+
+export const decodeToken = (token) => {
+  return vueEasyJwt.decodeToken(token);
+};
+
+export const setAuthHeaderToken = (token) => {
+  return {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+};
+
 export const getAuthHeaderToken = () => {
   return {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: `Bearer ${getToken()}`
-    }
+      Authorization: `Bearer ${getToken()}`,
+    },
   };
 };
 
@@ -35,5 +53,8 @@ export default {
   saveToken,
   destroyToken,
   isTokenValid,
-  getAuthHeaderToken
+  isValid,
+  decodeToken,
+  getAuthHeaderToken,
+  setAuthHeaderToken,
 };

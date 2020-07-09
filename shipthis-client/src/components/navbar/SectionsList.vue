@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import LoginForm from "../Login.vue";
+import LoginForm from "../auth/Login.vue";
 export default {
   name: "SectionsList",
   data: () => ({
@@ -111,6 +111,7 @@ export default {
   },
 };
 </script>
+
 <style lang="scss">
 @import "../../styles/main.scss";
 </style>
