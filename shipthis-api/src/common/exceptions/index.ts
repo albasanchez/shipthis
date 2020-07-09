@@ -24,3 +24,4 @@ export { LocatorConectionException } from './locator-conection.exception';
 export { WarehouseNotFoundException } from './warehouse-not-found.exception';
 export { WarehouseDeletedException } from './warehouse-deleted.exception';
 export { CommercialAllyDeletedException } from './commercial-ally-deleted.exception';
+export { CommentNotFoundException } from './comment-not-found.exception'

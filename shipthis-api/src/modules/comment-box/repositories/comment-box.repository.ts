@@ -15,4 +15,11 @@ export class CommentBoxRepository extends Repository<CommentBox> {
     cm.time_mark = new Date();
     return cm;
   }
+
+  async updateReviewed(comment: CommentBox, rewiew: boolean): Promise<any> {
+    comment.reviewed = rewiew;
+    this.save(comment);
+
+    return { response: 'Reviewed changed successfully' }
+  }
 }
