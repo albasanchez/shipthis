@@ -11,7 +11,7 @@ export class OrderTypeRepository extends Repository<OrderType> {
       .getMany();
   }
 
-  async getOrderTypeById(id: number): Promise<OrderType>{
-    return this.findOne({ where: {order_type_id: id}});
- }
+  async getOrderTypeById(id: number): Promise<OrderType> {
+    return this.findOne({ where: { order_type_id: id } });
+  }
 }

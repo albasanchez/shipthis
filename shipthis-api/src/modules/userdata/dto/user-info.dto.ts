@@ -1,5 +1,4 @@
-import { LanguageType } from './../../userdata/constants/language.enum';
-import { UserdataStatus} from './../../userdata/constants/user-status.enum';
+import { UserdataStatus } from './../../userdata/constants/user-status.enum';
 import {
   IsNotEmpty,
   IsString,
@@ -7,11 +6,10 @@ import {
   IsIn,
   IsEmail,
   IsNumber,
-  IsDate
+  IsDate,
 } from 'class-validator';
 
 export class UserInfoDto {
-
   @IsNotEmpty()
   @IsNumber()
   id: number;
@@ -55,14 +53,14 @@ export class UserInfoDto {
 
   @IsNotEmpty()
   @IsString()
-  registration_type: string
+  registration_type: string;
 
   @IsNotEmpty()
   @IsString()
-  role: string
+  role: string;
 
   @IsNotEmpty()
   @IsString()
   @IsIn([UserdataStatus.ACTIVE, UserdataStatus.BLOCKED, UserdataStatus.RESETED])
-  status: string
+  status: string;
 }

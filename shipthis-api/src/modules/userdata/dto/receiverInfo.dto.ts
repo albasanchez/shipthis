@@ -1,7 +1,6 @@
 import { IsNotEmpty, IsString, IsEmail, IsNumber } from 'class-validator';
 
 export class ReceiverInfoDto {
-
   @IsNotEmpty()
   @IsNumber()
   id: Number;

@@ -1,4 +1,4 @@
 export enum ReceiverStatus {
-    ACTIVE = 'ACTIVE',
-    DELETED = 'DELETED',
-  }
+  ACTIVE = 'ACTIVE',
+  DELETED = 'DELETED',
+}

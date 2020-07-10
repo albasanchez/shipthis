@@ -1,5 +1,5 @@
 import { Warehouse } from '../entities/warehouse.entity';
-import { IsNotEmpty, IsString, IsEmail} from 'class-validator';
+import { IsNotEmpty, IsString, IsEmail } from 'class-validator';
 export class NewCommercialAllyDto {
   @IsNotEmpty()
   @IsString()
@@ -28,5 +28,4 @@ export class NewCommercialAllyDto {
 
   @IsNotEmpty()
   warehouses: Warehouse[];
-
 }

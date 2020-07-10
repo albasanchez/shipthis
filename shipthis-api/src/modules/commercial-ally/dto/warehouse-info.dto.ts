@@ -1,8 +1,5 @@
-import { Place } from './../../ordersheet/entities/place.entity';
-import { CommercialAlly } from '../entities/commercial-ally.entity';
-import { IsNotEmpty, IsString, IsEmail, IsOptional, IsNumber} from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 export class WarehouseInfoDto {
-  
   @IsNotEmpty()
   @IsString()
   name: string;
@@ -14,5 +11,4 @@ export class WarehouseInfoDto {
   @IsString()
   @IsNotEmpty()
   address: string;
-  
 }

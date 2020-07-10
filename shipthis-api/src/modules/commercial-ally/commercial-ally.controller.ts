@@ -1,3 +1,4 @@
+import { AuthGuard } from '@nestjs/passport';
 import { ConsultPickupDto } from './dto/consult-pickup.dto';
 import { CreatePickupDto } from './dto/create-pickup.dto';
 import {
@@ -12,6 +13,7 @@ import {
   ParseIntPipe,
   Delete,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { NewCommercialAllyDto } from './dto/new-commercial-ally.dto';
 import { CommercialAllyService } from './commercial-ally.service';
@@ -43,6 +45,7 @@ export class CommercialAllyController {
     return this._commercialAllyServ.searchPickupDetail(pickup.tracking_id);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('create-commercial-ally')
   @UsePipes(ValidationPipe)
   async createCommercialAlly(
@@ -51,11 +54,13 @@ export class CommercialAllyController {
     return this._commercialAllyServ.createCommercialAlly(newCommercialAlly);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get('commercial-allies')
   async getAllCommercialAllies() {
     return await this._commercialAllyServ.getAllCommercialAllies();
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('update-commercial-ally')
   @UsePipes(ValidationPipe)
   async updateCommercialAlly(
@@ -64,6 +69,7 @@ export class CommercialAllyController {
     return this._commercialAllyServ.updateCommercialAlly(newCommercialAlly);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('delete-commercial-ally')
   @UsePipes(ValidationPipe)
   async deleteCommercialAlly(@Body() commercialAllykey: CommercialAllyKeyDto) {
@@ -72,6 +78,7 @@ export class CommercialAllyController {
     );
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('commercial-ally-warehouses')
   @UsePipes(ValidationPipe)
   async getWarehouses(@Body() commercialAllykey: CommercialAllyKeyDto) {
@@ -80,12 +87,14 @@ export class CommercialAllyController {
     );
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('create-warehouse')
   @UsePipes(ValidationPipe)
   async createWarehouse(@Body() newWarehouse): Promise<WarehouseInfoDto> {
     return this._commercialAllyServ.createWarehouse(newWarehouse);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('commercial-ally-pickups')
   @UsePipes(ValidationPipe)
   async getPickups(@Body() commercialAllykey: CommercialAllyKeyDto) {
@@ -94,6 +103,7 @@ export class CommercialAllyController {
     );
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Patch('update-warehouse/:id')
   @UsePipes(ValidationPipe)
   async updateWarehouse(
@@ -103,6 +113,7 @@ export class CommercialAllyController {
     return this._commercialAllyServ.updateWarehouse(id, newWarehouse);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete('delete-warehouse/:id')
   async deleteWarehouse(@Param('id', ParseIntPipe) id: number) {
     return await this._commercialAllyServ.deleteWarehouse(id);

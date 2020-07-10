@@ -1,5 +1,4 @@
 import { DiscountService } from './../discount/discount.service';
-import { GenderType } from './../userdata/constants/gender.enum';
 import { AuthRepository } from './repositories/auth.repository';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -232,7 +231,9 @@ export class AuthService {
     );
 
     if (this.userIsClient(user)) {
-      const welcomeDiscount: Discount = await this._discountServ.assignWelcomeDiscount(user);
+      const welcomeDiscount: Discount = await this._discountServ.assignWelcomeDiscount(
+        user,
+      );
       await this.sendWelcomeEmail(signup, welcomeDiscount);
     }
 
@@ -290,7 +291,7 @@ export class AuthService {
       signup.first_name,
       signup.last_name,
       welcomeDiscount.name,
-      welcomeDiscount.percentage
+      welcomeDiscount.percentage,
     );
   }
 

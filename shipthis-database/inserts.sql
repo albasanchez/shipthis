@@ -101,3 +101,15 @@ INSERT INTO discount
     (dis_name, dis_percentage, status)
 VALUES
     ('WELCOME', 10, 'ACTIVE');
+
+/*Admin*/
+INSERT INTO PERSON
+    (
+    document, first_name, middle_name, last_name, second_last_name, gender, phone_number, date_of_birth, def_language, picture_url, receive_notifications)
+VALUES
+    ('111111111', 'John', null, 'Doe', null, 'M', '+1 (222) 222-2222', '1995-07-06', 'EN', null, false);
+
+INSERT INTO USERDATA
+    (user_email, user_password, registration_date, registration_type, user_status, person_fk, rol_fk)
+VALUES
+    ('admin@gmail.com', '$2a$10$pyqO/LPmeR98I8nUtKey/Oq2PeMmMnc.BlnbWA5sr8Fz18f/42NAu', '2020-07-06', 'REGULAR', 'ACTIVE', 1, 2);

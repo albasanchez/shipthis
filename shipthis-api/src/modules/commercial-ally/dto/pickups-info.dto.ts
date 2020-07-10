@@ -1,7 +1,13 @@
 import { Item } from './../../ordersheet/entities/item.entity';
-import { IsNotEmpty, IsString, IsEmail, IsDate, IsNumber, IsUUID} from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsEmail,
+  IsDate,
+  IsNumber,
+  IsUUID,
+} from 'class-validator';
 export class PickupsInfoDto {
-  
   @IsNotEmpty()
   @IsUUID()
   id: number;
@@ -38,7 +44,7 @@ export class PickupsInfoDto {
   @IsNotEmpty()
   @IsNumber()
   facturation_amount: number;
-  
+
   @IsNotEmpty()
   @IsString()
   origin_warehouse_name: string;

@@ -547,7 +547,10 @@ export class CommercialAllyService {
       newWarehouse.place = place;
     }
 
-    const response = await this._warehouseRepo.updateWarehouse(id, newWarehouse);
+    const response = await this._warehouseRepo.updateWarehouse(
+      id,
+      newWarehouse,
+    );
 
     this._appLogger.log('Warehouse has been updated sucessfully');
 

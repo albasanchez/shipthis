@@ -3,11 +3,8 @@ import {
   Entity,
   Check,
   PrimaryGeneratedColumn,
-  ManyToOne,
-  JoinColumn,
   Column,
   OneToMany,
-  OneToOne,
 } from 'typeorm';
 import { Warehouse } from './warehouse.entity';
 

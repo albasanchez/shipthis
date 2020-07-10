@@ -1,4 +1,3 @@
-import { join } from 'path';
 import { CheckPoint } from './../ordersheet/entities/check-point.entity';
 import { Trajectory } from 'src/modules/ordersheet/entities/trajectory.entity';
 import { Pickup } from './../commercial-ally/entities/pickup.entity';

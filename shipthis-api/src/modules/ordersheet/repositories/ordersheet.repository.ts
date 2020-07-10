@@ -23,14 +23,18 @@ export class OrdersheetRepository extends Repository<Ordersheet> {
     });
   }
 
-  async updateOrdersheetStatus(order_id: number, newStatus: string, date: Date): Promise<void> {
+  async updateOrdersheetStatus(
+    order_id: number,
+    newStatus: string,
+    date: Date,
+  ): Promise<void> {
     await this.createQueryBuilder()
       .update()
       .set({ status: newStatus, delivery_date: date })
       .where({ ordersheet_id: order_id })
       .execute();
   }
-  
+
   async getUserHistory(user: Userdata): Promise<Ordersheet[]> {
     return this.find({ where: { user: user } });
   }

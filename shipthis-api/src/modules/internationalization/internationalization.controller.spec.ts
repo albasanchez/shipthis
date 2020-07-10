@@ -9,7 +9,9 @@ describe('Internationalization Controller', () => {
       controllers: [InternationalizationController],
     }).compile();
 
-    controller = module.get<InternationalizationController>(InternationalizationController);
+    controller = module.get<InternationalizationController>(
+      InternationalizationController,
+    );
   });
 
   it('should be defined', () => {

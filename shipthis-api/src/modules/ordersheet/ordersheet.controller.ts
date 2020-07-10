@@ -1,3 +1,4 @@
+import { AuthGuard } from '@nestjs/passport';
 import { AddressValidationDto } from './dto/address-validation.dto';
 import { OrderHistoryDto } from './dto/order-history.dto';
 import { OrdersheetService } from './ordersheet.service';
@@ -10,6 +11,7 @@ import {
   Body,
   Get,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { OrderDetailDto } from './dto/order-detail.dto';
@@ -18,12 +20,14 @@ import { OrderDetailDto } from './dto/order-detail.dto';
 export class OrdersheetController {
   constructor(private readonly _orderSheetService: OrdersheetService) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('calculate-order')
   @UsePipes(ValidationPipe)
   async createOrdersheet(@Body() newOrder: CreateOrdersheetDto) {
     return this._orderSheetService.calculateOrder(newOrder);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('register-order')
   @UsePipes(ValidationPipe)
   async registerOrdersheet(
@@ -39,12 +43,14 @@ export class OrdersheetController {
     return this._orderSheetService.consultBill(orderDetail.tracking_id);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('history-order')
   @UsePipes(ValidationPipe)
   async searchHistoryOrder(@Body() historyRef: OrderHistoryDto) {
     return this._orderSheetService.searchHistoryOrder(historyRef);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('history-bill')
   @UsePipes(ValidationPipe)
   async searchHistoryBill(@Body() historyRef: OrderHistoryDto) {
@@ -57,16 +63,19 @@ export class OrdersheetController {
     return this._orderSheetService.searchOrdersheetDetail(orderDetail);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get('orders')
   async getAllOrders() {
     return await this._orderSheetService.gelAllOrders();
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get('orders-total')
   async getAllOrdersTotal() {
     return await this._orderSheetService.gelAllOrdersTotal();
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post('address-validation')
   @UsePipes(ValidationPipe)
   async validateAddress(@Body() addressReq: AddressValidationDto) {

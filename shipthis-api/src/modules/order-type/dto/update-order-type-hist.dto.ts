@@ -1,26 +1,19 @@
-import {
-    IsNotEmpty,
-    IsString,
-    IsOptional,
-    IsIn,
-    IsNumber,
-  } from 'class-validator';
-  
-  export class UpdateOrderTypeHistDto {
+import { IsNotEmpty, IsNumber } from 'class-validator';
 
-    @IsNotEmpty()
-    @IsNumber()
-    id: number;
-  
-    @IsNotEmpty()
-    @IsNumber()
-    time_tax: number;
+export class UpdateOrderTypeHistDto {
+  @IsNotEmpty()
+  @IsNumber()
+  id: number;
 
-    @IsNotEmpty()
-    @IsNumber()
-    holidays_tax: number;
-  
-    @IsNotEmpty()
-    @IsNumber()
-    specific_destination_tax: number;
-  }
+  @IsNotEmpty()
+  @IsNumber()
+  time_tax: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  holidays_tax: number;
+
+  @IsNotEmpty()
+  @IsNumber()
+  specific_destination_tax: number;
+}
