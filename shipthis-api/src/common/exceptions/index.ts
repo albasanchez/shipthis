@@ -1,5 +1,7 @@
 export { PickupNotFoundException } from './pickup-not-found.exception';
 export { DiscountNotFoundException } from './discount-not-found.exception';
+export { DiscountDeletedException } from './discount-deleted.exception';
+export { DiscountNotRegisteredException } from './discount-not-registered.exception';
 export { InvalidDiscountException } from './invalid-discount.exception';
 export { BlockedUserException } from './blocked-user.exception';
 export { RolNotFoundException } from './rol-not-found.exception';
@@ -24,4 +26,5 @@ export { LocatorConectionException } from './locator-conection.exception';
 export { WarehouseNotFoundException } from './warehouse-not-found.exception';
 export { WarehouseDeletedException } from './warehouse-deleted.exception';
 export { CommercialAllyDeletedException } from './commercial-ally-deleted.exception';
-export { CommentNotFoundException } from './comment-not-found.exception'
+export { CommentNotFoundException } from './comment-not-found.exception';
+export { NotValidOptionException } from './not-valid-option.exception';

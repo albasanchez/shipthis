@@ -22,4 +22,15 @@ export class MapperUser {
         }
         return userInfo;
     }
+
+    static userToUserInfo(user: any) {
+
+        const userInfo = {
+            user_id: user.user_id,
+            user_email: user.email,
+            first_name: user.person.first_name,
+            last_name: user.person.last_name
+        }
+        return userInfo;
+    }
 }

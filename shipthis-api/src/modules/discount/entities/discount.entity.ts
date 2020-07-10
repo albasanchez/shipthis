@@ -4,10 +4,12 @@ import {
   PrimaryGeneratedColumn,
   Column,
   OneToMany,
+  Check
 } from 'typeorm';
 import { DiscPer } from './disc-per.entity';
 
 @Entity('discount')
+@Check(`status IN ('ACTIVE','DELETED')`)
 export class Discount extends BaseEntity {
   @PrimaryGeneratedColumn()
   discount_id: number;
@@ -17,6 +19,9 @@ export class Discount extends BaseEntity {
 
   @Column({ name: 'dis_percentage', type: 'numeric', nullable: false })
   percentage: number;
+
+  @Column({ name: 'status', type: 'varchar', nullable: false })
+  status: string;
 
   @OneToMany(
     type => DiscPer,

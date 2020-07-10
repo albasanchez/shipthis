@@ -26,9 +26,11 @@ export class EmailService {
     email: string,
     name: string,
     lastname: string,
+    dis_name: string,
+    percentage: number
   ): Promise<void> {
     this._appLoggerService.log('Sending Welcome email');
-    await this.sendEmail(this._generateTemplate.welcome(email, name, lastname));
+    await this.sendEmail(this._generateTemplate.welcome(email, name, lastname, dis_name, percentage));
   }
 
   async sendInvoiceByEmail(
@@ -88,5 +90,14 @@ export class EmailService {
       });
       res.send({ tracking_URL: trackingUrl, ...bill });
     });
+  }
+
+  async sendDiscountEmail(dis_name: string,
+     percentage: number,
+     user_name: string, 
+     user_last_name: string, 
+     email: string): Promise<void> {
+    this._appLoggerService.log('Sending Discount email');
+    await this.sendEmail(this._generateTemplate.discount(dis_name, percentage, user_name, user_last_name, email));
   }
 }

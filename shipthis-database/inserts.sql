@@ -98,6 +98,6 @@ VALUES
 
 /*Discount*/
 INSERT INTO discount
-    (dis_name, dis_percentage)
+    (dis_name, dis_percentage, status)
 VALUES
-    ('WELCOME', 10);
+    ('WELCOME', 10, 'ACTIVE');

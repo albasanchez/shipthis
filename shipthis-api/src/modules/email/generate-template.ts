@@ -43,8 +43,8 @@ export class GenerateTemplate {
       },
     };
   }
-
-  welcome(email: string, name: string, lastname: string) {
+  
+  welcome(email: string, name: string, lastname: string, dis_name: string, percentage: number) {
     return {
       to: email,
       from: this.configService.get(Configuration.SEND_GRID_EMAIL),
@@ -56,8 +56,8 @@ export class GenerateTemplate {
         email_body: `${name} ${lastname}, thank you for signing up <br> With <strong>Ship This</strong> you can send your packages all over the US. <br> To celebrate that you chose us, we will give you a discount to start your experience with us!`,
         thanks: 'Welcome to Ship This',
         announcement: {
-          description: 'Welcome discount',
-          resume: '-10%',
+          description: `${dis_name} DISCOUNT`,
+          resume: `-${percentage}%`,
         },
         column1: {
           keyword: 'Ship',
@@ -119,6 +119,42 @@ export class GenerateTemplate {
           content: buffer.toString('base64'),
         },
       ],
+    };
+  }
+
+  discount(dis_name: string, percentage: number, user_name: string, user_last_name: string, email: string) {
+    return {
+      to: email,
+      from: this.configService.get(Configuration.SEND_GRID_EMAIL),
+      templateId: this.configService.get(Configuration.SEND_GRID_TEMPLATE),
+      dynamicTemplateData: {
+        sender_name: 'Ship This',
+        title: 'We have assigned you a new discount!',
+        subject: 'We have assigned you a new discount!',
+        email_body: `${user_name} ${user_last_name}, we thank you for trusting us <br> You have been one of our best clients. <br> To celebrate that you keep choosing us, we will give you a discount!`,
+        thanks: 'Thanks for prefer us',
+        announcement: {
+          description: `${dis_name} DISCOUNT`,
+          resume: `-${percentage}%`,
+        },
+        column1: {
+          keyword: 'Ship',
+          description: "Anywhere in the US! It's quick and simple",
+        },
+        column2: {
+          keyword: 'Track',
+          description:
+            "Your shipment's delivery process using our Telegram bot",
+        },
+        column3: {
+          keyword: 'Take care',
+          description: 'Stay safe. Leave the rest to us!',
+        },
+        network_name: 'Ship This',
+        network_url: this.configService.get(Configuration.FRONTEND_URL),
+        bot_name: 'Ship This Bot',
+        bot_url: this.configService.get(Configuration.BOT_URL),
+      },
     };
   }
 }

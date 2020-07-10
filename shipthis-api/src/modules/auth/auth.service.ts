@@ -9,6 +9,7 @@ import { UserdataRegistrationType } from '../userdata/constants/user-registratio
 import { RolName } from '../rol/constants/rol-name.enum';
 import { IJwtPayload } from './payloads/jwt-payload.interace';
 import { Userdata } from '../userdata/entities/userdata.entity';
+import { Discount } from '../discount/entities/discount.entity';
 import { AppLoggerService } from 'src/log/applogger.service';
 import { UserdataStatus } from '../userdata/constants/user-status.enum';
 import {
@@ -228,8 +229,8 @@ export class AuthService {
     );
 
     if (this.userIsClient(user)) {
-      this._discountServ.assignWelcomeDiscount(user);
-      await this.sendWelcomeEmail(signup);
+      const welcomeDiscount: Discount = await this._discountServ.assignWelcomeDiscount(user);
+      await this.sendWelcomeEmail(signup, welcomeDiscount);
     }
 
     this._appLogger.log(`NEW ${role} registered successfully`);
@@ -280,11 +281,13 @@ export class AuthService {
     return !user ? true : user.rol.name === role ? false : true;
   }
 
-  private async sendWelcomeEmail(signup: SignupDto) {
+  private async sendWelcomeEmail(signup: SignupDto, welcomeDiscount: Discount) {
     this._emailService.sendWelcomeEmail(
       signup.useremail,
       signup.first_name,
       signup.last_name,
+      welcomeDiscount.name,
+      welcomeDiscount.percentage
     );
   }
 
