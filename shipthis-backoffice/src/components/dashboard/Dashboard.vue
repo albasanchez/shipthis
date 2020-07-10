@@ -44,11 +44,11 @@ export default {
         section: "Shipments"
       },
       { id: 3, 
-        name: "Emails", 
+        name: "Comments", 
         desc: "", 
-        icon: "mdi-email", 
-        route: "Emails",
-        section: "Emails",
+        icon: "mdi-message", 
+        route: "Comments",
+        section: "Comments",
       },
       {
         id: 4,

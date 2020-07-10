@@ -29,7 +29,7 @@ export default {
       { id: "1", name: "Dashboard", link: "/Home" },
       { id: "2", name: "Users", link: "/Users" },
       { id: "3", name: "Shipments", link: "/Shipments" },
-      { id: "4", name: "Emails", link: "/Emails" },
+      { id: "4", name: "Comments", link: "/Comments" },
       {
         id: "5",
         name: "Allies",

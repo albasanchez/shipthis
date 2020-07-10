@@ -78,9 +78,9 @@ const routes = [
     },
   },
   {
-    path: "/Emails",
-    name: "EmailsView",
-    component: () => import("../views/EmailsView.vue"),
+    path: "/Comments",
+    name: "CommentsView",
+    component: () => import("../views/CommentsView.vue"),
     meta: {
       requiresAuth: true,
       hideBasicComponents: false,
