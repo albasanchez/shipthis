@@ -86,7 +86,7 @@ export class EmailService {
           trackingUrl,
         );
       });
-      res.send(bill);
+      res.send({ tracking_URL: trackingUrl, ...bill });
     });
   }
 }

@@ -25,7 +25,9 @@ export class TelegramService implements OnModuleInit {
   ) {}
 
   onModuleInit() {
-    const localURL: string = 'http://localhost:3000/shipthisapi/v1';
+    const localURL: string = `${this._configService.get(
+      Configuration.BACKEND_URL,
+    )}/shipthisapi/v1`;
     this.httpService.get(localURL).subscribe(() => {
       this._appLogger.log('Telegram bot iniciated');
     });
@@ -39,7 +41,6 @@ export class TelegramService implements OnModuleInit {
 
     const bot = new TelegramBot(token, { polling: true });
 
-    // Matches "/echo [whatever]"
     bot.onText(/\/start/, msg => {
       //Welcome message
       const user: any = msg.from.id;

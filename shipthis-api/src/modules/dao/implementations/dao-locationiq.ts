@@ -17,6 +17,11 @@ export class DaoLocationIq implements IDaoLocation {
     );
     let route = { middle_points: null, distance: null };
     let trajectory: Trajectory = null;
+
+    await this.wait(
+      Number(_configService.get(Configuration.LOCATION_IQ_DELAY)),
+    );
+
     await axios
       .get(
         `https://us1.locationiq.com/v1/directions/driving/${origin.long},${
@@ -70,6 +75,9 @@ export class DaoLocationIq implements IDaoLocation {
     const _configService: ConfigService = new ConfigService(
       new AppLoggerService(),
     );
+    await this.wait(
+      Number(_configService.get(Configuration.LOCATION_IQ_DELAY)),
+    );
     const api_key = _configService.get(Configuration.LOCATION_IQ_TOKEN);
     let place: Place = null;
     try {
@@ -101,5 +109,13 @@ export class DaoLocationIq implements IDaoLocation {
     } catch (error) {}
 
     return place;
+  }
+
+  private async wait(time: number): Promise<void> {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve();
+      }, time);
+    });
   }
 }
