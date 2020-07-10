@@ -115,6 +115,7 @@
 <script>
 import Repository from "@/services/repositories/repositoryFactory";
 const ReceiverRepository = Repository.get("receiver");
+import {EventBus} from "../../main.js"
 
 export default {
   name: "ReceiverModal",
@@ -190,6 +191,7 @@ export default {
       this.dialog = false;
     },
     async createReceiver() {
+      let response;
       let receiverToCreate = {
         name: this.formReceiver.name,
         last_name: this.formReceiver.last_name,
@@ -197,15 +199,15 @@ export default {
         email: this.formReceiver.email,
         user_fk: this.userdata.user_id,
       };
-      await ReceiverRepository.createReceiver(receiverToCreate)
-        .then(async () => {
+        try {
+        response = await ReceiverRepository.createReceiver(receiverToCreate);
+          EventBus.$emit("ReceiverAdded",response);
           await this.succesfulTransaction("Receiver created succesfully");
-        })
-        .catch(() => {
-          this.failedTransaction(
+      } catch {
+        this.failedTransaction(
             "There has been an error while creating the receiver"
           );
-        });
+      }
     },
     async updateReceiver() {
       let receiverToUpdate = {

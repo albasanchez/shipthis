@@ -14,6 +14,10 @@ import 'vuesax/dist/vuesax.css' // import css style
 
 Vue.use(Vuesax) // implement Vuesax throughout the application
 
+
+export const EventBus = new Vue();
+
+
 Vue.use(Vuelidate);
 
 Vue.config.productionTip = false;

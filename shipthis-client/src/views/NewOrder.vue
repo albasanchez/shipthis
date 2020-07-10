@@ -5,9 +5,9 @@
 </template>
 
 <script>
-import NewOrderForm from "../components/user/NewOrderForm.vue";
+import NewOrderForm from "../components/Shipments/NewOrderForm.vue";
 export default {
-  name: "HomeUser",
+  name: "NewOrder",
   components: {
     NewOrderForm,
   },

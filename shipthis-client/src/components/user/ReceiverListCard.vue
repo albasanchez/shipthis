@@ -34,7 +34,6 @@
         <v-icon small @click="actiavateDialog('DELETE',item)">mdi-delete</v-icon>
       </template>
     </v-data-table>
-    
     <ReceiverModal ref="receiver_modal" @loadReceivers="loadReceivers()"/>
   </v-card>
 </template>

@@ -9,5 +9,12 @@ export default {
       jwt.getAuthHeaderToken()
     );
     return response;
-  }
+  },
+  async getCharacteristics() {
+    let response = await conn.get(
+      `${resource}/characteristics`,
+      jwt.getAuthHeaderToken()
+    );
+    return response;
+  },
 };
