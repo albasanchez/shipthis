@@ -71,7 +71,8 @@ VALUES
     ('199-145 W Brighton Ave. Syracuse, NY . USA', 43.020441 , -76.145704, '13205'),
     ('159-109 Sumpter St. Brooklyn, NY. USA', 40.680038 , -73.919799, '11233'),
     ('181-175 Orville Dr. Bohemia, NY . USA', 40.771644 , -73.101440, '11716'),
-    ('200-230 W Church St. Somerset, PA. USA', 40.006727, -79.081517, '15501');
+    ('200-230 W Church St. Somerset, PA. USA', 40.006727, -79.081517, '15501'),
+    ('New Jersey Turnpike Newark Bay Extension, Oak Island Junction, Newark, Essex County, New Jersey, 07114, USA', 40.7027585,	-74.1421899, null);
 
 /*Offices*/
 INSERT INTO office
@@ -102,14 +103,16 @@ INSERT INTO discount
 VALUES
     ('WELCOME', 10, 'ACTIVE');
 
-/*Admin*/
-INSERT INTO PERSON
-    (
-    document, first_name, middle_name, last_name, second_last_name, gender, phone_number, date_of_birth, def_language, picture_url, receive_notifications)
-VALUES
-    ('111111111', 'John', null, 'Doe', null, 'M', '+1 (222) 222-2222', '1995-07-06', 'EN', null, false);
+/*Usuario administrador del BO*/
+INSERT INTO PERSON (
+	document, first_name, middle_name, last_name, second_last_name, gender, phone_number, date_of_birth, def_language, picture_url, receive_notifications)
+	VALUES ('111111111', 'John', null, 'Doe', null, 'M', '+1 (222) 222-2222', '1995-07-06', 'EN', null, false);
 
-INSERT INTO USERDATA
-    (user_email, user_password, registration_date, registration_type, user_status, person_fk, rol_fk)
-VALUES
-    ('admin@gmail.com', '$2a$10$pyqO/LPmeR98I8nUtKey/Oq2PeMmMnc.BlnbWA5sr8Fz18f/42NAu', '2020-07-06', 'REGULAR', 'ACTIVE', 1, 2);
+INSERT INTO USERDATA (user_email, user_password, registration_date, registration_type, user_status, person_fk, rol_fk)
+VALUES ('admin@gmail.com', '$2a$10$pyqO/LPmeR98I8nUtKey/Oq2PeMmMnc.BlnbWA5sr8Fz18f/42NAu', '2020-07-06', 'REGULAR', 'ACTIVE', 1, 2);
+
+/*Commercial ally*/
+INSERT INTO COMMERCIAL_ALLY (COMMERCIAL_ALLY_ID, NAME, EMAIL, PHONE_NUMBER, MANAGER_NAME, MANAGER_LAST_NAME, DESCRIPTION, STATUS)
+VALUES ('de514f87-4f91-4de4-92ea-5799731338e3', 'Buhocenter', 'buhocenter@gmail.com', '+1 (123) 456-7890', 'John', 'Doe', 'Online shopping site', 'ACTIVE');
+INSERT INTO WAREHOUSE (NAME, STATUS, COMMERCIAL_ALLY_FK, PLACE_FK)
+VALUES ('Main Warehouse', 'ACTIVE', 'de514f87-4f91-4de4-92ea-5799731338e3', 13);

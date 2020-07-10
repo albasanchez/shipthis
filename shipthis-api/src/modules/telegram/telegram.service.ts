@@ -24,7 +24,7 @@ export class TelegramService implements OnModuleInit {
   ) {}
 
   onModuleInit() {
-    const localURL: string = `${this._configService.get(
+    const localURL = `${this._configService.get(
       Configuration.BACKEND_URL,
     )}/shipthisapi/v1`;
     this.httpService.get(localURL).subscribe(() => {
@@ -263,12 +263,12 @@ export class TelegramService implements OnModuleInit {
   }
 
   private createWelcomeMessage(username: string): string {
-    const message: string = `Welcome ${username}. I'm TocToc, The *Shipthis Bot* who is here to *help you* tracking your orders.\nWhat can I do for you?`;
+    const message = `Welcome ${username}. I'm TocToc, The *Shipthis Bot* who is here to *help you* tracking your orders.\nWhat can I do for you?`;
     return message;
   }
 
   private createHelpMessage(username: string): string {
-    const message: string = `Hello ${username}. For start using our my services just type \/start and you'll get information about all the funtionalities I have and how you can use them`;
+    const message = `Hello ${username}. For start using our my services just type \/start and you'll get information about all the funtionalities I have and how you can use them`;
     return message;
   }
 }

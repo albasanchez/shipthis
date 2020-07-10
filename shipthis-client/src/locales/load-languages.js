@@ -1,18 +1,20 @@
-const dotenv = require("dotenv");
+//const dotenv = require("dotenv");
 const axios = require("axios");
 const fs = require("fs");
 
 const languages = ["EN", "ES"];
 
 function readEnvironmentVariables() {
-  const envFilePath = __dirname + "/../../.env";
+ /* const envFilePath = __dirname + "/../../.env";
   const existsPath = fs.existsSync(envFilePath);
   if (!existsPath) {
     console.log(".env file does not exist");
     process.exit(0);
   }
+  console.log("Reading environment variable VUE_APP_LANG_URL from .env file");*/
   console.log("Reading environment variable VUE_APP_LANG_URL from .env file");
-  return dotenv.parse(fs.readFileSync(envFilePath)).VUE_APP_LANG_URL;
+  return process.env.VUE_APP_LANG_URL;
+ // return dotenv.parse(fs.readFileSync(envFilePath)).VUE_APP_LANG_URL;
 }
 
 async function loadDictionary() {

@@ -8,14 +8,18 @@
     "prebuild": "npm run language:load",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "postinstall": "npm run build",
+    "start": "node server.js",
     "language:load": "node -r ./src/locales/load-languages.js"
   },
   "dependencies": {
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
     "dotenv": "^8.2.0",
+    "express": "^4.17.1",
     "firebase": "^7.15.1",
     "fs": "0.0.1-security",
+    "server-static": "^2.0.5",
     "mapbox-gl": "^1.11.1",
     "moment": "^2.27.0",
     "vue": "^2.6.11",
