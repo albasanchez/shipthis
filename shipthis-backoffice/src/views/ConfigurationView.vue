@@ -1,5 +1,8 @@
 <template>
   <div class="general-container pt-10">
+       <v-row align="center" justify="center">
+      <h1 class="text-center primary--text">Configuration</h1>
+    </v-row>
     <v-row>
       <v-col cols="12" align="center" justify="center">
         <ConfigurationCard v-for="(item, key) in ConfigurationItems" :key="key" :item="item"></ConfigurationCard>
@@ -24,13 +27,6 @@
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </v-snackbar>
-    <v-row class="text-center mt-0">
-          <v-col cols="12">
-              <v-btn class="primary white--text" @click="goRoute('Home')">
-                  Go Back
-              </v-btn>
-          </v-col>
-      </v-row>
   </div>
 </template>
 

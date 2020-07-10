@@ -11,7 +11,7 @@
         <v-divider />
         <v-card-text>
           <v-container>
-            <v-form
+            <v-form 
               ref="receiver_form"
               v-model="valid"
               v-on="save.prevent"

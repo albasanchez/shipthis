@@ -58,6 +58,11 @@ export default {
         name: "Configuration",
         link: "Configuration"
       },
+       {
+        id: "8",
+        name: "Discounts",
+        link: "Discounts"
+      },
       {
         id: "7",
         name: "Sign Out",

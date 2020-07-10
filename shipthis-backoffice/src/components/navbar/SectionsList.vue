@@ -41,6 +41,11 @@ export default {
         link: "/Configuration"
       },
       {
+        id: "8",
+        name: "Discounts",
+        link: "/Discounts"
+      },
+      {
         id: "7",
         name: "Sign Out",
         link: ""

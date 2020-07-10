@@ -1,0 +1,30 @@
+.discount h1 {
+    position: relative;
+  }
+  .discount-height{
+    height: 100%
+  }
+  
+  .discount-list-card {
+    margin: 0;
+    padding: 30px;
+  }
+  
+  .header-color th{
+    color:$primary-color !important;
+  }
+  
+  .discount-word{
+    word-break: break-word !important;
+  }
+  
+  .discount-color {
+    background: $primary-gradient;
+    color: white;
+  }
+  
+  .discount-footer-color{
+    background: rgb(235, 235, 235);
+    color: white;
+  }
+  
