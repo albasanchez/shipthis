@@ -11,7 +11,11 @@
     >
       <v-list-item class="px-2 pt-2">
         <v-list-item-avatar>
-          <v-img src="../../assets/dashboard/guest.png"></v-img>
+          <v-img
+            v-if="userdata.picture_url === null"
+            src="../../assets/dashboard/guest.png"
+          ></v-img>
+          <v-img v-else :src="userdata.picture_url"></v-img>
         </v-list-item-avatar>
 
         <v-list-item-title class="white--text"
@@ -19,7 +23,7 @@
         >
 
         <v-btn icon @click.stop="mini = !mini">
-          <v-icon class="white--text"> {{ minimizeIcon }} </v-icon>
+          <v-icon class="white--text">{{ minimizeIcon }}</v-icon>
         </v-btn>
       </v-list-item>
 
@@ -34,15 +38,15 @@
           @click="goRoute(item.route)"
         >
           <v-list-item-icon>
-            <v-icon class="white--text sidebar-item-icon">{{
-              item.icon
-            }}</v-icon>
+            <v-icon class="white--text sidebar-item-icon">
+              {{ item.icon }}
+            </v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title class="white--text sidebar-item-title">{{
-              $t("sidebar." + item.title)
-            }}</v-list-item-title>
+            <v-list-item-title class="white--text sidebar-item-title">
+              {{ $t("sidebar." + item.title) }}
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -51,12 +55,9 @@
 </template>
 
 <script>
-import jwt from "../../common/jwt.service";
-
 export default {
   data() {
     return {
-      userdata: {},
       drawer: true,
       sidebarItems: [
         { title: "desktop", icon: "dashboard", route: "HomeUser" },
@@ -75,16 +76,17 @@ export default {
   methods: {
     goRoute(route) {
       if (route == "") {
-        jwt.destroyToken();
-        this.$store.dispatch("users/reset");
+        this.$store.dispatch("logout");
         this.$router.push("/");
       } else {
         this.$router.push("/" + route);
       }
     },
   },
-  beforeMount() {
-    this.userdata = this.$store.getters["users/getUser"].person;
+  computed: {
+    userdata() {
+      return this.$store.getters["users/getUser"].person;
+    },
   },
 };
 </script>

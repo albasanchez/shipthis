@@ -66,6 +66,9 @@ export class AuthService {
     } else {
       user = await this.registerUser(signup, registrationType, RolName.CLIENT);
     }
+    if (this.userIsNotActive(user)) {
+      throw new UserNotActiveException();
+    }
     return this.returnUser(user, this.userIsNotRegistered(posibleUser));
   }
 

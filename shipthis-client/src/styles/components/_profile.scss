@@ -6,23 +6,26 @@
   position: relative;
 }
 
-.profile-form {
-  margin: 0;
-  padding: 30px;
-}
-
 .profileTitle {
   height: 20px;
 }
 
-@media only screen and (max-width: 7200px) {
-  .profile-form {
-    width: 80%;
-  }
+.image {
+  width: 100%;
+  padding-left: 10px;
+  padding-top: 10px;
 }
-@media only screen and (max-width: 720px) {
-  .profile-form {
-    width: 100%;
-    padding-right: 90px;
-  }
+
+.tab {
+  min-width: 50px !important;
+}
+
+.tab div {
+  width: 100%;
+}
+
+.snackText {
+  font-size: 15px;
+  color: #1c1954;
+  margin: 0px !important;
 }

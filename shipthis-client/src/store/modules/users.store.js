@@ -3,6 +3,7 @@
 import jwt from "../../common/jwt.service";
 import Repository from "../../services/repositories/repositoryFactory";
 const AuthorizeRepository = Repository.get("authorize");
+const UserProfileRepository = Repository.get("userProfile");
 
 // Initial State object
 const initialState = () => {
@@ -175,6 +176,30 @@ const actions = {
       commit("set_user", response.userdata);
     } catch (e) {
       commit("set_error_message", e);
+    }
+  },
+  async updateProfile({ commit }, payload) {
+    try {
+      const response = await UserProfileRepository.updateProfile(payload);
+      commit("set_user", response.user);
+    } catch (e) {
+      commit("set_error_message", e.response.data.shipthisMesagge);
+    }
+  },
+  async updatePassword({ commit }, payload) {
+    try {
+      await UserProfileRepository.updatePassword(payload);
+      commit("set_error_message", "");
+    } catch (e) {
+      commit("set_error_message", e.response.data.shipthisMesagge);
+    }
+  },
+  async deleteAccount({ commit }, payload) {
+    try {
+      await UserProfileRepository.deleteAccount(payload);
+      commit("set_error_message", "");
+    } catch (e) {
+      commit("set_error_message", e.response.data.shipthisMesagge);
     }
   },
   reset({ commit }) {

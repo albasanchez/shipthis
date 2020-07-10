@@ -1,13 +1,13 @@
 #Profile:before {
-    content:"";
-    position: absolute;
-    width: 100%;
-    height: 621px;
-    background-color: $second-color;
-    opacity:0.8;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 621px;
+  background-color: $second-color;
+  opacity: 0.8;
 }
 #Profile h1 {
-position: relative;
+  position: relative;
 }
 
 .profile-form {
@@ -15,25 +15,23 @@ position: relative;
   padding: 30px;
 }
 
-@media only screen and (max-width: 960px){
+@media only screen and (max-width: 960px) {
+  #Profile {
+    height: 100%;
+    font-size: 16px;
+  }
+  #Profile:before {
+    height: 1000px;
+  }
+}
 
-#Profile {
-  height: 100%;
-  font-size: 16px;
+@media only screen and (max-width: 720px) {
+  #Profile:before {
+    height: 1200px;
+  }
 }
-#Profile:before {
-  height: 1000px;
-}
-}
-
-@media only screen and (max-width: 720px){
-
-#Profile:before {
-  height: 1200px;
-}
-}
-@media only screen and (max-width: 550px){
-#Profile:before {
-  height: 1200px;
-}
+@media only screen and (max-width: 550px) {
+  #Profile:before {
+    height: 1200px;
+  }
 }

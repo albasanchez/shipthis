@@ -8,9 +8,6 @@
     <v-col>
       <v-row>
         <v-col cols="12" class="secondary--text mt-4 d-flex justify-center">
-          <v-icon class="display-1 white--text mr-2">{{
-            RecieverListIcon
-          }}</v-icon>
           <h1
             class="white--text pa-0"
             :class="$vuetify.breakpoint.smAndDown ? 'headline' : 'display-1'"

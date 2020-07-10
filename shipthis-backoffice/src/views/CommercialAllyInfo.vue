@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="general-container px-5">
     <v-row>
-      <v-col cols="12"  align="center" justify="center">
+      <v-col cols="12" align="center" justify="center">
         <CommercialAlliesCard></CommercialAlliesCard>
       </v-col>
     </v-row>

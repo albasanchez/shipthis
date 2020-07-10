@@ -6,6 +6,7 @@ import OrderTypeRepository from "./orderType.repository";
 import OfficeRepository from "./office.repository";
 import ReceiverRepository from "./receiver.repository";
 import commercialAllyRepository from "./commercialAlly.repository";
+import userProfileRepository from "./userProfile.repository";
 
 const repositories = {
   authorize: AuthorizeRepository,
@@ -16,6 +17,7 @@ const repositories = {
   office: OfficeRepository,
   orderType: OrderTypeRepository,
   receiver: ReceiverRepository,
+  userProfile: userProfileRepository,
 };
 export default {
   get: (name) => repositories[name],
