@@ -1,23 +1,22 @@
-.navbar-color{
-    background: $primary-gradient;
-  }
-  .lang-btn{
-    max-width: 50px;
-  }
-  #imgNavbar:hover{
-    cursor: pointer;
-  }
-  
-  .navbar-sections__item{
-        color: $third-color !important;
-        text-decoration: none;
-        // padding-bottom: 8px;
-        transition: 0.3s;
-    }
-  .navbar-sections__item:hover {
-    color:$second-color !important;
-    cursor: pointer;
-  }
-  .navbar-sections__item .icon{
-    color: $third-color !important;
-  }
+.navbar-color {
+  background: $primary-gradient;
+  width: 100%;
+}
+.lang-btn {
+  max-width: 50px;
+}
+#imgNavbar:hover {
+  cursor: pointer;
+}
+
+#menuNavbar {
+  color: $second-color !important;
+}
+
+.navbar-translator,
+.navbar-translator .v-application .primary--text {
+  color: $third-color !important;
+  text-decoration: none;
+  // padding-bottom: 8px;
+  transition: 0.3s;
+}

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>App</title>
+  <link rel="stylesheet" type="text/css" href="/css/invoice.css">
+</head>
+
+<div class="invoice-box">
+  <table cellpadding="0" cellspacing="0">
+    <tr class="top">
+      <td colspan="3">
+        <img src="/images/logo_oscuro.png" class="logo" />
+        <p class="cell-title">
+          Tracking ID #{{ bill.ordersheet_id }}
+        </p>
+
+        <p class="cell-title">{{ bill.creation_date }}</p>
+      </td>
+      <td>
+        <div class="qrCode">
+          <img class="qrCode" src="{{code}}" />
+        </div>
+      </td>
+    </tr>
+
+    <tr class="section-heading">
+      <td colspan="3">Shipper information</td>
+      <td></td>
+    </tr>
+    <tr class="item">
+      <td>
+        <p class="cell-title">Name</p>
+        <p class="cell-description">
+          {{ bill.shipper.fullname }}
+        </p>
+      </td>
+      <td>
+        <p class="cell-title">Email</p>
+        <p class="cell-description">{{ bill.shipper.email }}</p>
+      </td>
+      <td>
+        <p class="cell-title">Phone number</p>
+        <p class="cell-description">{{ bill.shipper.phone_number }}</p>
+      </td>
+    </tr>
+
+    <tr class="section-heading">
+      <td colspan="3">Receiver information</td>
+      <td></td>
+    </tr>
+    <tr class="item">
+      <td>
+        <p class="cell-title">Name</p>
+        <p class="cell-description">{{ bill.receiver.fullname }}</p>
+      </td>
+      <td>
+        <p class="cell-title">Email</p>
+        <p class="cell-description">{{ bill.receiver.email }}</p>
+      </td>
+      <td>
+        <p class="cell-title">Phone number</p>
+        <p class="cell-description">{{ bill.receiver.phone_number }}</p>
+      </td>
+    </tr>
+
+    <tr class="section-heading">
+      <td colspan="3">Shipment information</td>
+      <td></td>
+    </tr>
+    <tr class="item">
+      <td colspan="4">
+        <p class="cell-title">Origin</p>
+        <p class="cell-description">{{ bill.origin }}</p>
+      </td>
+    </tr>
+    <tr class="item">
+      <td colspan="4">
+        <p class="cell-title">Destination</p>
+        <p class="cell-description">{{ bill.destination }}</p>
+      </td>
+    </tr>
+    <tr class="item">
+      <td colspan="2">
+        <p class="cell-title">Order type</p>
+        <p class="cell-description">{{ bill.order_type }}</p>
+      </td>
+      <td>
+        <p class="cell-title">Ignore holidays</p>
+        {{#if bill.ignore_holidays}}
+        <p class="cell-description">Yes</p>
+        {{else}}
+        <p class="cell-description">No</p>
+        {{/if}}
+      </td>
+      <td>
+        <p class="cell-title">Number of packages</p>
+        <p class="cell-description">{{ bill.packages.length }}</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+    </tr>
+
+    <tr class="heading">
+      <td>Package</td>
+      <td>Weight</td>
+      <td>Characteristic</td>
+      <td>Unitary cost</td>
+    </tr>
+    {{#each bill.packages}}
+    <tr class="item">
+      {{#if this.description}}
+      <td>{{ this.description }}</td>
+      {{else}}
+      <td>Not provided</td>
+      {{/if}}
+      <td>{{ this.weight }} gr</td>
+      <td>
+        {{#each this.characteristics}}
+        <span>
+          {{ this.name }}.
+        </span>
+        {{/each}}
+      </td>
+      <td>${{ this.cost }}</td>
+    </tr>
+    {{/each}}
+    <tr class="total">
+      <td colspan="2"></td>
+      <td>Subtotal</td>
+      <td>${{ bill.subtotal }}</td>
+    </tr>
+    <tr class="total">
+      <td colspan="2"></td>
+      <td>Additional taxes</td>
+      <td>${{ bill.additional_taxes }}</td>
+    </tr>
+    <tr class="total">
+      <td colspan="2"></td>
+      <td>Discount</td>
+      <td>${{ bill.discount }}</td>
+    </tr>
+    <tr class="total">
+      <td colspan="2"></td>
+      <td>Total</td>
+      <td>${{ bill.facturation_amount }}</td>
+    </tr>
+  </table>
+</div>
+
+</html>

@@ -1,12 +1,26 @@
-#RegistryForm{
-    height: 100%;
+#RegistryForm {
+  height: 100%;
 }
-.registry-form{
+
+.registry-form {
+  padding: 20px;
+  margin: 30px;
+}
+.registry-buttons {
+  display: flex;
+  justify-content: center;
+}
+.registry-snackbar {
+  color: white !important;
+}
+@media screen and (max-width: 7200px) {
+  .registry-form {
     width: 60%;
-    padding: 20px;
-    margin: 30px;
+  }
 }
-.registry-buttons{
-    display: flex;
-    justify-content: center;
+
+@media screen and (max-width: 720px) {
+  .registry-form {
+    width: 90%;
+  }
 }

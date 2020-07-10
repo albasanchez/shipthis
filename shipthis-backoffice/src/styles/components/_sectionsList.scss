@@ -1,0 +1,20 @@
+#sections-list {
+  display: flex;
+  background-color: transparent;
+}
+.sections-list__item {
+  color: $second-color !important;
+  min-width: 50px;
+  text-decoration: none;
+  // padding-bottom: 8px;
+  transition: 0.3s;
+}
+.sections-list__item:hover {
+  color: $success-color !important;
+  cursor: pointer;
+}
+.sections-list__itemactive {
+  color: #07fcbf;
+  border-bottom: #07fcbf solid 1px;
+  padding-bottom: 5px;
+}

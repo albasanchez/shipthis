@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CommentBoxRepository } from './comment-box.repository';
+import { CommentBoxRepository } from './repositories/comment-box.repository';
 import { CommentBoxController } from './comment-box.controller';
 import { CommentBoxService } from './comment-box.service';
 import { AppLoggerModule } from 'src/log/applogger.module';

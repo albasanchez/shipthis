@@ -1,0 +1,28 @@
+.navbar-color{
+    background: $primary-gradient;
+  }
+  .lang-btn{
+    max-width: 50px;
+  }
+  #imgNavbar{
+    max-width: 200px;
+  }
+  #imgNavbar:hover{
+    cursor: pointer;
+  }
+  
+  .navbar-sections__item{
+        color: $third-color !important;
+        text-decoration: none;
+        // padding-bottom: 8px;
+        transition: 0.3s;
+    }
+  .navbar-sections__item:hover {
+    color:$second-color !important;
+    cursor: pointer;
+  }
+  .navbar-sections__item .icon{
+    color: $third-color !important;
+  }
+
+

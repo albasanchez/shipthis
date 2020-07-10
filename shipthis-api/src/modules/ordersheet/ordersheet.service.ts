@@ -1,138 +1,214 @@
+import { OrderResumeDto } from './dto/order-resume.dto';
+import { MapperOrderResume } from './../../mapper/mapper-order-resume';
+import { BillDto } from './dto/bill.dto';
+import { DiscPerRepository } from './../discount/repositories/disc-per.repository';
+import { DiscPer } from './../discount/entities/disc-per.entity';
+import { CharPriceHist } from './../item-type/entities/char-price-hist.entity';
+import { ReceiverNotFoundException } from './../../common/exceptions/receiver-not-found.exception';
+import { ReceiverRepository } from './../userdata/repositories/receiver.repository';
+import { isArray } from 'util';
+import { Characteristic } from './../item-type/entities/characteristic.entity';
+import { CharacteristicRepository } from './../item-type/repositories/characteristic.repository';
+import { IDaoLocation } from './../dao/interfaces/dao-location.interface';
+import { DaoLocationFactory } from './../dao/factories/dao-location-factory';
+import { IDaoFactory } from './../dao/factories/interface/IDaofactory.interface';
+import { Office } from './../office/entities/office.entity';
+import { OfficeReposiroty } from './../office/repositories/office.repository';
 import { OrderHistoryDto } from './dto/order-history.dto';
-import { UserAlreadyRegisteredException } from 'src/common/exceptions/user-already-registered.exception';
-import { CheckPointRepository } from './../check-point/check-point.repository';
-import { TrajectoryRepository } from './../trajectory/trajectory.repository';
-import { Trajectory } from './../trajectory/trajectory.entity';
-import { ItemRepository } from './../item/item.repository';
-import { Place } from './../place/place.entity';
-import { OrderPriceHist } from './../order-price-hist/order-price-hist.entity';
-import { OrdersheetRepository } from './ordersheet.repository';
-import { ItemPriceHistRepository } from './../item-price-hist/item-price-hist.repository';
-import { OfficeReposiroty } from './../office/office.repository';
-import { Office } from './../office/office.entity';
-import { getConnection } from 'typeorm';
+import { Trajectory } from './entities/trajectory.entity';
+import { Place } from './entities/place.entity';
+import { OrderPriceHist } from '../order-type/entities/order-price-hist.entity';
+import { OrdersheetRepository } from './repositories/ordersheet.repository';
 import { Injectable } from '@nestjs/common';
 import { CreateOrdersheetDto } from './dto/create-ordersheet.dto';
-import { Userdata } from '../userdata/userdata.entity';
-import { UserDataRepository } from '../userdata/userdata.repository';
+import { Userdata } from '../userdata/entities/userdata.entity';
+import { UserDataRepository } from '../userdata/repositories/userdata.repository';
 import {
   UserNotFoundException,
   OfficeNotFoundException,
   EmptyDestinationException,
   OrderPriceHistNotFoundException,
-  ItemPriceHistNotFoundException,
   BadItemStructureException,
   OrdersheetNotFoundException,
+  InvalidAddressException,
+  InvalidReceiverException,
+  LocatorConectionException,
+  DiscountNotFoundException,
+  InvalidDiscountException,
 } from 'src/common/exceptions';
-import { OfficeStatus } from '../office/constants/office-status.enum';
-import { UserdataStatus } from '../userdata/constants/user-status.enum';
-import { Item } from '../item/item.entity';
-import { ItemPriceHist } from '../item-price-hist/item-price-hist.entity';
+import { Item } from './entities/item.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { OrderPriceHistRepository } from '../order-price-hist/order-price-hist.repository';
-import { Ordersheet } from './ordersheet.entity';
+import { OrderPriceHistRepository } from '../order-type/repositories/order-price-hist.repository';
+import { Ordersheet } from './entities/ordersheet.entity';
 import { OrdersheetStatus } from './constants/ordersheet-status.enum';
-import { async } from 'rxjs/internal/scheduler/async';
-import { CheckPoint } from '../check-point/check-point.entity';
-import { validate } from 'class-validator';
 import { AppLoggerService } from 'src/log/applogger.service';
 import { OrderDetailDto } from './dto/order-detail.dto';
+import { OrdersDetailsDto } from './dto/orders-details.dto';
+import { TotalsDto } from './dto/orders-totals.dto';
+import { MapperOrder } from '../../mapper/mapper-order';
+import { DaoFactoryConstans } from '../dao/factories/constants/dao-factory-constants.enum';
+import { Receiver } from '../userdata/entities/receiver.entity';
+import { ItemPriceHistRepository } from '../item-type/repositories/item-price-hist.repository';
+import { ItemPriceHist } from '../item-type/entities/item-price-hist.entity';
+import { MapperBill } from 'src/mapper/mapper-bill';
+import { Response } from 'express';
+import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class OrdersheetService {
   constructor(
     @InjectRepository(OrdersheetRepository)
     private readonly _ordersheetRepo: OrdersheetRepository,
+    @InjectRepository(UserDataRepository)
+    private readonly _userRepo: UserDataRepository,
+    @InjectRepository(OfficeReposiroty)
+    private readonly _officeRepo: OfficeReposiroty,
+    @InjectRepository(OrderPriceHistRepository)
+    private readonly _orderPriceRepo: OrderPriceHistRepository,
+    @InjectRepository(CharacteristicRepository)
+    private readonly _charRepo: CharacteristicRepository,
+    @InjectRepository(ReceiverRepository)
+    private readonly _receiverRepo: ReceiverRepository,
+    @InjectRepository(DiscPerRepository)
+    private readonly _discountRepo: DiscPerRepository,
+    @InjectRepository(ItemPriceHistRepository)
+    private readonly _itemPriceRepo: ItemPriceHistRepository,
     private readonly _appLogger: AppLoggerService,
+    private readonly _emailService: EmailService,
   ) {}
 
-  async createOrdersheet(order: CreateOrdersheetDto): Promise<any> {
-    this._appLogger.log('Create ordersheet service');
-    //validade user
+  async addressConfirmation(address: string): Promise<Place> {
+    this._appLogger.log('Handling New Request: Address Validation Service');
+    return this.validateAddress(address);
+  }
+
+  async calculateOrder(order: CreateOrdersheetDto): Promise<any> {
+    this._appLogger.log('Handling New Request: order bill calculation Service');
+    const new_order: Ordersheet = await this.validateOrder(order);
+    this.setPricesOnOrder(new_order);
+    return this.generateBill(new_order);
+  }
+
+  async registerOrder(order: CreateOrdersheetDto, res: Response): Promise<any> {
+    this._appLogger.log('Handling New Request: order registration Service');
+    const new_order: Ordersheet = await this.validateOrder(order);
+    this.setPricesOnOrder(new_order);
+    const saved_order = await this._ordersheetRepo.registerOrder(new_order);
+    const bill = this.generateBill(saved_order);
+    this._emailService.generateInvoice(bill, res, 'order');
+    return bill;
+  }
+
+  async consultBill(tracking_id: string): Promise<BillDto> {
+    this._appLogger.log('Handling New Request: order bill consulting Service');
+    const order: Ordersheet = await this._ordersheetRepo.fetchOrder(
+      tracking_id,
+    );
+    if (!order) throw new OrdersheetNotFoundException();
+    return this.generateBill(order);
+  }
+
+  private generateBill(order: Ordersheet): BillDto {
+    return MapperBill.generateBillFromOrder(order);
+  }
+
+  private async validateAddress(address: string): Promise<Place> {
+    const factory: IDaoFactory = new DaoLocationFactory();
+    const locator: IDaoLocation = factory.factoryMethod(
+      DaoFactoryConstans.LOCATIONIQ,
+    );
+    const place: Place = await locator.validateAddress(address);
+    if (!place) throw new InvalidAddressException();
+    return place;
+  }
+
+  private setPricesOnOrder(order: Ordersheet): void {
+    const distance_km: number = Number(order.trajectories.distance) / 1000;
+    const base_price = Number(order.item_price_hist.base_price);
+    const price_gr_km: number = Number(order.item_price_hist.price_km) / 1000;
+
+    let order_base_cost = 0;
+
+    order.items.map(item => {
+      let item_total_tax = 0;
+      for (const char of item.characteristics) {
+        item_total_tax += Number(char.tax);
+      }
+      const item_cost =
+        base_price +
+        (price_gr_km *
+          distance_km *
+          this.getDimensionalWeight(item) *
+          (100 + item_total_tax)) /
+          10000;
+      item.item_cost = Number(item_cost.toFixed(2));
+      order_base_cost += Number(item_cost.toFixed(2));
+    });
+
+    let order_total_tax = Number(order.order_price_hist.time_tax);
+    order_total_tax += order.ignore_holidays
+      ? Number(order.order_price_hist.holidays_tax)
+      : 0;
+    order_total_tax += order.destination_place
+      ? Number(order.order_price_hist.specific_destination_tax)
+      : 0;
+    const tax_factor = (100 + order_total_tax) / 100;
+
+    const discount = order.discount
+      ? Number(order.discount.discount.percentage)
+      : 0;
+    const discount_factor = (100 - discount) / 100;
+
+    order.facturation_amount = order_base_cost * tax_factor * discount_factor;
+    order.facturation_amount = Number(order.facturation_amount.toFixed(2));
+  }
+
+  private getDimensionalWeight(item: Item): number {
+    const weight: number = item.item_weight;
+    const volume: number =
+      (item.item_width * item.item_length * item.item_height) / 5;
+    return Math.max(weight, volume);
+  }
+
+  private async getCurrentPrice(): Promise<ItemPriceHist> {
+    return await this._itemPriceRepo.getCurrentPrice();
+  }
+
+  private async validateOrder(order: CreateOrdersheetDto): Promise<Ordersheet> {
+    //validate user
     const user: Userdata = await this.validateUser(order.useremail);
 
-    //validate origin office
-    const officeRepo: OfficeReposiroty = await getConnection().getRepository(
-      Office,
+    //valida receiver
+    const receiver: Receiver = await this.validateReceiver(
+      order.receiver_id,
+      user.user_id,
     );
-    const origin_office = await officeRepo.findOne({
-      where: {
-        office_id: order.origin_office,
-        status: OfficeStatus.ACTIVE,
-      },
-    });
-    if (!origin_office) {
-      this._appLogger.log('Error creating ordersheet: Origin office not found');
-      throw new OfficeNotFoundException();
+
+    //validate discount
+    let discount: DiscPer = null;
+    if (order.discount_id) {
+      discount = await this.validateDiscount(order.discount_id, user.user_id);
     }
+
+    //validate origin office
+    const origin_office = await this.validateOffice(order.origin_office);
 
     //validate order_price_hist
-    const orderPriceHistRepo: OrderPriceHistRepository = await getConnection().getRepository(
-      OrderPriceHist,
-    );
-    const orderPrice = await orderPriceHistRepo.findOne({
-      where: {
-        order_price_hist_id: order.order_price_hist,
-        ending_date: null,
-      },
-    });
-    if (!orderPrice) {
-      this._appLogger.log(
-        'Error creating ordersheet: Order type hist movement not found',
-      );
-      throw new OrderPriceHistNotFoundException();
-    }
+    const orderPrice = await this.validateOrderType(order.order_price_hist);
 
     //validate destination place set
-    let dest_office: Office;
+    let dest_office: Office = null;
+    let dest_address: Place = null;
     if (order.destination_office) {
-      dest_office = await officeRepo.findOne({
-        where: {
-          office_id: order.destination_office,
-          status: OfficeStatus.ACTIVE,
-        },
-      });
-      if (!dest_office) {
-        this._appLogger.log('Error creating ordersheet: Destination not found');
-        throw new OfficeNotFoundException();
-      }
+      dest_office = await this.validateOffice(order.destination_office);
     } else if (!order.destination_address) {
-      this._appLogger.log(
-        'Error creating ordersheet: Destination addres empty',
-      );
       throw new EmptyDestinationException();
+    } else {
+      dest_address = await this.validateAddress(order.destination_address);
     }
 
     //validate items
-    let itemsToInsert: Item[] = [];
-    const itemPriceRepo: ItemPriceHistRepository = await getConnection().getRepository(
-      ItemPriceHist,
-    );
-    let newItem: Item;
-    for await (const item of order.items) {
-      if (typeof item.item_type_hist !== 'number') {
-        this._appLogger.log(
-          'Error creating ordersheet: Bad structure for items array',
-        );
-        throw new BadItemStructureException();
-      }
-      let itemPrice: ItemPriceHist = await itemPriceRepo.findOne({
-        where: { item_price_hist_id: item.item_type_hist, ending_date: null },
-      });
-      if (!itemPrice) {
-        this._appLogger.log(
-          'Error creating ordersheet: Item price hist movement not found',
-        );
-        throw new ItemPriceHistNotFoundException();
-      }
-      newItem = new Item();
-      newItem.item_weight = item.item_weight;
-      newItem.item_volumen = item.item_volumen;
-      newItem.is_fragile = item.is_fragile;
-      newItem.is_insured = item.is_insured;
-      newItem.item_type_hist = itemPrice;
-      itemsToInsert.push(newItem);
-    }
+    const itemsToInsert: Item[] = await this.validateItems(order.items);
 
     //create ordersheet
     const newOrdersheet: Ordersheet = new Ordersheet();
@@ -141,104 +217,261 @@ export class OrdersheetService {
     newOrdersheet.order_price_hist = orderPrice;
     newOrdersheet.creation_date = new Date();
     newOrdersheet.status = OrdersheetStatus.DELIVERY;
-    newOrdersheet.rec_fullname = order.rec_fullname;
-    newOrdersheet.rec_phone_code = order.rec_phone_code;
-    newOrdersheet.rec_phone_number = order.rec_phone_number;
-    newOrdersheet.rec_document = order.rec_document;
-    newOrdersheet.rec_email = order.rec_email;
-    newOrdersheet.ignore_hollydays = order.ignore_hollydays;
-    if (dest_office) {
-      newOrdersheet.destination_office = dest_office;
-    } else {
-      const dest_place = new Place();
-      dest_place.address = order.destination_address;
-      newOrdersheet.destination_place = dest_place;
-    }
+    newOrdersheet.receiver = receiver;
+    newOrdersheet.ignore_holidays = order.ignore_holidays;
+    newOrdersheet.destination_office = dest_office;
+    newOrdersheet.destination_place = dest_address;
+    newOrdersheet.discount = discount;
+    newOrdersheet.item_price_hist = await this.getCurrentPrice();
+
     //items
     newOrdersheet.items = itemsToInsert;
+
     //create trajectory
-    const orderRoute: Trajectory = new Trajectory();
-    orderRoute.linear_distance = Math.floor(90 + Math.random() * 700);
-    orderRoute.efective_distance = Math.floor(orderRoute.linear_distance * 1.2);
-    //check-point
-    const cpArray: CheckPoint[] = [];
-    let cpPlace: Place;
-    let cpCheckPoint: CheckPoint;
-    const cpnumber: number = Math.floor(3 + Math.random() * 2);
-    for (const step of Array(cpnumber).keys()) {
-      cpPlace = new Place();
-      cpPlace.address = `Check point ${step + 1} St.`;
-      cpCheckPoint = new CheckPoint();
-      cpCheckPoint.place = cpPlace;
-      cpCheckPoint.check_point_order = step + 1;
-      cpArray.push(cpCheckPoint);
-    }
-    //Insert check-points into trajectory
-    orderRoute.check_points = cpArray;
+    const orderRoute: Trajectory = await this.generateTrajectory(
+      origin_office,
+      dest_address,
+      dest_office,
+    );
+
     //Insert  trajectory into ordersheet
     newOrdersheet.trajectories = orderRoute;
-    //register ordersheet
-    const savedOrdersheet: Ordersheet = await this._ordersheetRepo.save(
-      newOrdersheet,
-    );
-    this._appLogger.log(
-      `New order created successfuly with ID = ${savedOrdersheet.ordersheet_id}`,
-    );
-    savedOrdersheet.user.password = '';
-    return { response: 'Order Registered successfully' };
+
+    return newOrdersheet;
   }
 
-  async searchHistory(info: OrderHistoryDto): Promise<any> {
-    this._appLogger.log('Search user history orders service');
-    //Validate user
-    const user: Userdata = await this.validateUser(info.useremail);
-    const hist: Ordersheet[] = await this._ordersheetRepo.find({
-      where: { user: user },
+  async searchHistoryBill(data: OrderHistoryDto): Promise<OrderResumeDto[]> {
+    this._appLogger.log('Search user history bills service');
+    const user: Userdata = await this.validateUser(data.useremail);
+    const generated_orders: Ordersheet[] = await this._ordersheetRepo.getUserHistory(
+      user,
+    );
+    const order_history: OrderResumeDto[] = [];
+    generated_orders.map(order => {
+      const order_resume = MapperOrderResume.generateOrderResumeFromOrdersheet(
+        order,
+      );
+      order_resume.trajectory = null;
+      order_history.push(order_resume);
     });
 
-    hist.map(a => {
+    return order_history;
+  }
+
+  async searchHistoryOrder(data: OrderHistoryDto): Promise<any> {
+    this._appLogger.log('Search user history orders service');
+    const user: Userdata = await this.validateUser(data.useremail);
+    const order_history: Ordersheet[] = await this._ordersheetRepo.getUserHistory(
+      user,
+    );
+
+    order_history.map(a => {
       delete a.user;
       delete a.trajectories.check_points;
+      delete a.receiver.user;
     });
 
-    return hist;
+    return order_history;
+  }
+
+  async gelAllOrders(): Promise<OrdersDetailsDto[]> {
+    const orders: Ordersheet[] = await this._ordersheetRepo.getAllOrders();
+    const ordersInfo: OrdersDetailsDto[] = [];
+
+    orders.forEach(order => {
+      ordersInfo.push(MapperOrder.ordersheetToOrderDetails(order));
+    });
+
+    return ordersInfo;
+  }
+
+  async gelAllOrdersTotal(): Promise<TotalsDto> {
+    const ordersTotal: Ordersheet[] = await this._ordersheetRepo.getAllOrders();
+    const ordersDeliveryTotal: Ordersheet[] = [];
+    const ordersInTransitTotal: Ordersheet[] = [];
+    const ordersDeliveredTotal: Ordersheet[] = [];
+
+    ordersTotal.forEach(order => {
+      if (order.status == OrdersheetStatus.DELIVERY) {
+        ordersDeliveryTotal.push(order);
+      } else if (order.status == OrdersheetStatus.TRANSIT) {
+        ordersInTransitTotal.push(order);
+      } else if (order.status == OrdersheetStatus.DELIVERED) {
+        ordersDeliveredTotal.push(order);
+      }
+    });
+
+    const Totals = new TotalsDto();
+
+    Totals.delivery = ordersDeliveryTotal.length;
+    Totals.inTransit = ordersInTransitTotal.length;
+    Totals.delivered = ordersDeliveredTotal.length;
+    Totals.total = ordersTotal.length;
+
+    return Totals;
   }
 
   async searchOrdersheetDetail(orderDetail: OrderDetailDto): Promise<any> {
-    this._appLogger.log('Search order Detail service');
-    const order: Ordersheet = await this.validateExitingOrdersheet(
+    this._appLogger.log('Handling New Request: Search order Detail service');
+    const order: Ordersheet = await this.validateExistingOrdersheet(
       orderDetail.tracking_id,
     );
-    const person = order.user.person;
-    delete order.user;
-    return { person: person, ...order };
+    return MapperOrderResume.generateOrderResumeFromOrdersheet(order);
   }
 
-  private async validateExitingOrdersheet(id: string): Promise<Ordersheet> {
-    const order: Ordersheet = await this._ordersheetRepo.findOne({
-      where: { ordersheet_id: id },
-    });
+  private async validateExistingOrdersheet(id: string): Promise<Ordersheet> {
+    const order: Ordersheet = await this._ordersheetRepo.fetchOrder(id);
 
     if (!order) {
-      this._appLogger.log('Error in OrdersheetService: Ordersheet not found');
       throw new OrdersheetNotFoundException();
     }
     return order;
   }
 
   private async validateUser(useremail: string): Promise<Userdata> {
-    //validade user
-    const userdataRepo: UserDataRepository = await getConnection().getRepository(
-      Userdata,
-    );
-    const user: Userdata = await userdataRepo.findOne({
-      where: { email: useremail, status: UserdataStatus.ACTIVE },
-    });
-
-    if (!user) {
-      this._appLogger.log('Error in OrdersheetService: User not found');
-      throw new UserNotFoundException();
-    }
+    const user: Userdata = await this._userRepo.fetchUser(useremail);
+    if (!user) throw new UserNotFoundException();
     return user;
+  }
+
+  private async validateOffice(office_id: number): Promise<Office> {
+    const office: Office = await this._officeRepo.fetchOffice(office_id);
+    if (!office) throw new OfficeNotFoundException();
+    return office;
+  }
+
+  private async validateOrderType(
+    order_price_id: number,
+  ): Promise<OrderPriceHist> {
+    const orderPrice = await this._orderPriceRepo.fetchOrderPriceHist(
+      order_price_id,
+    );
+    if (!orderPrice) throw new OrderPriceHistNotFoundException();
+    return orderPrice;
+  }
+
+  private async validateReceiver(
+    receiver_id: number,
+    user_id: number,
+  ): Promise<Receiver> {
+    const receiver: Receiver = await this._receiverRepo.getReceiver(
+      receiver_id,
+    );
+    if (!receiver) throw new ReceiverNotFoundException();
+    if (receiver.user.user_id !== user_id) throw new InvalidReceiverException();
+    return receiver;
+  }
+
+  private async generateTrajectory(
+    origin_office: Office,
+    dest_place: Place,
+    dest_office: Office,
+  ): Promise<Trajectory> {
+    const origin = { long: null, lat: null };
+    const destination = { long: null, lat: null };
+
+    origin.long = origin_office.place.position_long;
+    origin.lat = origin_office.place.position_lat;
+    if (!dest_office) {
+      destination.long = dest_place.position_long;
+      destination.lat = dest_place.position_lat;
+    } else {
+      destination.long = dest_office.place.position_long;
+      destination.lat = dest_office.place.position_lat;
+    }
+
+    const factory: IDaoFactory = new DaoLocationFactory();
+    const locator: IDaoLocation = factory.factoryMethod(
+      DaoFactoryConstans.LOCATIONIQ,
+    );
+    const trajectory: Trajectory = await locator.generateTrajectory(
+      origin,
+      destination,
+    );
+
+    if (!trajectory) throw new LocatorConectionException();
+
+    return trajectory;
+  }
+
+  private async validateDiscount(discount_id: number, user_id: number) {
+    const discPer: DiscPer = await this._discountRepo.validateDiscount(
+      discount_id,
+      user_id,
+    );
+
+    if (!discPer) throw new DiscountNotFoundException();
+    if (
+      discPer.ordersheet ||
+      new Date(discPer.expiration_date).getTime() < new Date().getTime()
+    )
+      throw new InvalidDiscountException();
+
+    return discPer;
+  }
+
+  private async validateItems(item_list: any[]): Promise<Item[]> {
+    const itemsToInsert: Item[] = [];
+    const active_charateristics: Characteristic[] = await this._charRepo.getAllCharacteristics();
+
+    let newItem: Item;
+    for (const item of item_list) {
+      if (
+        !item.item_weight ||
+        typeof item.item_weight !== 'number' ||
+        !item.item_length ||
+        typeof item.item_length !== 'number' ||
+        !item.item_width ||
+        typeof item.item_width !== 'number' ||
+        !item.item_height ||
+        typeof item.item_height !== 'number'
+      ) {
+        throw new BadItemStructureException();
+      }
+
+      newItem = new Item();
+      newItem.characteristics = [];
+      let new_characteristic: Characteristic;
+      if (item.characteristics) {
+        if (isArray(item.characteristics)) {
+          for (const char of item.characteristics) {
+            if (!char.characteristic_id) {
+              throw new BadItemStructureException();
+            }
+            new_characteristic = null;
+            new_characteristic = active_charateristics.find(
+              e => e.characteristic_id === char.characteristic_id,
+            );
+            if (!new_characteristic) {
+              throw new BadItemStructureException();
+            }
+            const posible_char = newItem.characteristics.find(
+              e =>
+                e.char_price_hist_id ===
+                new_characteristic.char_price_hists[0].char_price_hist_id,
+            );
+            if (!posible_char) {
+              const char_to_inset: CharPriceHist =
+                new_characteristic.char_price_hists[0];
+              const { char_price_hists, ...char_info } = new_characteristic;
+              char_to_inset.characteristic = char_info as Characteristic;
+              newItem.characteristics.push(char_to_inset);
+            }
+          }
+        } else {
+          throw new BadItemStructureException();
+        }
+      }
+
+      newItem.description = item.description;
+      newItem.item_weight = item.item_weight;
+      newItem.item_height = item.item_height;
+      newItem.item_length = item.item_length;
+      newItem.item_width = item.item_width;
+
+      itemsToInsert.push(newItem);
+    }
+
+    return itemsToInsert;
   }
 }

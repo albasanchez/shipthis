@@ -1,0 +1,29 @@
+.Receiver h1 {
+  position: relative;
+}
+.receiver-height{
+  height: 100%
+}
+
+.receiver-list-card {
+  margin: 0;
+  padding: 30px;
+}
+
+.header-color th{
+  color:$second-color !important;
+}
+
+.receiver-word{
+  word-break: break-word !important;
+}
+
+.receiver-color {
+  background: $primary-gradient;
+  color: white;
+}
+
+.receiver-footer-color{
+  background: rgb(235, 235, 235);
+  color: white;
+}

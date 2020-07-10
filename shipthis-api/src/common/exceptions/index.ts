@@ -1,3 +1,8 @@
+export { PickupNotFoundException } from './pickup-not-found.exception';
+export { DiscountNotFoundException } from './discount-not-found.exception';
+export { DiscountDeletedException } from './discount-deleted.exception';
+export { DiscountNotRegisteredException } from './discount-not-registered.exception';
+export { InvalidDiscountException } from './invalid-discount.exception';
 export { BlockedUserException } from './blocked-user.exception';
 export { RolNotFoundException } from './rol-not-found.exception';
 export { UserAlreadyRegisteredException } from './user-already-registered.exception';
@@ -11,3 +16,15 @@ export { ItemPriceHistNotFoundException } from './item-price-hist-not-found.exce
 export { OrderPriceHistNotFoundException } from './order-price-hist-not-found.exception';
 export { BadItemStructureException } from './bad-item-structure.exception';
 export { OrdersheetNotFoundException } from './ordersheet-not-found.exception';
+export { POEditorConnectionException } from './poeditor-connection.exception';
+export { WrongRoleTypeAccessException } from './wrong-rote-type-access.exception';
+export { UserNotActiveException } from './user-not-active.exception';
+export { CommercialAllyNotFoundException } from './commercial-ally-not-found.exception';
+export { InvalidAddressException } from './invalid-address.exception';
+export { InvalidReceiverException } from './invalid-receiver.exception';
+export { LocatorConectionException } from './locator-conection.exception';
+export { WarehouseNotFoundException } from './warehouse-not-found.exception';
+export { WarehouseDeletedException } from './warehouse-deleted.exception';
+export { CommercialAllyDeletedException } from './commercial-ally-deleted.exception';
+export { CommentNotFoundException } from './comment-not-found.exception';
+export { NotValidOptionException } from './not-valid-option.exception';

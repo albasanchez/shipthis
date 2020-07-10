@@ -4,22 +4,27 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
-import messages from "./plugins/i18n";
-import VueI18n from "vue-i18n";
+import firebase from "firebase";
+import { firebaseConfig } from "../firebase/fireBaseConfig";
+import VueTheMask from "vue-the-mask";
+import i18n from "./plugins/i18n";
+import Vuesax from "vuesax"; //import dependency
+import "vuesax/dist/vuesax.css"; // import css style
 
-Vue.use(VueI18n);
+Vue.use(Vuesax); // implement Vuesax throughout the application
+
+export const EventBus = new Vue();
+
 Vue.use(Vuelidate);
 
 Vue.config.productionTip = false;
-
-const i18n = new VueI18n({
-  locale: "EN",
-  messages,
-});
-
+Vue.use(VueTheMask);
 new Vue({
   router,
   store,
+  created() {
+    firebase.initializeApp(firebaseConfig);
+  },
   vuetify,
   i18n,
   render: (h) => h(App),

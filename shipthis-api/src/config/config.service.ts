@@ -8,14 +8,12 @@ export class ConfigService {
   constructor(private readonly _appLogger: AppLoggerService) {
     const isDevelopmentEnv = process.env.NODE_ENV !== 'production';
     if (isDevelopmentEnv) {
-      this._appLogger.log('Detected develoment environment');
       const envFilePath = __dirname + '/../../.env';
       const existsPath = fs.existsSync(envFilePath);
       if (!existsPath) {
-        this._appLogger.log('.env file does not exist');
+        this._appLogger.error('.env file does not exist');
         process.exit(0);
       }
-      this._appLogger.log('Reading environment variables from .env file');
       this.envConfig = parse(fs.readFileSync(envFilePath));
     } else {
       this.envConfig = {

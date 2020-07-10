@@ -1,22 +1,20 @@
+import { LanguageType } from './../../userdata/constants/language.enum';
+import { GenderType } from './../../userdata/constants/gender.enum';
 import {
   IsNotEmpty,
   IsString,
   IsOptional,
   IsIn,
   IsEmail,
-  IsDecimal,
   IsBoolean,
+  IsUrl,
 } from 'class-validator';
 
 export class SignupDto {
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
   @IsEmail()
   useremail: string;
-
-  @IsOptional()
-  @IsString()
-  username: string;
 
   @IsNotEmpty()
   @IsString()
@@ -44,19 +42,11 @@ export class SignupDto {
 
   @IsNotEmpty()
   @IsString()
-  @IsIn(['M', 'F', 'O'])
+  @IsIn([GenderType.MALE, GenderType.FEMALE, GenderType.OTHER])
   gender: string;
 
-  @IsOptional()
   @IsNotEmpty()
   @IsString()
-  @IsDecimal()
-  phone_code: string;
-
-  @IsOptional()
-  @IsNotEmpty()
-  @IsString()
-  @IsDecimal()
   phone_number: string;
 
   @IsString()
@@ -65,12 +55,13 @@ export class SignupDto {
 
   @IsNotEmpty()
   @IsString()
-  @IsIn(['es', 'en'])
+  @IsIn([LanguageType.ENGLISH, LanguageType.SPANISH])
   def_language: string;
 
   @IsOptional()
   @IsNotEmpty()
   @IsString()
+  @IsUrl()
   picture_url: string;
 
   @IsBoolean()

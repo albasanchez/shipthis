@@ -1,13 +1,22 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ItemTypeRepository } from './item-type.repository';
-import { ItemTypeController } from './item-type.controller';
 import { ItemTypeService } from './item-type.service';
+import { ItemTypeController } from './item-type.controller';
+import { CharacteristicRepository } from './repositories/characteristic.repository';
+import { ItemPriceHistRepository } from './repositories/item-price-hist.repository';
+import { CharPriceHistRepository } from './repositories/char-price-hist.repository';
 import { AppLoggerModule } from 'src/log/applogger.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ItemTypeRepository]), AppLoggerModule],
-  controllers: [ItemTypeController],
+  imports: [
+    TypeOrmModule.forFeature([
+      CharacteristicRepository,
+      ItemPriceHistRepository,
+      CharPriceHistRepository,
+    ]),
+    AppLoggerModule,
+  ],
   providers: [ItemTypeService],
+  controllers: [ItemTypeController],
 })
 export class ItemTypeModule {}

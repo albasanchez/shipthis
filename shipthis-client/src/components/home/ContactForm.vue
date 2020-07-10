@@ -1,16 +1,13 @@
 <template>
   <v-form class="elevation-3" id="contact-form" ref="form" v-on:submit.prevent>
-    <!--Alerts -->
-    <v-alert v-model="alertSuccess" type="success" dismissible>
-      <strong>{{ $t("contact.successMessage") }}</strong>
-    </v-alert>
-    <v-alert v-model="alertError" type="error" dismissible>
-      <strong>{{$t("contact.errorMessage")}}</strong>
-    </v-alert>
     <v-row>
       <v-col cols="12" align="center" class="text-center secondary--text pa-0">
-        <h2 class="d-inline pr-1">{{ $t("contact.contactTitle") }}</h2>
-        <v-icon class="d-inline secondary--text pl-1 mb-3 pb-3">{{ contactIcons.bolt }}</v-icon>
+        <h2 class="d-inline pr-1 secondary--text">
+          {{ $t("contact.contactTitle") }}
+        </h2>
+        <v-icon class="d-inline secondary--text pl-1 mb-3 pb-3">{{
+          contactIcons.bolt
+        }}</v-icon>
       </v-col>
     </v-row>
     <v-row>
@@ -41,47 +38,82 @@
         @click="onSubmit"
         width="200"
         align="center"
-      >{{ $t("buttons.submit") }}</v-btn>
+        >{{ $t("buttons.submit") }}</v-btn
+      >
     </div>
     <v-row>
       <v-col class="text-center gray--text">
-        <p style="font-size: 15px; color: gray" class="pb-0 mb-0 pt-2">{{ $t("contact.contactInfo") }}</p>
+        <p style="font-size: 15px; color: gray;" class="pb-0 mb-0 pt-2">
+          {{ $t("contact.contactInfo") }}
+        </p>
       </v-col>
     </v-row>
+    <v-snackbar v-model="alertSuccess" top :timeout="timeout" color="success">
+      <strong class="secondary--text">{{
+        $t("contact.successMessage")
+      }}</strong>
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          icon
+          dark
+          text
+          v-bind="attrs"
+          @click="alertNoOrder = false"
+          class="secondary--text"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </template>
+    </v-snackbar>
+    <v-snackbar v-model="alertError" top :timeout="timeout" color="error">
+      <strong>{{ $t("contact.errorMessage") }}</strong>
+      <template v-slot:action="{ attrs }">
+        <v-btn icon dark text v-bind="attrs" @click="alertNoOrder = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-form>
 </template>
 
 <script>
-import axios from "../../services/auth-connector";
+import Repository from "../../services/repositories/repositoryFactory";
+const CommentRepository = Repository.get("comment");
 
 export default {
   name: "ContactForm",
 
-  data: () => ({
+  data: ($v) => ({
     alertSuccess: false,
     alertError: false,
+    timeout: 4000,
     commentRules: [
-      v => !!v || "El comentario no puede estar vacio",
-      v => v.length <= 500 || "El comentario no puede exeder los 500 caracteres"
+      (v) => !!v || $v.$t("errorMessages.input"),
+      (v) => v.length <= 500 || $v.$t("errorMessages.comment"),
     ],
     suggestion: "",
 
     // Strings
     contactIcons: {
-      bolt: "fas fa-bolt"
-    }
+      bolt: "fas fa-bolt",
+    },
   }),
   methods: {
-    onSubmit() {
+    async onSubmit() {
       if (this.$refs.form.validate()) {
-        const comment = { comment: this.suggestion };
-        axios
-          .post("/comment-box/savecomment", comment)
-          .then(() => (this.alertSuccess = true))
-          .catch(() => (this.alertError = true));
+        const comment = {
+          comment: this.suggestion,
+          language: this.$i18n.locale,
+        };
+        try {
+          await CommentRepository.registerComment(comment);
+          this.alertSuccess = true;
+        } catch (e) {
+          this.alertError = true;
+        }
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
