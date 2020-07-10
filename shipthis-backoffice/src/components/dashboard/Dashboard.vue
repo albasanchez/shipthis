@@ -52,6 +52,14 @@ export default {
       },
       {
         id: 4,
+        name: "Commercial Allies",
+        desc: "",
+        icon: "mdi-handshake",
+        route: "CommercialAllies",
+        section: "CommercialAllies"
+      },
+      {
+        id: 5,
         name: "Configuration",
         desc: "",
         icon: "mdi-cog",

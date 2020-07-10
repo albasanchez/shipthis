@@ -1,5 +1,5 @@
 <template>
-  <v-card class="receiver-list-card" >
+  <v-card class="receiver-list-card">
     <v-card-title>
       <v-spacer></v-spacer>
       <v-text-field
@@ -9,7 +9,15 @@
         single-line
         hide-details
       ></v-text-field>
-      <v-btn  :class="$vuetify.breakpoint.xsOnly? 'mt-3' : 'mx-2'" :fab="!$vuetify.breakpoint.xsOnly" dark small :block="$vuetify.breakpoint.xsOnly" color="indigo" @click="actiavateDialog('CREATE')">
+      <v-btn
+        :class="$vuetify.breakpoint.xsOnly ? 'mt-3' : 'mx-2'"
+        :fab="!$vuetify.breakpoint.xsOnly"
+        dark
+        small
+        :block="$vuetify.breakpoint.xsOnly"
+        color="indigo"
+        @click="actiavateDialog('CREATE')"
+      >
         <v-icon dark>mdi-plus</v-icon>
       </v-btn>
     </v-card-title>
@@ -28,13 +36,15 @@
       class="header-color"
     >
       <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" @click="actiavateDialog('UPDATE',item)"
+        <v-icon small class="mr-2" @click="actiavateDialog('UPDATE', item)"
           >mdi-pencil</v-icon
         >
-        <v-icon small @click="actiavateDialog('DELETE',item)">mdi-delete</v-icon>
+        <v-icon small @click="actiavateDialog('DELETE', item)"
+          >mdi-delete</v-icon
+        >
       </template>
     </v-data-table>
-    <ReceiverModal ref="receiver_modal" @loadReceivers="loadReceivers()"/>
+    <ReceiverModal ref="receiver_modal" @loadReceivers="loadReceivers()" />
   </v-card>
 </template>
 
@@ -55,8 +65,8 @@ export default {
     search: "",
   }),
   methods: {
-    actiavateDialog(action, receiver){
-       switch (action) {
+    actiavateDialog(action, receiver) {
+      switch (action) {
         case "CREATE":
           return this.$refs.receiver_modal.activateDialog(action);
         case "UPDATE":
@@ -66,13 +76,12 @@ export default {
         default:
           break;
       }
-      
     },
     async loadReceivers() {
       await ReceiverRepository.getReceivers(this.userdata.user_id)
         .then((response) => {
           this.receivers = response;
-          this.loading = false; 
+          this.loading = false;
         })
         .catch(() => {
           this.loading = false;
@@ -94,7 +103,11 @@ export default {
           value: "phone_number",
         },
         { text: this.$t("receivers.receiverEmail"), value: "email" },
-        { text: this.$t("receivers.actions"), value: "actions", sortable: false },
+        {
+          text: this.$t("receivers.actions"),
+          value: "actions",
+          sortable: false,
+        },
       ];
     },
   },

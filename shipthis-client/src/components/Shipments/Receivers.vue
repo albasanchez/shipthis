@@ -10,7 +10,8 @@
         :small="$vuetify.breakpoint.smAndDown"
         elevation="0"
         @click="addReceiver()"
-      >{{ $t("newOrder.AddReceiver") }}</v-btn>
+        >{{ $t("newOrder.AddReceiver") }}</v-btn
+      >
       <ReceiverModal ref="addreceiver"></ReceiverModal>
     </v-row>
     <v-row justify="center">
@@ -26,7 +27,8 @@
             v-bind="attrs"
             v-on="on"
             elevation="0"
-          >{{ $t("newOrder.FrequentReceiver") }}</v-btn>
+            >{{ $t("newOrder.FrequentReceiver") }}</v-btn
+          >
         </template>
         <v-card>
           <v-card-title>
@@ -50,12 +52,16 @@
                   </div>
                 </v-col>
               </v-row>
-              <h4 v-if="receiversdisabled == true">{{ $t("newOrder.ReceiverModalEmpty") }}</h4>
+              <h4 v-if="receiversdisabled == true">
+                {{ $t("newOrder.ReceiverModalEmpty") }}
+              </h4>
             </v-container>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn text class="red--text" @click="dialog = false">{{ $t("newOrder.cancelBtn") }}</v-btn>
+            <v-btn text class="red--text" @click="dialog = false">{{
+              $t("newOrder.cancelBtn")
+            }}</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>

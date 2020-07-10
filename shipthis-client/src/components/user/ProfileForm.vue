@@ -14,7 +14,7 @@
           <v-select
             v-model="userdata.def_language"
             :items="default_language_items"
-            :rules="[v => !!v || 'Selecciona un lenguaje por defecto.']"
+            :rules="[(v) => !!v || 'Selecciona un lenguaje por defecto.']"
             :label="$t('labels.defaultLanguage')"
             required
           ></v-select>
@@ -153,24 +153,25 @@ export default {
 
     // Rules
     emailRules: [
-      v => !!v || "El E-mail es obligatorio",
-      v => /.+@.+\..+/.test(v) || "El E-mail debe ser válido"
+      (v) => !!v || "El E-mail es obligatorio",
+      (v) => /.+@.+\..+/.test(v) || "El E-mail debe ser válido",
     ],
-    firstNameRules: [v => !!v || "El nombre es obligatorio"],
-    lastNameRules: [v => !!v || "El apellido es obligatorio"],
+    firstNameRules: [(v) => !!v || "El nombre es obligatorio"],
+    lastNameRules: [(v) => !!v || "El apellido es obligatorio"],
     phoneCodeRules: [
-      v =>
+      (v) =>
         (v && v.length >= 2) ||
-        "El código de área debe tener al menos 2 dígitos."
+        "El código de área debe tener al menos 2 dígitos.",
     ],
     phoneNumberRules: [
-      v => (v && v.length == 7) || "El número de teléfono debe tener 7 dígitos."
+      (v) =>
+        (v && v.length == 7) || "El número de teléfono debe tener 7 dígitos.",
     ],
     password: "",
     rules: {
-      required: value => !!value || "La contraseña es obligatoria.",
-      min: v => v.length >= 6 || "Al menos 6 caracteres"
-    }
+      required: (value) => !!value || "La contraseña es obligatoria.",
+      min: (v) => v.length >= 6 || "Al menos 6 caracteres",
+    },
   }),
   methods: {
     validate() {
@@ -181,11 +182,11 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation();
-    }
+    },
   },
   beforeMount() {
     this.userdata = this.$store.getters["users/getUser"];
-  }
+  },
 };
 </script>
 

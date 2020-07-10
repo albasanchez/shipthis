@@ -23,7 +23,7 @@ import ServiceCard from "./ServiceCard.vue";
 export default {
   name: "Services",
   components: {
-    ServiceCard
+    ServiceCard,
   },
   data: () => ({
     services: [
@@ -32,12 +32,12 @@ export default {
         id: 2,
         name: "service2",
         desc: "service2desc",
-        img: "service-home.png"
+        img: "service-home.png",
       },
       { id: 3, name: "service3", desc: "service3desc", img: "service-PC.png" },
-      { id: 4, name: "service4", desc: "service4desc", img: "service-map.png" }
-    ]
-  })
+      { id: 4, name: "service4", desc: "service4desc", img: "service-map.png" },
+    ],
+  }),
 };
 </script>
 

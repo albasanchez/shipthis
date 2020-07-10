@@ -9,8 +9,8 @@ import ReceiverList from "../components/user/ReceiverList.vue";
 export default {
   name: "Receivers",
   components: {
-    ReceiverList
-  }
+    ReceiverList,
+  },
 };
 </script>
 <style lang="scss"></style>

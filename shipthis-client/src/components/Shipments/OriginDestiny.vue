@@ -3,7 +3,12 @@
     <h4>{{ $t("newOrder.originAndDestinyTitle") }}</h4>
     <v-row justify="center">
       <v-col cols="12" md="12">
-        <v-dialog v-model="dialogOrigin" persistent scrollable max-width="300px">
+        <v-dialog
+          v-model="dialogOrigin"
+          persistent
+          scrollable
+          max-width="300px"
+        >
           <template v-slot:activator="{ on, attrs }">
             <v-row justify="center">
               <v-btn
@@ -13,7 +18,8 @@
                 dark
                 v-bind="attrs"
                 v-on="on"
-              >{{ $t("newOrder.OriginQuestion") }}</v-btn>
+                >{{ $t("newOrder.OriginQuestion") }}</v-btn
+              >
             </v-row>
           </template>
           <v-card>
@@ -33,19 +39,21 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn text class="red--text" @click="dialogOrigin = false">
-                {{
-                $t("newOrder.cancelBtn")
-                }}
+                {{ $t("newOrder.cancelBtn") }}
               </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
         <p class="order-details" v-if="Information.OriginOffice != 0">
-          <span class="font-weight-bold">{{ OriginName }} | {{OriginDirection}}</span>
+          <span class="font-weight-bold"
+            >{{ OriginName }} | {{ OriginDirection }}</span
+          >
         </p>
       </v-col>
     </v-row>
-    <h4 class="font-weight-light ma-0">{{ $t("newOrder.DestinationQuestion") }}</h4>
+    <h4 class="font-weight-light ma-0">
+      {{ $t("newOrder.DestinationQuestion") }}
+    </h4>
     <v-row align="center" justify="center">
       <v-radio-group row v-model="picked" :rules="rules.item">
         <v-radio :label="$t('newOrder.office')" value="1"></v-radio>
@@ -55,7 +63,12 @@
     <!--Office-->
     <div v-if="picked == 1">
       <v-row justify="center">
-        <v-dialog v-model="dialogDestiny" persistent scrollable max-width="300px">
+        <v-dialog
+          v-model="dialogDestiny"
+          persistent
+          scrollable
+          max-width="300px"
+        >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               color="primary"
@@ -64,7 +77,8 @@
               dark
               v-bind="attrs"
               v-on="on"
-            >{{ $t("newOrder.destiny") }}</v-btn>
+              >{{ $t("newOrder.destiny") }}</v-btn
+            >
           </template>
           <v-card>
             <v-card-text>
@@ -83,16 +97,16 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn text class="red--text" @click="dialogDestiny = false">
-                {{
-                $t("newOrder.cancelBtn")
-                }}
+                {{ $t("newOrder.cancelBtn") }}
               </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-row>
-      <p class="order-details" v-if="Information.DestinyOffice != 0 ">
-        <span class="font-weight-bold">{{ DestinyName }} | {{DestinyDirection}} </span>
+      <p class="order-details" v-if="Information.DestinyOffice != 0">
+        <span class="font-weight-bold"
+          >{{ DestinyName }} | {{ DestinyDirection }}
+        </span>
       </p>
     </div>
 
@@ -152,9 +166,9 @@ export default {
     dialogOrigin: false,
     dialogDestiny: false,
     OriginName: "",
-    OriginDirection:"",
+    OriginDirection: "",
     DestinyName: "",
-    DestinyDirection : "",
+    DestinyDirection: "",
     OOffice: "",
     Information: {
       DestinyOffice: 0,

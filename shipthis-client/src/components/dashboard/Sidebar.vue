@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import jwt from '../../common/jwt.service';
+import jwt from "../../common/jwt.service";
 
 export default {
   data() {
@@ -64,28 +64,28 @@ export default {
         { title: "historial", icon: "mdi-history", route: "ShippingHistory" },
         { title: "newOrder", icon: "local_shipping", route: "NewOrder" },
         { title: "receivers", icon: "mdi-account-group", route: "Receivers" },
-        { title: "signOff", icon: "cancel", route: "" }
+        { title: "signOff", icon: "cancel", route: "" },
       ],
       mini: true,
       right: true,
       expandOnHover: true,
-      minimizeIcon: "mdi-chevron-left"
+      minimizeIcon: "mdi-chevron-left",
     };
   },
   methods: {
     goRoute(route) {
       if (route == "") {
         jwt.destroyToken();
-        this.$store.dispatch('users/reset');
+        this.$store.dispatch("users/reset");
         this.$router.push("/");
       } else {
         this.$router.push("/" + route);
       }
-    }
+    },
   },
   beforeMount() {
     this.userdata = this.$store.getters["users/getUser"].person;
-  }
+  },
 };
 </script>
 <style lang="scss">

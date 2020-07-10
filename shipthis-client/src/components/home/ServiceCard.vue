@@ -18,19 +18,19 @@ export default {
   props: {
     serviceName: String,
     serviceDescription: String,
-    serviceIcon: String
+    serviceIcon: String,
   },
   methods: {
-    resolve_img_url: function(path) {
+    resolve_img_url: function (path) {
       let images = require.context(
         "../../assets/home/",
         false,
         /\.png$|\.jpg$/
       );
       return images("./" + path);
-    }
+    },
   },
-  data: () => ({})
+  data: () => ({}),
 };
 </script>
 

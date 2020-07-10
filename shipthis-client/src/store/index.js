@@ -10,7 +10,7 @@ export default new Vuex.Store({
   modules, //all modules are automatically imported
   state: {
     idToken: null,
-    user: null
+    user: null,
   },
   mutations: {
     login(state, { token, user }) {
@@ -22,17 +22,17 @@ export default new Vuex.Store({
       state.idToken = null;
       state.user = null;
       jwt.destroyToken();
-    }
+    },
   },
   actions: {
     logout({ commit }) {
       commit("logout");
       //resets state of all the modules
-      Object.keys(modules).forEach(moduleName => {
+      Object.keys(modules).forEach((moduleName) => {
         commit(`${moduleName}/reset`);
       });
-    }
+    },
   },
   getters: {},
-  plugins: [createPersistedState({ paths: ["users"] })]
+  plugins: [createPersistedState({ paths: ["users"] })],
 });

@@ -44,11 +44,11 @@ import LoginForm from "../auth/Login.vue";
 export default {
   name: "Us",
   data: () => ({
-    activateLogin: false
+    activateLogin: false,
   }),
   components: {
-    LoginForm
-  }
+    LoginForm,
+  },
 };
 </script>
 

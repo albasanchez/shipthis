@@ -3,12 +3,15 @@
     <Navbar />
     <v-container fluid class="ma-0 pa-0 page-content">
       <router-view class="mt-12 page-content"></router-view>
-      <FABTelegram v-if="!$route.meta.hideBasicComponents" :loggedIn = "loggedIn" />
+      <FABTelegram
+        v-if="!$route.meta.hideBasicComponents"
+        :loggedIn="loggedIn"
+      />
     </v-container>
     <Footer />
     <Sidebar app id="Sidebar" v-if="loggedIn && $vuetify.breakpoint.mdAndUp">
-      
-    /></Sidebar>
+      /></Sidebar
+    >
   </v-app>
 </template>
 

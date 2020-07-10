@@ -4,7 +4,7 @@
 const requireModule = require.context(".", false, /\.store\.js$/);
 const modules = {};
 
-requireModule.keys().forEach(filename => {
+requireModule.keys().forEach((filename) => {
   // create the module name from fileName
   // remove the store.js extension
   const moduleName = filename.replace(/(\.\/|\.store\.js)/g, "");

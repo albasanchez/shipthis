@@ -57,7 +57,7 @@ export class CommercialAllyRepository extends Repository<CommercialAlly> {
 
    async deleteCommercialAlly(commercial_ally_key: string): Promise<any> {
        
-    this.update(commercial_ally_key, {status: CommercialAllyStatus.DELETED})
+    await this.update(commercial_ally_key, {status: CommercialAllyStatus.DELETED})
 
     return  { response: 'Commercial Ally has been deleted sucessfully' };
  } 

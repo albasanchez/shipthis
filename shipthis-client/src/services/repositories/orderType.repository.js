@@ -9,5 +9,5 @@ export default {
       jwt.getAuthHeaderToken()
     );
     return response;
-  }
+  },
 };

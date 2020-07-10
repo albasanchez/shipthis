@@ -87,6 +87,34 @@ const routes = [
     },
   },
   {
+    path: "/CommercialAllies",
+    name: "CommercialAlliesView",
+    component: () => import("../views/CommercialAlliesView.vue"),
+    meta: {
+      requiresAuth: true,
+      hideBasicComponents: false,
+    },
+  },
+  {
+    path: "/CommercialAllyInfo",
+    name: "CommercialAllyInfo",
+    component: () => import("../views/CommercialAllyInfo.vue"),
+     meta: {
+      requiresAuth: true,
+      hideBasicComponents: false,
+    },
+  },
+  {
+    path: "/CommercialAllies/pickup/:id",
+    name: "Pickup",
+    props: true,
+    component: () => import("../views/Tracking.vue"),
+    meta: {
+      requiresAuth: true,
+      hideBasicComponents: false,
+    },
+  },
+  {
     path: "*",
     redirect: "/",
   }

@@ -4,21 +4,30 @@
       <v-col cols="12" md="8" align="center">
         <v-stepper v-model="e1">
           <v-stepper-header class="third accent-1">
-            <v-stepper-step :complete="e1 > 1" step="1" :class="$vuetify.breakpoint.smAndDown ? 'pa-2' : ''"
+            <v-stepper-step
+              :complete="e1 > 1"
+              step="1"
+              :class="$vuetify.breakpoint.smAndDown ? 'pa-2' : ''"
               >{{ $t("newOrder.originAndDestinyTitle") }}
             </v-stepper-step>
 
             <v-divider></v-divider>
 
-            <v-stepper-step :complete="e1 > 2" step="2" :class="$vuetify.breakpoint.smAndDown ? 'pa-2' : ''">{{
-              $t("newOrder.itemConfigurationTitle")
-            }}</v-stepper-step>
+            <v-stepper-step
+              :complete="e1 > 2"
+              step="2"
+              :class="$vuetify.breakpoint.smAndDown ? 'pa-2' : ''"
+              >{{ $t("newOrder.itemConfigurationTitle") }}</v-stepper-step
+            >
 
             <v-divider></v-divider>
 
-            <v-stepper-step :complete="e1 > 3" step="3" :class="$vuetify.breakpoint.smAndDown ? 'pa-2' : ''">{{
-              $t("newOrder.orderInformation")
-            }}</v-stepper-step>
+            <v-stepper-step
+              :complete="e1 > 3"
+              step="3"
+              :class="$vuetify.breakpoint.smAndDown ? 'pa-2' : ''"
+              >{{ $t("newOrder.orderInformation") }}</v-stepper-step
+            >
           </v-stepper-header>
 
           <v-stepper-items>
@@ -58,10 +67,10 @@ export default {
     message: "newOrder.CalculatePrices",
     order_details: {},
     invoice: {
-      receiver:{
-        fullname:"",
-        email:""
-      }
+      receiver: {
+        fullname: "",
+        email: "",
+      },
     },
   }),
   components: {

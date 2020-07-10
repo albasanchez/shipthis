@@ -18,5 +18,5 @@ const repositories = {
   receiver: ReceiverRepository,
 };
 export default {
-  get: name => repositories[name]
+  get: (name) => repositories[name],
 };

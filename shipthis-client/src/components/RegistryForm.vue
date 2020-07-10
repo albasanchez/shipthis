@@ -300,7 +300,7 @@ export default {
       def_language: null,
       receive_notifications: false,
     },
-    timeout:4000,
+    timeout: 4000,
     loading: false,
     alertError: false,
     valid: true,

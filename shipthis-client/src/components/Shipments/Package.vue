@@ -1,17 +1,27 @@
 <template>
   <div>
-    <v-expansion-panels v-model="item.item_id" v-for="(item, index) in items" :key="index">
+    <v-expansion-panels
+      v-model="item.item_id"
+      v-for="(item, index) in items"
+      :key="index"
+    >
       <v-expansion-panel class="mb-2">
-        <v-expansion-panel-header :class="index == flag && readonly==false ? 'red--text' : ''">
+        <v-expansion-panel-header
+          :class="index == flag && readonly == false ? 'red--text' : ''"
+        >
           <v-col cols="8">
             <v-row>
-            <p class="font-weight-bold">{{ $t("labels.package") }}:</p>
-            <span class="pl-2"> {{item.description }}</span> 
-          
+              <p class="font-weight-bold">{{ $t("labels.package") }}:</p>
+              <span class="pl-2"> {{ item.description }}</span>
             </v-row>
           </v-col>
           <v-col cols="4" align="end">
-            <v-btn small class="error" @click="removeItem(index)" v-if="readonly == false">
+            <v-btn
+              small
+              class="error"
+              @click="removeItem(index)"
+              v-if="readonly == false"
+            >
               <v-icon class="mr-1 mt-0">mdi-delete</v-icon>
             </v-btn>
           </v-col>

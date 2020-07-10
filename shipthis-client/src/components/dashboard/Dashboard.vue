@@ -38,7 +38,7 @@ import DashboardCard from "./DashboardCard.vue";
 export default {
   name: "Dashboard",
   components: {
-    DashboardCard
+    DashboardCard,
   },
   data: () => ({
     userdata: {},
@@ -49,34 +49,34 @@ export default {
         name: "myProfile",
         desc: "myProfileDesc",
         img: "dash-user.png",
-        route: "UserProfile"
+        route: "UserProfile",
       },
       {
         id: 2,
         name: "historial",
         desc: "historialDesc",
         img: "dash-historial.png",
-        route: "ShippingHistory"
+        route: "ShippingHistory",
       },
       {
         id: 3,
         name: "newOrder",
         desc: "newOrderDesc",
         img: "dash-order.png",
-        route: "NewOrder"
+        route: "NewOrder",
       },
       {
         id: 4,
         name: "receivers",
         desc: "receiversDesc",
         img: "dash-contact.png",
-        route: "Receivers"
-      }
-    ]
+        route: "Receivers",
+      },
+    ],
   }),
   mounted() {
     this.userdata = this.$store.getters["users/getUser"].person;
-  }
+  },
 };
 </script>
 

@@ -15,7 +15,11 @@
             ></v-select>
           </v-col>
         </v-row>
-        <div class="form-row" v-for="(typeItem, i) in order_types_list" :key="i">
+        <div
+          class="form-row"
+          v-for="(typeItem, i) in order_types_list"
+          :key="i"
+        >
           <v-row
             class="pa-0 ma-0"
             v-if="
@@ -57,26 +61,62 @@
         <Receivers></Receivers>
       </v-container>
 
-      <v-snackbar v-model="snackbarValidateDirection" type="error" top timeout="5000" color="red">
+      <v-snackbar
+        v-model="snackbarValidateDirection"
+        type="error"
+        top
+        timeout="5000"
+        color="red"
+      >
         {{ $t("newOrder.snackValidateDirection") }}
         <template v-slot:action="{ attrs }">
-          <v-btn dark icon color="white" v-bind="attrs" @click="snackbarValidateDirection = false">
+          <v-btn
+            dark
+            icon
+            color="white"
+            v-bind="attrs"
+            @click="snackbarValidateDirection = false"
+          >
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </template>
       </v-snackbar>
-      <v-snackbar v-model="snackbarOriginDestination" type="error" top timeout="5000" color="red">
+      <v-snackbar
+        v-model="snackbarOriginDestination"
+        type="error"
+        top
+        timeout="5000"
+        color="red"
+      >
         {{ $t("newOrder.snackOriginDestinationMsg") }}
         <template v-slot:action="{ attrs }">
-          <v-btn dark icon color="white" v-bind="attrs" @click="snackbarOriginDestination = false">
+          <v-btn
+            dark
+            icon
+            color="white"
+            v-bind="attrs"
+            @click="snackbarOriginDestination = false"
+          >
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </template>
       </v-snackbar>
-      <v-snackbar v-model="snackbarReceiver" type="error" top timeout="5000" color="red">
+      <v-snackbar
+        v-model="snackbarReceiver"
+        type="error"
+        top
+        timeout="5000"
+        color="red"
+      >
         {{ $t("newOrder.snackReceiver") }}
         <template v-slot:action="{ attrs }">
-          <v-btn dark icon color="white" v-bind="attrs" @click="snackbarReceiver = false">
+          <v-btn
+            dark
+            icon
+            color="white"
+            v-bind="attrs"
+            @click="snackbarReceiver = false"
+          >
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </template>
@@ -90,7 +130,8 @@
           :small="$vuetify.breakpoint.smAndDown"
           class="red--text"
           @click="goRoute('HomeUser')"
-        >{{ $t("newOrder.cancelBtn") }}</v-btn>
+          >{{ $t("newOrder.cancelBtn") }}</v-btn
+        >
       </v-col>
       <v-col align="end">
         <v-btn
@@ -157,7 +198,7 @@ export default {
         this.validate(data.Direction);
       } else {
         this.order_details.destination_office = data.DestinyOffice;
-        this.order_details.destination_address = null
+        this.order_details.destination_address = null;
         this.validate(null);
       }
     });
@@ -206,16 +247,18 @@ export default {
         if (direction != null && this.order_details.OriginOffice != 0) {
           this.verificateDirection(direction);
         } else {
-          if (this.order_details.destination_office != 0 && this.order_details.origin_office != 0) {
+          if (
+            this.order_details.destination_office != 0 &&
+            this.order_details.origin_office != 0
+          ) {
             this.actualstep = 2;
             EventBus.$emit("next-step", this.actualstep);
             EventBus.$emit("SendInformation-OriginDestiny", this.order_details);
-          }
-          else {
-             this.snackbarOriginDestination = true;
+          } else {
+            this.snackbarOriginDestination = true;
           }
         }
-        } else if (
+      } else if (
         (this.order_details.origin_office == 0 ||
           this.order_details.destination_office == 0) &&
         (this.order_details.destination_address != null ||
@@ -226,8 +269,7 @@ export default {
         this.order_details.destination_office == 0
       ) {
         this.snackbarOriginDestination = true;
-      } 
-      else if (this.order_details.receiver_id == null) {
+      } else if (this.order_details.receiver_id == null) {
         this.snackbarReceiver = true;
       }
     },

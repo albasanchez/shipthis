@@ -3,9 +3,7 @@
     <h4>{{ $t("newOrder.itemConfiguration") }}</h4>
     <v-container fluid class="text-center form-container">
       <v-btn @click="addItem()" color="primary" outlined class="mb-2">
-        {{
-        $t("newOrder.addItemBtn")
-        }}
+        {{ $t("newOrder.addItemBtn") }}
       </v-btn>
       <div class="order-items" v-if="items.length > 0">
         <v-form ref="form1">
@@ -15,7 +13,11 @@
     </v-container>
     <v-row>
       <v-col align="start">
-        <v-btn class="primary" :small="$vuetify.breakpoint.smAndDown" @click="emitNextStep(0)">
+        <v-btn
+          class="primary"
+          :small="$vuetify.breakpoint.smAndDown"
+          @click="emitNextStep(0)"
+        >
           <v-icon class="mr-1 mt-0">mdi-chevron-left</v-icon>
           <p class="mt-3 hidden-sm-and-down">{{ $t("newOrder.backBtn") }}</p>
         </v-btn>
@@ -26,10 +28,15 @@
           class="red--text"
           :small="$vuetify.breakpoint.smAndDown"
           @click="goRoute('HomeUser')"
-        >{{ $t("newOrder.cancelBtn") }}</v-btn>
+          >{{ $t("newOrder.cancelBtn") }}</v-btn
+        >
       </v-col>
       <v-col align="end">
-        <v-btn class="primary" :small="$vuetify.breakpoint.smAndDown" @click="emitNextStep(1)">
+        <v-btn
+          class="primary"
+          :small="$vuetify.breakpoint.smAndDown"
+          @click="emitNextStep(1)"
+        >
           <p class="mt-3 hidden-sm-and-down">{{ $t("newOrder.nextBtn") }}</p>
           <v-icon>mdi-chevron-right</v-icon>
         </v-btn>
@@ -78,8 +85,7 @@ export default {
               this.items[i].item_width = parseFloat(this.items[i].item_width);
             }
             EventBus.$emit("packages", this.items);
-          }
-          else {
+          } else {
             EventBus.$emit("validation", this.items);
           }
         }

@@ -56,7 +56,10 @@
       class="ma-0"
       width="750"
     >
-      <LoginForm :activateLogin="activateLogin" @update="updateDialog"></LoginForm>
+      <LoginForm
+        :activateLogin="activateLogin"
+        @update="updateDialog"
+      ></LoginForm>
     </v-dialog>
   </div>
 </template>
@@ -86,12 +89,12 @@ export default {
   components: {
     LoginForm,
   },
-  created(){
-    this.fetchData()
+  created() {
+    this.fetchData();
   },
   watch: {
     // call again the method if the route changes
-    '$route': 'fetchData'
+    $route: "fetchData",
   },
   methods: {
     goRoute(route) {
@@ -100,14 +103,14 @@ export default {
     loginDialog(activate) {
       this.activateLogin = activate;
     },
-    updateDialog(newData){
+    updateDialog(newData) {
       this.activateLogin = newData;
-      this.userLoggedIn = true
+      this.userLoggedIn = true;
     },
-    fetchData(){
+    fetchData() {
       let res = this.$store.getters["users/getUser"];
       this.userLoggedIn = res.user_id != null;
-    }
+    },
   },
 };
 </script>

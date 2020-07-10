@@ -19,10 +19,10 @@ export default {
     name: String,
     description: String,
     icon: String,
-    route: String
+    route: String,
   },
   methods: {
-    resolve_img_url: function(path) {
+    resolve_img_url: function (path) {
       let images = require.context(
         "../../assets/dashboard/",
         false,
@@ -32,9 +32,9 @@ export default {
     },
     goRoute(route) {
       this.$router.push("/" + route);
-    }
+    },
   },
-  data: () => ({})
+  data: () => ({}),
 };
 </script>
 

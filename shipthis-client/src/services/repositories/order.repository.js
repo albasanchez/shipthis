@@ -1,7 +1,7 @@
 import conn from "../api-connector";
 import jwt from "../../common/jwt.service";
 const resource = "/ordersheet";
-const resource2 = "/discount"
+const resource2 = "/discount";
 
 export default {
   async searchOrderDetail(orderId) {
@@ -19,36 +19,36 @@ export default {
     );
     return response;
   },
-  async validateDirection(address){
+  async validateDirection(address) {
     let response = await conn.post(
       `${resource}/address-validation`,
       address,
-      jwt.getAuthHeaderToken()  
+      jwt.getAuthHeaderToken()
     );
     return response;
   },
-  async calculatePrices(order){
+  async calculatePrices(order) {
     let response = await conn.post(
       `${resource}/calculate-order`,
       order,
-      jwt.getAuthHeaderToken()  
+      jwt.getAuthHeaderToken()
     );
     return response;
   },
-  async registerOrder(order){
+  async registerOrder(order) {
     let response = await conn.post(
       `${resource}/register-order`,
       order,
-      jwt.getAuthHeaderToken()  
+      jwt.getAuthHeaderToken()
     );
     return response;
   },
-  async UserDiscounts(email){
+  async UserDiscounts(email) {
     let response = await conn.post(
       `${resource2}/avaliable-discounts`,
       email,
-      jwt.getAuthHeaderToken()  
+      jwt.getAuthHeaderToken()
     );
     return response;
-  }
+  },
 };

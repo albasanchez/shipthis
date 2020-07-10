@@ -50,11 +50,16 @@ export default {
       { id: "4", name: "Emails", link: "Emails" },
       {
         id: "5",
+        name: "Allies",
+        link: "CommercialAllies"
+      },
+      {
+        id: "6",
         name: "Configuration",
         link: "Configuration"
       },
       {
-        id: "6",
+        id: "7",
         name: "Sign Out",
         link: ""
       }

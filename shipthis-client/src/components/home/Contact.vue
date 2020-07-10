@@ -12,9 +12,9 @@ import ContactForm from "./ContactForm.vue";
 export default {
   name: "Contact",
   components: {
-    ContactForm
+    ContactForm,
   },
-  data: () => ({})
+  data: () => ({}),
 };
 </script>
 

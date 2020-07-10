@@ -22,8 +22,8 @@ export default {
   },
   beforeMount() {
     let res = this.$store.getters["users/getUser"];
-    this.loggedIn = !!res.user_id
-  }
+    this.loggedIn = !!res.user_id;
+  },
   // computed: mapState({
   //   loggedIn: state => !!state.user
   // })

@@ -10,7 +10,7 @@ export default {
     );
     return response;
   },
-  async createReceiver(receiver){
+  async createReceiver(receiver) {
     let response = await conn.post(
       `${resource}/create-receiver`,
       receiver,
@@ -18,7 +18,7 @@ export default {
     );
     return response;
   },
-  async updateReceiver(receiverId,receiver) {
+  async updateReceiver(receiverId, receiver) {
     let response = await conn.patch(
       `${resource}/update-receiver/${receiverId}`,
       receiver,
