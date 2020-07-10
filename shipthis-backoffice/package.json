@@ -5,14 +5,18 @@
   "scripts": {
     "serve": "vue-cli-service serve --port 8085",
     "build": "vue-cli-service build",
+    "postinstall": "npm run build",
+    "start": "node server.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@mdi/font": "^5.3.45",
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
+    "express": "^4.17.1",
     "mapbox-gl": "^1.11.1",
     "moment": "^2.27.0",
+    "server-static": "^2.0.5",
     "v-money": "^0.8.1",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",

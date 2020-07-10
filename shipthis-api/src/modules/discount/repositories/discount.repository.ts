@@ -10,39 +10,39 @@ export class DiscountRepository extends Repository<Discount> {
   }
 
   async getActiveDiscounts(): Promise<Discount[]> {
-    return this.find({ where: { status: DiscountStatus.ACTIVE } }); 
+    return this.find({ where: { status: DiscountStatus.ACTIVE } });
   }
 
   async getDiscounts(): Promise<Discount[]> {
-    return this.find(); 
+    return this.find();
   }
 
   async findDiscountById(id: number): Promise<Discount> {
     return this.findOne({ where: { discount_id: id } });
   }
 
-  async createDiscount(newDiscount: UpdateDiscountDto) : Promise<any> {
-
+  async createDiscount(newDiscount: UpdateDiscountDto): Promise<any> {
     const discount: Discount = new Discount();
 
-      discount.name = newDiscount.name;
-      discount.percentage = newDiscount.percentage;
-      discount.status = DiscountStatus.ACTIVE;
-    
+    discount.name = newDiscount.name;
+    discount.percentage = newDiscount.percentage;
+    discount.status = DiscountStatus.ACTIVE;
+
     return this.save(discount);
   }
 
-  async updateDiscount(id: number, newDiscount: UpdateDiscountDto): Promise<any> {
-       
-    this.update(id, newDiscount)
+  async updateDiscount(
+    id: number,
+    newDiscount: UpdateDiscountDto,
+  ): Promise<any> {
+    this.update(id, newDiscount);
 
-    return  { response: 'Discount has been updated sucessfully' };
- }
+    return { response: 'Discount has been updated sucessfully' };
+  }
 
   async deleteDiscount(id: number): Promise<any> {
-   
-    this.update(id, {status: DiscountStatus.DELETED})
+    this.update(id, { status: DiscountStatus.DELETED });
 
-    return  { response: 'Discount has been deleted sucessfully' };
- } 
+    return { response: 'Discount has been deleted sucessfully' };
+  }
 }

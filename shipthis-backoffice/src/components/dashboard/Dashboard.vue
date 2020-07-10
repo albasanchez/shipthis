@@ -66,6 +66,14 @@ export default {
         route: "Configuration",
         section: "Configuration"
       },
+       {
+        id: 6,
+        name: "Discounts",
+        desc: "",
+        icon: "mdi-sale",
+        route: "Discounts",
+        section: "Discounts"
+      },
     ],
   }),
   components: {

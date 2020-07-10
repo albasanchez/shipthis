@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { OrderPriceHist} from './entities/order-price-hist.entity';
 import { OrderType } from './entities/order-type.entity';
-import { OrderTypeStatus } from './constants/order-type-status.enum';
 import { OrderTypeRepository } from './repositories/order-type.repository';
 import { OrderPriceHistRepository } from './repositories/order-price-hist.repository';
 import { AppLoggerService } from 'src/log/applogger.service';
@@ -23,20 +21,28 @@ export class OrderTypeService {
     return await this._orderTypeRepository.getAllActiveOrdertypes();
   }
 
-  async updateOrderTypeHist(newRegister: UpdateOrderTypeHistDto): Promise<UpdateOrderTypeHistDto> {
+  async updateOrderTypeHist(
+    newRegister: UpdateOrderTypeHistDto,
+  ): Promise<UpdateOrderTypeHistDto> {
+    this._appLogger.log(
+      'Handling New Request: Update Order Type History Service',
+    );
 
-    this._appLogger.log('Handling New Request: Update Order Type History Service');
+    const order_type: OrderType = await this._orderTypeRepository.getOrderTypeById(
+      newRegister.id,
+    );
 
-    const order_type: OrderType = await this._orderTypeRepository.getOrderTypeById(newRegister.id);
-
-    if(!order_type) {
+    if (!order_type) {
       throw new OrderTypeNotFoundException();
     }
 
-    const newPriceRegister = this._orderTypeHistRepository.updateHistory(newRegister, order_type);
+    const newPriceRegister = this._orderTypeHistRepository.updateHistory(
+      newRegister,
+      order_type,
+    );
 
     this._appLogger.log('Order Type History has been updated');
 
     return newPriceRegister;
- } 
+  }
 }

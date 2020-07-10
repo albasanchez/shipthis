@@ -1,4 +1,4 @@
 export enum WarehouseStatus {
-    ACTIVE = 'ACTIVE',
-    DELETED = 'DELETED',
-  }
+  ACTIVE = 'ACTIVE',
+  DELETED = 'DELETED',
+}

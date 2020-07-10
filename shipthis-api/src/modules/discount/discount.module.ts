@@ -16,7 +16,7 @@ import { EmailModule } from '../email/email.module';
       UserDataRepository,
     ]),
     AppLoggerModule,
-    EmailModule
+    EmailModule,
   ],
   providers: [DiscountService],
   controllers: [DiscountController],

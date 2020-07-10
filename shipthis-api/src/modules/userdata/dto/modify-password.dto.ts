@@ -1,7 +1,6 @@
-import { IsNotEmpty, IsString, IsEmail, IsNumber, IsInt } from 'class-validator';
+import { IsNotEmpty, IsString, IsInt } from 'class-validator';
 
 export class ModifyPasswordDTO {
-
   @IsNotEmpty()
   @IsInt()
   user_id: number;
@@ -13,5 +12,4 @@ export class ModifyPasswordDTO {
   @IsNotEmpty()
   @IsString()
   new_password: string;
-
 }

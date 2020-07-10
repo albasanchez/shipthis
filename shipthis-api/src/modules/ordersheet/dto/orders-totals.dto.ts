@@ -1,4 +1,4 @@
-import { IsOptional, IsNumber, IsNotEmpty} from 'class-validator';
+import { IsNumber, IsNotEmpty } from 'class-validator';
 export class TotalsDto {
   @IsNotEmpty()
   @IsNumber()

@@ -1,5 +1,14 @@
-import { IsNotEmpty, IsString, IsEmail, IsInt, IsOptional, IsBoolean, IsEnum, NotEquals, isValidationOptions, IsPositive, IsUrl, IsIn } from 'class-validator';
-import { LanguageType } from "../constants/language.enum";
+import {
+  IsNotEmpty,
+  IsString,
+  IsInt,
+  IsOptional,
+  IsBoolean,
+  IsPositive,
+  IsUrl,
+  IsIn,
+} from 'class-validator';
+import { LanguageType } from '../constants/language.enum';
 
 export class UpdateUserDataDTO {
   @IsNotEmpty()
@@ -39,5 +48,4 @@ export class UpdateUserDataDTO {
   @IsBoolean()
   @IsNotEmpty()
   receive_notifications: boolean;
-
 }

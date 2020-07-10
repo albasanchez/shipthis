@@ -1,4 +1,4 @@
 export enum DiscountStatus {
-    ACTIVE = 'ACTIVE',
-    DELETED = 'DELETED',
-  }
+  ACTIVE = 'ACTIVE',
+  DELETED = 'DELETED',
+}

@@ -103,7 +103,12 @@ Este producto fue desarrollado gracias al esfuerzo de las siguientes personas :
 
 - Yeisson Venencia [@yeisson-venencia](https://github.com/yeisson-venencia) 📖
 - David Monroy [@david-monroy](https://github.com/david-monroy) 📖
-- Gino López [@Gino-Lopez12](https://github.com/Gino-Lopez12) 🐛
+- Alba Sánchez [@albasanchez](https://github.com/albasanchez) 📖
+- Carolina Patiño [@carolinapatino](https://github.com/carolinapatino) 📖
+- Diego Gutiérrez [@Dagutierrez14](https://github.com/Dagutierrez14) 📖
+- Anthony Rodríguez [@thonygrz](https://github.com/thonygrz) 📖
+- Luis Fuentes [@LuisRFuentes](https://github.com/LuisRFuentes) 📖
+- Vanessa Nadal [@vanessanadal](https://github.com/vanessanadal) 📖
 
 # Contact
 

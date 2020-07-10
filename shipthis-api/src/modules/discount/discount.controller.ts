@@ -1,9 +1,8 @@
+import { AuthGuard } from '@nestjs/passport';
 import { AvaliableDiscountDto } from './dto/avaliable-discount.dto';
-import { DiscountInfoDto } from './dto/discount-info.dto';
 import { AssignDiscountDto } from './dto/assign-discount.dto';
 import { UpdateDiscountDto } from './dto/update-discount.dto';
 import { AssignDiscountsDto } from './dto/assign-discounts.dto';
-import { DiscountBasicInfoDto } from './dto/discount-basic-info.dto';
 import { DiscountService } from './discount.service';
 import {
   Controller,
@@ -15,9 +14,11 @@ import {
   Param,
   Patch,
   Delete,
-  ParseIntPipe
+  ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('discount')
 export class DiscountController {
   constructor(private readonly _discountServ: DiscountService) {}

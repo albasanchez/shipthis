@@ -24,6 +24,15 @@ const routes = [
     },
   },
   {
+    path: "/Discounts",
+    name: "Discounts",
+    component: () => import ('../views/DiscountsView.vue'),
+    meta: {
+      requiresAuth: true,
+      hideBasicComponents: false,
+    },
+  },
+  {
     path: "/Users",
     name: "UsersView",
     component: () => import ('../views/UsersView.vue'),

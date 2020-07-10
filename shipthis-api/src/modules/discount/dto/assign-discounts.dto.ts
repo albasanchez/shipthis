@@ -4,7 +4,12 @@ import { IsNotEmpty, IsNumber, IsIn } from 'class-validator';
 export class AssignDiscountsDto {
   @IsNumber()
   @IsNotEmpty()
-  @IsIn([Option.MORE_ACTIVE_USERS,Option.LESS_ACTIVE_USERS,Option.ALL_USERS,Option.NEW_USERS])
+  @IsIn([
+    Option.MORE_ACTIVE_USERS,
+    Option.LESS_ACTIVE_USERS,
+    Option.ALL_USERS,
+    Option.NEW_USERS,
+  ])
   option: number;
 
   @IsNumber()

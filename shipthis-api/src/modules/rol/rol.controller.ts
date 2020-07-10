@@ -1,6 +1,14 @@
-import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  UseGuards,
+} from '@nestjs/common';
 import { RolService } from './rol.service';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('rols')
 export class RolController {
   constructor(private readonly _rolService: RolService) {}

@@ -4,7 +4,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   OneToMany,
-  Check
+  Check,
 } from 'typeorm';
 import { DiscPer } from './disc-per.entity';
 

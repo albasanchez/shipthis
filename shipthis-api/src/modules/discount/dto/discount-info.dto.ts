@@ -1,6 +1,5 @@
 import { IsString, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 export class DiscountInfoDto {
-
   @IsNumber()
   @IsNotEmpty()
   discount_id: number;

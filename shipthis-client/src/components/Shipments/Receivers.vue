@@ -114,6 +114,7 @@ export default {
     addReceiver() {
       this.$refs.addreceiver.activateDialog("CREATE");
       EventBus.$on("ReceiverAdded", (data) => {
+        this.receiversdisabled = false;
         this.loadReceivers();
         this.ReceiverSelected = data.name + " " + data.last_name;
         EventBus.$emit("Information-Receivers", data.receiver_id);

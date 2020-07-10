@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Configuration } from '../../config/config.keys';
 import { ConfigService } from '../../config/config.service';
 
@@ -43,8 +43,14 @@ export class GenerateTemplate {
       },
     };
   }
-  
-  welcome(email: string, name: string, lastname: string, dis_name: string, percentage: number) {
+
+  welcome(
+    email: string,
+    name: string,
+    lastname: string,
+    dis_name: string,
+    percentage: number,
+  ) {
     return {
       to: email,
       from: this.configService.get(Configuration.SEND_GRID_EMAIL),
@@ -122,7 +128,13 @@ export class GenerateTemplate {
     };
   }
 
-  discount(dis_name: string, percentage: number, user_name: string, user_last_name: string, email: string) {
+  discount(
+    dis_name: string,
+    percentage: number,
+    user_name: string,
+    user_last_name: string,
+    email: string,
+  ) {
     return {
       to: email,
       from: this.configService.get(Configuration.SEND_GRID_EMAIL),

@@ -11,7 +11,7 @@ export class CharacteristicRepository extends Repository<Characteristic> {
       .getMany();
   }
 
-  async getCharacteristicById(id: number): Promise<Characteristic>{
-    return this.findOne({ where: {characteristic_id: id}});
- }
+  async getCharacteristicById(id: number): Promise<Characteristic> {
+    return this.findOne({ where: { characteristic_id: id } });
+  }
 }

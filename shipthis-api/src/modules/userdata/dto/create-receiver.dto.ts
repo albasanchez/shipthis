@@ -1,7 +1,6 @@
-import { IsNotEmpty, IsString, IsEmail , IsNumber} from 'class-validator';
+import { IsNotEmpty, IsString, IsEmail, IsNumber } from 'class-validator';
 
 export class CreateReceiverDto {
-
   @IsNotEmpty()
   @IsString()
   name: string;
@@ -22,5 +21,4 @@ export class CreateReceiverDto {
   @IsNotEmpty()
   @IsNumber()
   user_fk: number;
-
 }

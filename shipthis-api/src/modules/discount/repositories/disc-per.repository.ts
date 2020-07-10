@@ -52,7 +52,6 @@ export class DiscPerRepository extends Repository<DiscPer> {
   }
 
   async assignDiscounts(users: Userdata[], discount: Discount) {
-
     const date: Date = new Date();
     date.setFullYear(date.getFullYear() + 1);
 
@@ -62,16 +61,15 @@ export class DiscPerRepository extends Repository<DiscPer> {
       const disc_per = {
         expiration_date: date,
         user: user,
-        discount: discount
+        discount: discount,
       };
       discountsToAssign.push(disc_per);
     });
 
     return this.createQueryBuilder()
-                .insert()
-                .into('disc_per')
-                .values(discountsToAssign)
-                .execute();
+      .insert()
+      .into('disc_per')
+      .values(discountsToAssign)
+      .execute();
   }
-
 }

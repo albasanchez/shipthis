@@ -1,7 +1,6 @@
 import { Place } from './../../ordersheet/entities/place.entity';
-import { IsNotEmpty, IsString, IsOptional} from 'class-validator';
+import { IsString, IsOptional } from 'class-validator';
 export class UpdateWarehouseDto {
- 
   @IsOptional()
   @IsString()
   name: string;
@@ -13,5 +12,4 @@ export class UpdateWarehouseDto {
   @IsString()
   @IsOptional()
   place: Place;
-  
 }

@@ -1,6 +1,5 @@
-import { IsNotEmpty, IsString, IsEmail, IsUUID} from 'class-validator';
+import { IsNotEmpty, IsString, IsEmail, IsUUID } from 'class-validator';
 export class CommercialAllyInfoDto {
-
   @IsNotEmpty()
   @IsUUID()
   commercial_ally_key: string;

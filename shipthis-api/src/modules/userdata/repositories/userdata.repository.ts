@@ -20,10 +20,10 @@ export class UserDataRepository extends Repository<Userdata> {
 
   async getUserWithPerson(id: number): Promise<Userdata> {
     return this.findOne({
-      select: ['user_id','email','status'],
+      select: ['user_id', 'email', 'status'],
       where: { user_id: id, status: UserdataStatus.ACTIVE },
-      relations: ['person']
-    })
+      relations: ['person'],
+    });
   }
 
   async getUserActiveOrBloked(id: number): Promise<Userdata> {
@@ -31,11 +31,11 @@ export class UserDataRepository extends Repository<Userdata> {
       where: [
         { user_id: id, status: UserdataStatus.ACTIVE },
         { user_id: id, status: UserdataStatus.BLOCKED },
-      ]
-    })
+      ],
+    });
   }
 
-  async modifyUserStatus(user: Userdata, new_status: UserdataStatus){
+  async modifyUserStatus(user: Userdata, new_status: UserdataStatus) {
     user.status = new_status;
     this.save(user);
   }
@@ -45,7 +45,8 @@ export class UserDataRepository extends Repository<Userdata> {
   }
 
   async getUsersWithMoreOrders(): Promise<any[]> {
-    return this.query(`
+    return this.query(
+      `
     select o.user_fk as user_id,
     count(*) as cantidad 
     from ordersheet o, userdata u
@@ -53,11 +54,13 @@ export class UserDataRepository extends Repository<Userdata> {
     group by user_fk
     order by cantidad desc
     limit 20;
-    `.trim());
+    `.trim(),
+    );
   }
 
   async getUsersWithLessOrders(): Promise<any[]> {
-    return this.query(`
+    return this.query(
+      `
     select o.user_fk as user_id,
     count(*) as cantidad 
     from ordersheet o, userdata u
@@ -65,14 +68,14 @@ export class UserDataRepository extends Repository<Userdata> {
     group by user_fk
     order by cantidad asc
     limit 20;
-    `.trim());
+    `.trim(),
+    );
   }
 
   async getLatestUsers(): Promise<Userdata[]> {
-    return this.createQueryBuilder("user")
-               .orderBy("user.registration_date","DESC")
-               .limit(50)
-               .getMany();;
+    return this.createQueryBuilder('user')
+      .orderBy('user.registration_date', 'DESC')
+      .limit(50)
+      .getMany();
   }
-
 }

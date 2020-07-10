@@ -6,6 +6,7 @@ import commercialAlliesRepository from "./commercialAllies.repository";
 import usersRepository from "./users.repository";
 import OrderRepository from "./order.repository";
 import commentsRepository from "./comments.repository";
+import discountRepository from "./discount.repository";
 
 const repositories = {
   configuration: ConfigurationRepository,
@@ -16,6 +17,7 @@ const repositories = {
   users: usersRepository,
   order: OrderRepository,
   comments: commentsRepository, 
+  discounts: discountRepository,
 };
 
 export default {

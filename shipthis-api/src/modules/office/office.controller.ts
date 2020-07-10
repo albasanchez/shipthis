@@ -1,6 +1,8 @@
-import { Controller, Get } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { OfficeService } from './office.service';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('office')
 export class OfficeController {
   constructor(private readonly _officeService: OfficeService) {}

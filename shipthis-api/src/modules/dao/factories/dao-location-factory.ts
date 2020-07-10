@@ -1,4 +1,3 @@
-import { DaoPOEditor } from './../implementations/dao-poeditor';
 import { DaoFactoryConstans } from './constants/dao-factory-constants.enum';
 import { IDaoFactory } from './interface/IDaofactory.interface';
 import { DaoLocationIq } from '../implementations/dao-locationiq';

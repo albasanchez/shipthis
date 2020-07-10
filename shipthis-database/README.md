@@ -64,7 +64,7 @@ $ npm run migration:migration:run
 macOS y Windows:
 
 ```
-$ npm run migrationwindows:generate
+$ npm run migrationwindows:generate firstmigration
 $ npm run migrationwindows:run
 ```
 
