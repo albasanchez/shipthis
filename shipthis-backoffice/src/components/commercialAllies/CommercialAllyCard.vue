@@ -339,6 +339,11 @@ export default {
           align: "center"
         },
         {
+          text: "Receiver Last Name",
+          value: "rec_last_name",
+          align: "center"
+        },
+        {
           text: "Origin Warehouse",
           value: "origin_warehouse_name",
           align: "center"
