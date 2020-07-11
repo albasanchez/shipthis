@@ -182,13 +182,14 @@
           :search="searchPickups"
           :items-per-page="5"
           :loading="loadingPickups"
+          :sort-by="creation_date"
           loading-text="Loading pickups"
           no-data-text="There are no pickups registered"
           no-results-text="There are no pickups with the search parameters"
           class="header-color"
         >
-          <template v-slot:item.actions="{ item }">
-            <v-icon small class="mr-2" @click="viewTrackingInformation(item.id)">mdi-magnify</v-icon>
+          <template v-slot:item.creation_date="{ item }">
+            <p @click="viewTrackingInformation(item.id)">{{formatdate(item.creation_date)}}</p>
           </template>
         </v-data-table>
       </v-col>
@@ -202,6 +203,7 @@
 <script>
 import WarehouseModal from "./WarehouseModal";
 import Repository from "@/services/repositories/repositoryFactory";
+import moment from "moment";
 const CommercialAlliesRepository = Repository.get("commercialAlly");
 
 export default {
@@ -273,7 +275,11 @@ export default {
     goBack() {
       this.$store.dispatch("commercialAlly/setCommercialAlly", null);
       this.$router.push({ name: "CommercialAlliesView" });
-    }
+    },
+
+    formatdate(date){
+      return moment(date).format('YYYY-MM-DD HH:mm:ss')
+    },
   },
   computed: {
     warehousesHeaders() {
@@ -351,12 +357,6 @@ export default {
         {
           text: "Status",
           value: "pickup_status",
-          align: "center"
-        },
-        {
-          text: "Actions",
-          value: "actions",
-          sortable: false,
           align: "center"
         }
       ];
