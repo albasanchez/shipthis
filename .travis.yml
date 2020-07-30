@@ -1,0 +1,89 @@
+language: node_js
+node_js:
+  - 11.14.0
+
+branches:
+  only:
+    - master
+    - Develop
+
+jobs:
+  include:
+    - stage: deploy api staging
+      if: branch = Develop
+      script: skip
+      before_deploy:
+        - cd shipthis-api
+      deploy:
+        provider: heroku
+        api_key: $HEROKU_KEY
+        app: staging-shipthis-api
+        skip_cleanup: true
+        on:
+          repo: ingswucab/consorcio1-ucabrier
+          branch: Develop
+    - stage: deploy client staging
+      if: branch = Develop
+      script: skip
+      before_deploy:
+        - cd shipthis-client
+      deploy:
+        provider: heroku
+        api_key: $HEROKU_KEY
+        app: staging-shipthis
+        skip_cleanup: true
+        on:
+          repo: ingswucab/consorcio1-ucabrier
+          branch: Develop
+    - stage: deploy api production
+      if: branch = master
+      script: skip
+      before_deploy:
+        - cd shipthis-api
+      deploy:
+        provider: heroku
+        api_key: $HEROKU_KEY
+        app: $DEPLOY_API
+        skip_cleanup: true
+        on:
+          repo: ingswucab/consorcio1-ucabrier
+          branch: master
+    - stage: deploy client production
+      if: branch = master
+      script: skip
+      before_deploy:
+        - cd shipthis-client
+      deploy:
+        provider: heroku
+        api_key: $HEROKU_KEY_2
+        app: $DEPLOY_CLIENT
+        skip_cleanup: true
+        on:
+          repo: ingswucab/consorcio1-ucabrier
+          branch: master
+    - stage: deploy backoffice staging
+      if: branch = Develop
+      script: skip
+      before_deploy:
+        - cd shipthis-backoffice
+      deploy:
+        provider: heroku
+        api_key: $HEROKU_KEY_2
+        app: staging-shipthis-bo
+        skip_cleanup: true
+        on:
+          repo: ingswucab/consorcio1-ucabrier
+          branch: Develop
+    - stage: deploy backoffice production
+      if: branch = master
+      script: skip
+      before_deploy:
+        - cd shipthis-backoffice
+      deploy:
+        provider: heroku
+        api_key: $HEROKU_KEY_2
+        app: shipthis-bo
+        skip_cleanup: true
+        on:
+          repo: ingswucab/consorcio1-ucabrier
+          branch: master
