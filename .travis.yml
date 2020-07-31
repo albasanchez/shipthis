@@ -20,7 +20,7 @@ jobs:
         app: staging-shipthis-api
         skip_cleanup: true
         on:
-          repo: ingswucab/consorcio1-ucabrier
+          repo: albasanchez/shipthis
           branch: Develop
     - stage: deploy client staging
       if: branch = Develop
@@ -33,7 +33,7 @@ jobs:
         app: staging-shipthis
         skip_cleanup: true
         on:
-          repo: ingswucab/consorcio1-ucabrier
+          repo: albasanchez/shipthis
           branch: Develop
     - stage: deploy api production
       if: branch = master
@@ -46,7 +46,7 @@ jobs:
         app: $DEPLOY_API
         skip_cleanup: true
         on:
-          repo: ingswucab/consorcio1-ucabrier
+          repo: albasanchez/shipthis
           branch: master
     - stage: deploy client production
       if: branch = master
@@ -59,7 +59,7 @@ jobs:
         app: $DEPLOY_CLIENT
         skip_cleanup: true
         on:
-          repo: ingswucab/consorcio1-ucabrier
+          repo: albasanchez/shipthis
           branch: master
     - stage: deploy backoffice staging
       if: branch = Develop
@@ -72,7 +72,7 @@ jobs:
         app: staging-shipthis-bo
         skip_cleanup: true
         on:
-          repo: ingswucab/consorcio1-ucabrier
+          repo: albasanchez/shipthis
           branch: Develop
     - stage: deploy backoffice production
       if: branch = master
@@ -85,5 +85,5 @@ jobs:
         app: shipthis-bo
         skip_cleanup: true
         on:
-          repo: ingswucab/consorcio1-ucabrier
+          repo: albasanchez/shipthis
           branch: master
