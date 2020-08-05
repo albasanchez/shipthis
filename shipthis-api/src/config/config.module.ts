@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from './config.service';
-import { AppLoggerModule } from 'src/log/applogger.module';
-import { AppLoggerService } from 'src/log/applogger.service';
+import { AppLoggerModule } from '../log/applogger.module';
+import { AppLoggerService } from '../log/applogger.service';
 
 @Module({
   imports: [AppLoggerModule],

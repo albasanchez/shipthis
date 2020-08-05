@@ -13,7 +13,7 @@ import { Characteristic } from './../item-type/entities/characteristic.entity';
 import { Item } from './../ordersheet/entities/item.entity';
 import { CreatePickupDto } from './dto/create-pickup.dto';
 import { Injectable } from '@nestjs/common';
-import { AppLoggerService } from 'src/log/applogger.service';
+import { AppLoggerService } from '../../log/applogger.service';
 import { CommercialAllyRepository } from './repositories/commercial-ally.repository';
 import { WarehouseRepository } from './repositories/warehouse.repository';
 import { PickupRepository } from './repositories/pickup.repository';
@@ -45,7 +45,7 @@ import {
   LocatorConectionException,
   BadItemStructureException,
   PickupNotFoundException,
-} from 'src/common/exceptions';
+} from '../../common/exceptions';
 import { DaoFactoryConstans } from '../dao/factories/constants/dao-factory-constants.enum';
 import { UpdateWarehouseDto } from './dto/update-warehouse.dto';
 import { WarehouseStatus } from './constants/warehouse-status.enum';

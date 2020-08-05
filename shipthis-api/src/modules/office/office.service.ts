@@ -2,7 +2,7 @@ import { Office } from './entities/office.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OfficeReposiroty } from './repositories/office.repository';
-import { AppLoggerService } from 'src/log/applogger.service';
+import { AppLoggerService } from '../../log/applogger.service';
 
 @Injectable()
 export class OfficeService {

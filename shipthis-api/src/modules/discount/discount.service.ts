@@ -1,6 +1,6 @@
 import { DiscPer } from './entities/disc-per.entity';
 import { UserDataRepository } from './../userdata/repositories/userdata.repository';
-import { AppLoggerService } from 'src/log/applogger.service';
+import { AppLoggerService } from '../../log/applogger.service';
 import { DiscPerRepository } from './repositories/disc-per.repository';
 import { Userdata } from './../userdata/entities/userdata.entity';
 import { Injectable } from '@nestjs/common';
@@ -11,7 +11,7 @@ import {
   UserNotFoundException,
   DiscountNotRegisteredException,
   DiscountDeletedException,
-} from 'src/common/exceptions';
+} from '../../common/exceptions';
 import { DiscountInfoDto } from './dto/discount-info.dto';
 import { DiscountBasicInfoDto } from './dto/discount-basic-info.dto';
 import { MapperDiscount } from './../../mapper/mapper-discount';

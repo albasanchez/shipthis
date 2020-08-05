@@ -8,8 +8,8 @@ import { NewItemHistDto } from './dto/item-price-history.dto';
 import { CharPriceInfoDto } from './dto/char-price-info.dto';
 import { CharPriceHistRepository } from './repositories/char-price-hist.repository';
 import { NewCharPriceDto } from './dto/new-char-price.dto';
-import { CharacteristicNotFoundException } from 'src/common/exceptions/characteristic-not-found.exception';
-import { AppLoggerService } from 'src/log/applogger.service';
+import { CharacteristicNotFoundException } from '../../common/exceptions/characteristic-not-found.exception';
+import { AppLoggerService } from '../../log/applogger.service';
 
 @Injectable()
 export class ItemTypeService {

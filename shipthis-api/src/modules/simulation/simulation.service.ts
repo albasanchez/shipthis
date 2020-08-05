@@ -13,7 +13,7 @@ import {
   SchedulerRegistry,
 } from '@nestjs/schedule';
 import { Ordersheet } from '../ordersheet/entities/ordersheet.entity';
-import { AppLoggerService } from 'src/log/applogger.service';
+import { AppLoggerService } from '../../log/applogger.service';
 import { Simulation } from './entities/simulation.entity';
 import { SimulationRepository } from './repositories/simulation.repository';
 import { InjectRepository } from '@nestjs/typeorm';

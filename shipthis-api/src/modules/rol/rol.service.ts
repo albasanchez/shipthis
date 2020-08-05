@@ -2,7 +2,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { RolRepository } from './repositories/rol.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Rol } from './entities/rol.entity';
-import { RolNotFoundException } from 'src/common/exceptions/rol-not-found.exception';
+import { RolNotFoundException } from '../../common/exceptions/rol-not-found.exception';
 
 @Injectable()
 export class RolService {

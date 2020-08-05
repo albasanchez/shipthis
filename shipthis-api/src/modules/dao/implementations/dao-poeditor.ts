@@ -1,10 +1,10 @@
 import { ConfigService } from '../../../config/config.service';
 import { IDaoTranslation } from '../interfaces/dao-translation.interface';
 import axios from 'axios';
-import { AppLoggerService } from 'src/log/applogger.service';
+import { AppLoggerService } from '../../../log/applogger.service';
 import { Configuration } from '../../../config/config.keys';
 import FormData = require('form-data');
-import { POEditorConnectionException } from 'src/common/exceptions';
+import { POEditorConnectionException } from '../../../common/exceptions';
 
 export class DaoPOEditor implements IDaoTranslation {
   async fetchDictionary(language: string) {
