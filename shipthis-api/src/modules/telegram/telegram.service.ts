@@ -1,12 +1,12 @@
 import { CheckPoint } from './../ordersheet/entities/check-point.entity';
-import { Trajectory } from '../../modules/ordersheet/entities/trajectory.entity';
+import { Trajectory } from 'src/modules/ordersheet/entities/trajectory.entity';
 import { Pickup } from './../commercial-ally/entities/pickup.entity';
 import { OrdersheetRepository } from './../ordersheet/repositories/ordersheet.repository';
 import { PickupRepository } from './../commercial-ally/repositories/pickup.repository';
 import { Configuration } from './../../config/config.keys';
 import { ConfigService } from './../../config/config.service';
 import { HttpService, Injectable, OnModuleInit } from '@nestjs/common';
-import { AppLoggerService } from '../../log/applogger.service';
+import { AppLoggerService } from 'src/log/applogger.service';
 import { Ordersheet } from '../ordersheet/entities/ordersheet.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 const TelegramBot = require('node-telegram-bot-api');
@@ -126,8 +126,7 @@ export class TelegramService implements OnModuleInit {
         if (order) {
           messages.push(this.createFirsMesaggeForTracking(username));
           messages.push(this.createCreationOrderMessage(order.creation_date));
-          this.insertCheckpointsMessages(messages, order.trajectories);
-          if (order.delivery_date)
+          if (order.delivery_date) {
             messages.push(
               this.createDeliveryOrderMessage(
                 order.delivery_date,
@@ -137,6 +136,9 @@ export class TelegramService implements OnModuleInit {
                   : order.destination_place.address,
               ),
             );
+          } else {
+            this.insertCheckpointsMessages(messages, order.trajectories);
+          }
           bot.sendMessage(user, messages.join('\n\n'), {
             parse_mode: 'Markdown',
           });
@@ -147,8 +149,7 @@ export class TelegramService implements OnModuleInit {
             messages.push(
               this.createCreationOrderMessage(pickup.creation_date),
             );
-            this.insertCheckpointsMessages(messages, pickup.trajectories);
-            if (pickup.delivery_date)
+            if (pickup.delivery_date) {
               messages.push(
                 this.createDeliveryOrderMessage(
                   pickup.delivery_date,
@@ -156,6 +157,9 @@ export class TelegramService implements OnModuleInit {
                   pickup.destination_place.address,
                 ),
               );
+            } else {
+              this.insertCheckpointsMessages(messages, pickup.trajectories);
+            }
             bot.sendMessage(user, messages.join('\n\n'), {
               parse_mode: 'Markdown',
             });
