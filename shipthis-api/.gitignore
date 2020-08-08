@@ -1,6 +1,7 @@
 # compiled output
 /dist
 /node_modules
+package-lock.json
 
 # Logs
 logs
@@ -35,7 +36,7 @@ lerna-debug.log*
 
 # Configuration
 .env
-ormconfig.json
+orm.config.json
 
 # Database
 src/database/migrations

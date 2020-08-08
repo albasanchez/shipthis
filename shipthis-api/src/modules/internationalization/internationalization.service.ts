@@ -3,7 +3,7 @@ import { DaoTranslationFactory } from './../dao/factories/dao-translation-factor
 import { IDaoFactory } from './../dao/factories/interface/IDaofactory.interface';
 import { Injectable } from '@nestjs/common';
 import { DaoFactoryConstans } from '../dao/factories/constants/dao-factory-constants.enum';
-import { AppLoggerService } from 'src/log/applogger.service';
+import { AppLoggerService } from '../../log/applogger.service';
 
 @Injectable()
 export class InternationalizationService {
