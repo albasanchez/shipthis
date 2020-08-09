@@ -11,18 +11,7 @@ import { CommercialAllyRepository } from '../../repositories/commercial-ally.rep
 import { CommercialAllyStatus } from '../../constants/commercial-ally-status.enum';
 import { ConfigService } from '../../../../config/config.service';
 import { DaoLocationIq } from '../../../../modules/dao/implementations/dao-locationiq';
-
-const ally = {
-  commercial_ally_key: 'b902ff4b-9ee2-4ea8-9d61-83e035eccb26',
-  name: 'CommercialAlly',
-  email: 'ally@gmail.com',
-  phone_number: '+1 (234) 567890',
-  manager_name: 'manager',
-  manager_last_name: 'name',
-  description: 'eCommerce',
-  status: '',
-  warehouses: [],
-};
+import { ally } from './constants';
 
 export const commercialAllyMockModuleMetadata: ModuleMetadata = {
   providers: [
@@ -65,6 +54,15 @@ export class CommercialAllyMock {
     } else {
       return jest.fn().mockResolvedValue(null);
     }
+  }
+  save() {
+    return jest.fn();
+  }
+  find() {
+    return jest.fn().mockResolvedValue([ally]);
+  }
+  update() {
+    return jest.fn();
   }
 }
 

@@ -14,6 +14,7 @@ import {
   WarehouseNotFoundException,
   CommercialAllyNotFoundException,
   BadItemStructureException,
+  PickupNotFoundException,
 } from '../../../common/exceptions';
 import { CharacteristicRepository } from '../../../modules/item-type/repositories/characteristic.repository';
 import { Characteristic } from '../../../modules/item-type/entities/characteristic.entity';
@@ -21,10 +22,13 @@ import { CharPriceHist } from '../../../modules/item-type/entities/char-price-hi
 import { LocationMock } from '../../../modules/dao/mocks/location.mock';
 import axios from 'axios';
 import { ItemPriceHistRepository } from '../../../modules/item-type/repositories/item-price-hist.repository';
-import { WarehouseMock } from './mocks/warehouse.mock';
+import {
+  WarehouseMock,
+  warehouseCreateQueryBuilder,
+} from './mocks/warehouse.mock';
 import { PickupRepository } from '../repositories/pickup.repository';
 import { PickupMock } from './mocks/pickup.mock';
-import { HttpStatus } from '@nestjs/common';
+import { defaultWarehouse, defaultPlace, response } from './mocks/constants';
 
 describe('CommercialAllyService', () => {
   let service: CommercialAllyService;
@@ -67,11 +71,16 @@ describe('CommercialAllyService', () => {
       },
     ],
   };
-  const response: any = {
-    json: (body?: any) => {
-      //
-    },
-    status: (code: number) => HttpStatus.OK,
+  const ally = {
+    commercial_ally_key: 'b902ff4b-9ee2-4ea8-9d61-83e035eccb26',
+    name: 'CommercialAlly',
+    email: 'ally@gmail.com',
+    phone_number: '+1 (234) 567890',
+    manager_name: 'manager',
+    manager_last_name: 'name',
+    description: 'eCommerce',
+    warehouses: [defaultWarehouse],
+    status: '',
   };
 
   beforeEach(async () => {
@@ -99,7 +108,7 @@ describe('CommercialAllyService', () => {
     expect(warehouseRepository).toBeDefined();
   });
 
-  describe('register pickup functions', () => {
+  describe('pickup', () => {
     it('should calculate pickup data', async () => {
       pickup.items[0].characteristics[0].characteristic_id = 1;
       pickup.items[0].characteristics[1].characteristic_id = 2;
@@ -148,9 +157,56 @@ describe('CommercialAllyService', () => {
       expect(characteristicRepository.createQueryBuilder).toHaveBeenCalled();
       expect(pickupRepository.save).toHaveBeenCalled();
     });
+    it('should consult a pickup', () => {
+      pickupRepository.findOne = mockPickupRepository.findOne(true);
+      service.searchPickupDetail(pickup.tracking_id);
+      expect(pickupRepository.findOne).toHaveBeenCalledWith(pickup.tracking_id);
+    });
   });
 
-  describe('throw exceptions', () => {
+  describe('commercial ally', () => {
+    it('should create a commercial ally', async () => {
+      ally.warehouses[0].place = defaultPlace;
+      ally.warehouses[0].place.address = 'Berry Street';
+      axios.get = locationMock.get();
+      allyRepository.save = mockAllyRepository.save();
+      await service.createCommercialAlly(ally);
+      expect(allyRepository.save).toHaveBeenCalled();
+    });
+    it('should consult all commercial allies', () => {
+      allyRepository.find = mockAllyRepository.find();
+      service.getAllCommercialAllies();
+      expect(allyRepository.find).toHaveBeenCalled();
+    });
+    it('should update a commercial ally', () => {
+      allyRepository.findOne = mockAllyRepository.findOne('Active');
+      allyRepository.update = mockAllyRepository.update();
+      service.updateCommercialAlly(ally);
+      expect(allyRepository.findOne).toHaveBeenCalled();
+    });
+    it('should delete a commercial ally', () => {
+      allyRepository.findOne = mockAllyRepository.findOne('Active');
+      jest
+        .spyOn(warehouseRepository, 'createQueryBuilder')
+        .mockImplementation(() => warehouseCreateQueryBuilder);
+      allyRepository.update = mockAllyRepository.update();
+      service.deleteCommercialAlly(ally.commercial_ally_key);
+      expect(allyRepository.findOne).toHaveBeenCalled();
+    });
+  });
+
+  describe('pickup exceptions', () => {
+    it('should throw pickup not found exception', () => {
+      pickupRepository.findOne = mockPickupRepository.findOne(false);
+      try {
+        service.searchPickupDetail(pickup.tracking_id);
+        expect(pickupRepository.findOne).toHaveBeenCalledWith(
+          pickup.tracking_id,
+        );
+      } catch (e) {
+        expect(e).toEqual(new PickupNotFoundException());
+      }
+    });
     it('should throw bad item structure exception because characteristic id does not exist', async () => {
       pickup.items[0].characteristics[0].characteristic_id = null;
       pickup.items[0].characteristics[1].characteristic_id = 2;
@@ -269,6 +325,19 @@ describe('CommercialAllyService', () => {
       } catch (e) {
         expect(e).toEqual(new WarehouseNotFoundException());
       }
+    });
+  });
+
+  describe('commercial ally exceptions', () => {
+    it('should update a commercial ally', () => {
+      allyRepository.findOne = mockAllyRepository.findOne('Deleted');
+      service.updateCommercialAlly(ally);
+      expect(allyRepository.findOne).toHaveBeenCalled();
+    });
+    it('should delete a commercial ally', () => {
+      allyRepository.findOne = mockAllyRepository.findOne('Deleted');
+      service.deleteCommercialAlly(ally.commercial_ally_key);
+      expect(allyRepository.findOne).toHaveBeenCalled();
     });
   });
 });

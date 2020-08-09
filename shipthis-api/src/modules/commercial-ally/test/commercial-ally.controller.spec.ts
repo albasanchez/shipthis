@@ -1,38 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CommercialAllyController } from '../commercial-ally.controller';
 import { CommercialAllyService } from '../commercial-ally.service';
-import { Place } from '../../../modules/ordersheet/entities/place.entity';
+import { ally, pickup, warehouse } from './mocks/constants';
 
 describe('CommercialAlly Controller', () => {
   let controller: CommercialAllyController;
   let service: CommercialAllyService;
-  const ally = {
-    commercial_ally_key: 'b902ff4b-9ee2-4ea8-9d61-83e035eccb26',
-    name: 'CommercialAlly',
-    email: 'ally@gmail.com',
-    phone_number: '+1 (234) 567890',
-    manager_name: 'manager',
-    manager_last_name: 'name',
-    description: 'eCommerce',
-    warehouses: [],
-  };
-  const pickup = {
-    tracking_id: 'b902ff4b-9ee2-4ea8-9d61-83e035eccb26',
-    commercial_ally_api_key: 'b902ff4b-9ee2-4ea8-9d61-83e035eccb26',
-    Warehouse_id: 1,
-    rec_first_name: 'John',
-    rec_last_name: 'Doe',
-    rec_email: 'johnDoe@gmail.com',
-    rec_phone_number: '+1 (234) 567890',
-    destination_address: 'Berry Street',
-    items: [],
-  };
-  const warehouse = {
-    name: 'Warehouse',
-    commercial_ally_key: 'ad1da626-b492-4c9c-ac0b-655852d9a6e8',
-    address: '199-145 W Brighton Ave. Syracuse, NY . USA',
-    place: new Place
-  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -130,7 +103,7 @@ describe('CommercialAlly Controller', () => {
   });
 
   it('should call delete commercial ally warehouses service', () => {
-    controller.deleteWarehouse(1)
+    controller.deleteWarehouse(1);
     expect(service.deleteWarehouse).toHaveBeenCalledWith(1);
   });
 

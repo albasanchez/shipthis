@@ -1,24 +1,27 @@
 import { WarehouseStatus } from '../../constants/warehouse-status.enum';
-import { Warehouse } from '../../entities/warehouse.entity';
-import { Place } from '../../../../modules/ordersheet/entities/place.entity';
-
-const warehouse = new Warehouse();
-
-const place = new Place();
+import { defaultPlace, defaultWarehouse } from './constants';
 
 export class WarehouseMock {
   findOne(successful: string) {
-    place.position_lat = -77.846;
-    place.position_long = 105.1123;
-    warehouse.place = place;
+    defaultPlace.position_lat = -77.846;
+    defaultPlace.position_long = 105.1123;
+    defaultWarehouse.place = defaultPlace;
     if (successful == 'Active') {
-      warehouse.status = WarehouseStatus.ACTIVE;
-      return jest.fn().mockResolvedValue(warehouse);
+      defaultWarehouse.status = WarehouseStatus.ACTIVE;
+      return jest.fn().mockResolvedValue(defaultWarehouse);
     } else if (successful == 'Deleted') {
-      warehouse.status = WarehouseStatus.DELETED;
-      return jest.fn().mockResolvedValue(warehouse);
+      defaultWarehouse.status = WarehouseStatus.DELETED;
+      return jest.fn().mockResolvedValue(defaultWarehouse);
     } else {
       return jest.fn().mockResolvedValue(null);
     }
   }
+  crea;
 }
+
+export const warehouseCreateQueryBuilder: any = {
+  update: jest.fn().mockReturnThis(),
+  set: jest.fn().mockReturnThis(),
+  where: jest.fn().mockReturnThis(),
+  execute: jest.fn().mockReturnThis(),
+};
