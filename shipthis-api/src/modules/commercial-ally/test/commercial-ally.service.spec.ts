@@ -7,6 +7,7 @@ import {
   CommercialAllyMock,
   createQueryBuilder,
   ItemPriceMock,
+  PlaceMock,
 } from './mocks/commercial-ally.mock';
 import {
   CommercialAllyDeletedException,
@@ -28,7 +29,13 @@ import {
 } from './mocks/warehouse.mock';
 import { PickupRepository } from '../repositories/pickup.repository';
 import { PickupMock } from './mocks/pickup.mock';
-import { defaultWarehouse, defaultPlace, response } from './mocks/constants';
+import {
+  defaultWarehouse,
+  defaultPlace,
+  response,
+  warehouse,
+} from './mocks/constants';
+import { PlaceRepository } from '../../../modules/ordersheet/repositories/place.repository';
 
 describe('CommercialAllyService', () => {
   let service: CommercialAllyService;
@@ -37,10 +44,12 @@ describe('CommercialAllyService', () => {
   let characteristicRepository: CharacteristicRepository;
   let itemPriceRepository: ItemPriceHistRepository;
   let pickupRepository: PickupRepository;
+  let placeRepository: PlaceRepository;
   const mockAllyRepository: CommercialAllyMock = new CommercialAllyMock();
   const mockWarehouseRepository: WarehouseMock = new WarehouseMock();
   const mockItemPriceRepository: ItemPriceMock = new ItemPriceMock();
   const mockPickupRepository: PickupMock = new PickupMock();
+  const mockPlaceRepository: PlaceMock = new PlaceMock();
   const locationMock: LocationMock = new LocationMock();
 
   const pickup = {
@@ -100,6 +109,7 @@ describe('CommercialAllyService', () => {
       ItemPriceHistRepository,
     );
     pickupRepository = module.get<PickupRepository>(PickupRepository);
+    placeRepository = module.get<PlaceRepository>(PlaceRepository);
   });
 
   it('should be defined', () => {
@@ -157,9 +167,9 @@ describe('CommercialAllyService', () => {
       expect(characteristicRepository.createQueryBuilder).toHaveBeenCalled();
       expect(pickupRepository.save).toHaveBeenCalled();
     });
-    it('should consult a pickup', () => {
+    it('should consult a pickup', async () => {
       pickupRepository.findOne = mockPickupRepository.findOne(true);
-      service.searchPickupDetail(pickup.tracking_id);
+      await service.searchPickupDetail(pickup.tracking_id);
       expect(pickupRepository.findOne).toHaveBeenCalledWith(pickup.tracking_id);
     });
   });
@@ -173,38 +183,81 @@ describe('CommercialAllyService', () => {
       await service.createCommercialAlly(ally);
       expect(allyRepository.save).toHaveBeenCalled();
     });
-    it('should consult all commercial allies', () => {
+    it('should consult all commercial allies', async () => {
       allyRepository.find = mockAllyRepository.find();
-      service.getAllCommercialAllies();
+      await service.getAllCommercialAllies();
       expect(allyRepository.find).toHaveBeenCalled();
     });
-    it('should update a commercial ally', () => {
+    it('should update a commercial ally', async () => {
       allyRepository.findOne = mockAllyRepository.findOne('Active');
       allyRepository.update = mockAllyRepository.update();
-      service.updateCommercialAlly(ally);
+      await service.updateCommercialAlly(ally);
       expect(allyRepository.findOne).toHaveBeenCalled();
     });
-    it('should delete a commercial ally', () => {
+    it('should delete a commercial ally', async () => {
       allyRepository.findOne = mockAllyRepository.findOne('Active');
       jest
         .spyOn(warehouseRepository, 'createQueryBuilder')
         .mockImplementation(() => warehouseCreateQueryBuilder);
       allyRepository.update = mockAllyRepository.update();
-      service.deleteCommercialAlly(ally.commercial_ally_key);
+      await service.deleteCommercialAlly(ally.commercial_ally_key);
       expect(allyRepository.findOne).toHaveBeenCalled();
+    });
+    it('should consult all warehouses from a commercial ally', async () => {
+      allyRepository.findOne = mockAllyRepository.findOne('Active');
+      warehouseRepository.find = mockWarehouseRepository.find();
+      await service.getWarehouses(ally.commercial_ally_key);
+      expect(allyRepository.findOne).toHaveBeenCalled();
+    });
+    it('should consult all pickups from a commercial ally', async () => {
+      allyRepository.findOne = mockAllyRepository.findOne('Active');
+      warehouseRepository.find = mockWarehouseRepository.find();
+      pickupRepository.find = mockPickupRepository.find();
+      await service.getPickups(ally.commercial_ally_key);
+      expect(allyRepository.findOne).toHaveBeenCalled();
+      expect(warehouseRepository.find).toHaveBeenCalled();
+      expect(pickupRepository.find).toHaveBeenCalled();
+    });
+  });
+
+  describe('warehouse', () => {
+    it('should create a warehouse', async () => {
+      axios.get = locationMock.get();
+      allyRepository.findOne = mockAllyRepository.findOne('Active');
+      warehouseRepository.save = mockWarehouseRepository.save();
+      await service.createWarehouse(warehouse);
+      expect(allyRepository.findOne).toHaveBeenCalled();
+      expect(warehouseRepository.save).toHaveBeenCalled();
+    });
+    it('should update a warehouse', async () => {
+      warehouseRepository.findOne = mockWarehouseRepository.findOne('Active');
+      axios.get = locationMock.get();
+      placeRepository.save = mockPlaceRepository.save(true);
+      warehouseRepository.update = mockWarehouseRepository.update();
+      await service.updateWarehouse(1, warehouse);
+      expect(warehouseRepository.findOne).toHaveBeenCalled();
+      expect(placeRepository.save).toHaveBeenCalled();
+      expect(warehouseRepository.update).toHaveBeenCalled();
+    });
+    it('should delete a warehouse', async () => {
+      warehouseRepository.findOne = mockWarehouseRepository.findOne('Active');
+      warehouseRepository.update = mockWarehouseRepository.update();
+      await service.deleteWarehouse(1);
+      expect(warehouseRepository.findOne).toHaveBeenCalled();
+      expect(warehouseRepository.update).toHaveBeenCalled();
     });
   });
 
   describe('pickup exceptions', () => {
-    it('should throw pickup not found exception', () => {
+    it('should throw pickup not found exception', async () => {
       pickupRepository.findOne = mockPickupRepository.findOne(false);
       try {
-        service.searchPickupDetail(pickup.tracking_id);
+        await service.searchPickupDetail(pickup.tracking_id);
+      } catch (e) {
         expect(pickupRepository.findOne).toHaveBeenCalledWith(
           pickup.tracking_id,
         );
-      } catch (e) {
-        expect(e).toEqual(new PickupNotFoundException());
+        expect(e).toBeInstanceOf(PickupNotFoundException);
       }
     });
     it('should throw bad item structure exception because characteristic id does not exist', async () => {
@@ -224,13 +277,13 @@ describe('CommercialAllyService', () => {
       itemPriceRepository.findOne = mockItemPriceRepository.findOne();
       try {
         await service.calculatePickup(pickup);
+      } catch (e) {
         expect(allyRepository.findOne).toHaveBeenCalledWith({
           where: { commercial_ally_id: pickup.commercial_ally_api_key },
         });
         expect(warehouseRepository.findOne).toHaveBeenCalled();
         expect(characteristicRepository.createQueryBuilder).toHaveBeenCalled();
-      } catch (e) {
-        expect(e).toEqual(new BadItemStructureException());
+        expect(e).toBeInstanceOf(BadItemStructureException);
       }
     });
     it('should throw bad item structure exception because characteristic id is innactive', async () => {
@@ -250,39 +303,39 @@ describe('CommercialAllyService', () => {
       itemPriceRepository.findOne = mockItemPriceRepository.findOne();
       try {
         await service.calculatePickup(pickup);
+      } catch (e) {
         expect(allyRepository.findOne).toHaveBeenCalledWith({
           where: { commercial_ally_id: pickup.commercial_ally_api_key },
         });
         expect(warehouseRepository.findOne).toHaveBeenCalled();
         expect(characteristicRepository.createQueryBuilder).toHaveBeenCalled();
-      } catch (e) {
-        expect(e).toEqual(new BadItemStructureException());
+        expect(e).toBeInstanceOf(BadItemStructureException);
       }
     });
-    it('should throw commercial ally deleted exception', () => {
+    it('should throw commercial ally deleted exception', async () => {
       allyRepository.findOne = mockAllyRepository.findOne('Deleted');
       try {
-        service.calculatePickup(pickup);
+        await service.calculatePickup(pickup);
+      } catch (e) {
         expect(allyRepository.findOne).toHaveBeenCalledWith({
           where: { commercial_ally_id: pickup.commercial_ally_api_key },
         });
-      } catch (e) {
-        expect(e).toEqual(new CommercialAllyDeletedException());
+        expect(e).toBeInstanceOf(CommercialAllyDeletedException);
       }
     });
-    it('should throw warehouse deleted exception', () => {
+    it('should throw warehouse deleted exception', async () => {
       allyRepository.findOne = mockAllyRepository.findOne('Active');
       warehouseRepository.findOne = mockWarehouseRepository.findOne('Deleted');
       try {
-        service.calculatePickup(pickup);
+        await service.calculatePickup(pickup);
+      } catch (e) {
         expect(allyRepository.findOne).toHaveBeenCalledWith({
           where: { commercial_ally_id: pickup.commercial_ally_api_key },
         });
-      } catch (e) {
-        expect(e).toEqual(new WarehouseDeletedException());
+        expect(e).toBeInstanceOf(WarehouseDeletedException);
       }
     });
-    it('should throw bad item structure exception', () => {
+    it('should throw bad item structure exception', async () => {
       pickup.items[0].characteristics[0].characteristic_id = 1;
       pickup.items[0].characteristics[1].characteristic_id = 2;
       pickup.items[0].item_height = null;
@@ -293,51 +346,82 @@ describe('CommercialAllyService', () => {
         .spyOn(characteristicRepository, 'createQueryBuilder')
         .mockImplementation(() => createQueryBuilder);
       try {
-        service.calculatePickup(pickup);
+        await service.calculatePickup(pickup);
+      } catch (e) {
         expect(allyRepository.findOne).toHaveBeenCalledWith({
           where: { commercial_ally_id: pickup.commercial_ally_api_key },
         });
-      } catch (e) {
-        expect(e).toEqual(new BadItemStructureException());
+        expect(e).toBeInstanceOf(BadItemStructureException);
       }
     });
-    it('should throw commercial ally not found exception', () => {
+    it('should throw commercial ally not found exception', async () => {
       allyRepository.findOne = mockAllyRepository.findOne('Not found');
       try {
-        service.calculatePickup(pickup);
+        await service.calculatePickup(pickup);
+      } catch (e) {
         expect(allyRepository.findOne).toHaveBeenCalledWith({
           where: { commercial_ally_id: pickup.commercial_ally_api_key },
         });
-      } catch (e) {
-        expect(e).toEqual(new CommercialAllyNotFoundException());
+        expect(e).toBeInstanceOf(CommercialAllyNotFoundException);
       }
     });
-    it('should throw warehouse not found exception', () => {
+    it('should throw warehouse not found exception', async () => {
       allyRepository.findOne = mockAllyRepository.findOne('Active');
       warehouseRepository.findOne = mockWarehouseRepository.findOne(
         'Not found',
       );
       try {
-        service.calculatePickup(pickup);
+        await service.calculatePickup(pickup);
+      } catch (e) {
         expect(allyRepository.findOne).toHaveBeenCalledWith({
           where: { commercial_ally_id: pickup.commercial_ally_api_key },
         });
-      } catch (e) {
-        expect(e).toEqual(new WarehouseNotFoundException());
+        expect(e).toBeInstanceOf(WarehouseNotFoundException);
       }
     });
   });
 
   describe('commercial ally exceptions', () => {
-    it('should update a commercial ally', () => {
+    it('should throw commercial ally deleted exception while updating', async () => {
       allyRepository.findOne = mockAllyRepository.findOne('Deleted');
-      service.updateCommercialAlly(ally);
-      expect(allyRepository.findOne).toHaveBeenCalled();
+      try {
+        await service.updateCommercialAlly(ally);
+      } catch (e) {
+        expect(allyRepository.findOne).toHaveBeenCalled();
+        expect(e).toBeInstanceOf(CommercialAllyDeletedException);
+      }
     });
-    it('should delete a commercial ally', () => {
+    it('should throw commercial ally deleted exception while deleting', async () => {
       allyRepository.findOne = mockAllyRepository.findOne('Deleted');
-      service.deleteCommercialAlly(ally.commercial_ally_key);
-      expect(allyRepository.findOne).toHaveBeenCalled();
+      try {
+        await service.deleteCommercialAlly(ally.commercial_ally_key);
+      } catch (e) {
+        expect(allyRepository.findOne).toHaveBeenCalled();
+        expect(e).toBeInstanceOf(CommercialAllyDeletedException);
+      }
+    });
+  });
+
+  describe('warehouse exceptions', () => {
+    it('should throw commercial ally deleted exception', async () => {
+      axios.get = locationMock.get();
+      allyRepository.findOne = mockAllyRepository.findOne('Deleted');
+      warehouseRepository.save = mockWarehouseRepository.save();
+      try {
+        await service.createWarehouse(warehouse);
+      } catch (e) {
+        expect(allyRepository.findOne).toHaveBeenCalled();
+        expect(e).toBeInstanceOf(CommercialAllyDeletedException);
+      }
+    });
+    it('should throw warehouse deleted exception', async () => {
+      warehouseRepository.findOne = mockWarehouseRepository.findOne('Deleted');
+      try {
+        await service.updateWarehouse(1, warehouse);
+      } catch (e) {
+        expect(warehouseRepository.findOne).toHaveBeenCalled();
+        expect(e).toBeInstanceOf(WarehouseDeletedException);
+      }
     });
   });
 });

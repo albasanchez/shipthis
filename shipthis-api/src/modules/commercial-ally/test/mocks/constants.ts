@@ -59,7 +59,9 @@ export const pickup = {
 export const registeredPickup = {
   pickup_id: 'b902ff4b-9ee2-4ea8-9d61-83e035eccb26',
   creation_date: '2020-08-01',
+  delivery_date: '2020-08-01',
   origin_warehouse: {
+    name: 'Warehouse',
     place: { address: 'Berry Street' },
     commercial_ally: {
       name: 'CommercialAlly',
@@ -68,6 +70,7 @@ export const registeredPickup = {
     },
   },
   destination_place: { address: 'Berry Street' },
+  status: 'ACTIVE',
   facturation_amount: 215,
   items: [
     {
@@ -86,9 +89,4 @@ export const registeredPickup = {
   rec_email: 'johndoe@gmail.com',
 };
 
-export const response: any = {
-  json: (body?: any) => {
-    //
-  },
-  status: (code: number) => HttpStatus.OK,
-};
+export const response: any = {};

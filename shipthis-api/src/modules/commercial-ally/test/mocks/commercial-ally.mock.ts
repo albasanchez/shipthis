@@ -11,7 +11,7 @@ import { CommercialAllyRepository } from '../../repositories/commercial-ally.rep
 import { CommercialAllyStatus } from '../../constants/commercial-ally-status.enum';
 import { ConfigService } from '../../../../config/config.service';
 import { DaoLocationIq } from '../../../../modules/dao/implementations/dao-locationiq';
-import { ally } from './constants';
+import { ally, defaultPlace } from './constants';
 
 export const commercialAllyMockModuleMetadata: ModuleMetadata = {
   providers: [
@@ -102,9 +102,14 @@ export const createQueryBuilder: any = {
     },
   ]),
 };
-
 export class ItemPriceMock {
   findOne() {
     return jest.fn().mockResolvedValue({ base_price: 5, price_km: 0.02 });
+  }
+}
+
+export class PlaceMock {
+  save(successful: boolean) {
+    return jest.fn().mockResolvedValue(defaultPlace);
   }
 }

@@ -16,7 +16,23 @@ export class WarehouseMock {
       return jest.fn().mockResolvedValue(null);
     }
   }
-  crea;
+  find() {
+    defaultWarehouse.warehouse_id = 1;
+    defaultWarehouse.name = 'Warehouse';
+    defaultWarehouse.place = defaultPlace;
+    defaultWarehouse.status = WarehouseStatus.ACTIVE;
+    return jest.fn().mockResolvedValue([defaultWarehouse]);
+  }
+  save() {
+    defaultWarehouse.warehouse_id = 1;
+    defaultWarehouse.name = 'Warehouse';
+    defaultWarehouse.place = defaultPlace;
+    defaultWarehouse.status = WarehouseStatus.ACTIVE;
+    return jest.fn().mockResolvedValue(defaultWarehouse);
+  }
+  update() {
+    return jest.fn();
+  }
 }
 
 export const warehouseCreateQueryBuilder: any = {

@@ -78,13 +78,6 @@ describe('CommercialAlly Controller', () => {
     );
   });
 
-  it('should call delete commercial ally service', () => {
-    controller.deleteCommercialAlly(ally);
-    expect(service.deleteCommercialAlly).toHaveBeenCalledWith(
-      ally.commercial_ally_key,
-    );
-  });
-
   it('should call get commercial ally warehouses service', () => {
     controller.getWarehouses(ally);
     expect(service.getWarehouses).toHaveBeenCalledWith(

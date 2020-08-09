@@ -8,7 +8,10 @@ export class PickupMock {
     if (successful) {
       return jest.fn().mockResolvedValue(registeredPickup);
     } else {
-      return jest.fn().mockResolvedValue(null);
+      return jest.fn().mockResolvedValue(undefined);
     }
+  }
+  find() {
+    return jest.fn().mockResolvedValue([registeredPickup]);
   }
 }
