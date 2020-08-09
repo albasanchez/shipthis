@@ -75,32 +75,4 @@ export class LocationMock {
       }
     });
   }
-  getNoMiddlePoints() {
-    return jest.fn().mockImplementation((url: string) => {
-      if (url.includes('search')) {
-        return Promise.resolve({
-          data: [{ lat: -77.862, lon: 105.463, display_name: 'Name' }],
-        });
-      } else if (url.includes('reverse')) {
-        return Promise.resolve({
-          data: { address: { country_code: 'us' } },
-        });
-      } else if (url.includes('directions')) {
-        return Promise.resolve({
-          data: {
-            routes: [
-              {
-                distance: 10,
-                legs: [
-                  {
-                    steps: [],
-                  },
-                ],
-              },
-            ],
-          },
-        });
-      }
-    });
-  }
 }
