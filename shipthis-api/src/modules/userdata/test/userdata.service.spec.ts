@@ -55,6 +55,11 @@ describe('UserdataService', () => {
                      def_language: LanguageType.ENGLISH, picture_url: null,  
                      receive_notifications: true};
 
+   const user_second_test =    { user_id:3, first_name: 'Luisa', last_name: 'Contreras',
+                                middle_name: undefined, second_last_name: undefined, 
+                                phone_number:'+1 (654) 562 5698',  def_language: LanguageType.ENGLISH, picture_url: null,  
+                                 receive_notifications: true};
+
   const newPassword: ModifyPasswordDTO = { user_id: 1, actual_password: 'hola123', new_password:'testPassword' };
   const newPasswordFail = { user_id: 1, actual_password: 'testFail', new_password:'testPassword' };
 
@@ -226,6 +231,13 @@ describe('UserdataService', () => {
        expect(userdataRepository.findOne).toHaveBeenCalled();
        expect(userdataRepository.save).toHaveBeenCalled();
      });
+     it('should change the user information', async () => {
+      userdataRepository.findOne = mockUserdataRepository.findOne( false,true);
+      userdataRepository.save = mockUserdataRepository.save();
+      await service.modifyUserdata(user_second_test);
+      expect(userdataRepository.findOne).toHaveBeenCalled();
+      expect(userdataRepository.save).toHaveBeenCalled();
+    });
      it('should not change the user information', async () => {
        userdataRepository.findOne = mockUserdataRepository.findOne(false, false);
        userdataRepository.save = mockUserdataRepository.save();
