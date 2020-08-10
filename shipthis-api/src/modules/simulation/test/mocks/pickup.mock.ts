@@ -1,37 +1,3 @@
-
-import { Characteristic } from '../../../../modules/item-type/entities/characteristic.entity';
-
-export const defaultCharacteristic = new Characteristic();
-
-let pickup = {
-  tracking_id: 'b902ff4b-9ee2-4ea8-9d61-83e035eccb26',
-  commercial_ally_api_key: 'b902ff4b-9ee2-4ea8-9d61-83e035eccb26',
-  Warehouse_id: 1,
-  rec_first_name: 'John',
-  rec_last_name: 'Doe',
-  rec_email: 'johnDoe@gmail.com',
-  rec_phone_number: '+1 (234) 567890',
-  destination_address: 'Berry Street',
-  items: [
-    {
-      description: 'Item1',
-      item_weight: 100,
-      item_length: 130,
-      item_width: 30,
-      item_height: 50,
-      characteristics: [defaultCharacteristic, defaultCharacteristic],
-    },
-    {
-      description: 'Item2',
-      item_weight: 100,
-      item_length: 130,
-      item_width: 30,
-      item_height: 50,
-      characteristics: null,
-    },
-  ],
-};
-
 let registeredPickup = {
   pickup_id: 'b902ff4b-9ee2-4ea8-9d61-83e035eccb26',
   creation_date: '2020-08-01',
