@@ -99,7 +99,7 @@ describe('Userdata Controller', () => {
 
   describe('modifyInfo', () => {
     it('should return saved response', () => {
-      const info = { user_id:1, first_name: 'Ana', middle_name: 'Maria', last_name: 'Contreras', second_last_name: 'Lara',
+      const info = { user_id:1, first_name: 'Luisa', middle_name: 'Maria', last_name: 'Contreras', second_last_name: 'Lara',
        phone_number:'+1 (654) 562 5698', def_language: LanguageType.ENGLISH, picture_url: null,  receive_notifications: true};
       controller.modifyInfo(info);
       expect(service.modifyUserdata).toHaveBeenCalledWith(info);

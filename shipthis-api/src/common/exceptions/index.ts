@@ -28,3 +28,4 @@ export { WarehouseDeletedException } from './warehouse-deleted.exception';
 export { CommercialAllyDeletedException } from './commercial-ally-deleted.exception';
 export { CommentNotFoundException } from './comment-not-found.exception';
 export { NotValidOptionException } from './not-valid-option.exception';
+export { ReceiverNotFoundException } from './receiver-not-found.exception';
