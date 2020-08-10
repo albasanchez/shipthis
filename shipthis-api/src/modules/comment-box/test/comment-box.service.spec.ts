@@ -68,7 +68,7 @@ describe('CommentBoxService', () => {
       } catch (e) {
         expect(repository.findOne).toHaveBeenCalledWith(comment.comment_id);
         expect(repository.save).not.toHaveBeenCalled();
-        expect(e).toEqual(new CommentNotFoundException());
+        expect(e).toBeInstanceOf(CommentNotFoundException);
       }
     });
   });

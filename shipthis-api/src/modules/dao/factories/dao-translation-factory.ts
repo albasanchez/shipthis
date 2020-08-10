@@ -7,9 +7,6 @@ export class DaoTranslationFactory implements IDaoFactory {
     switch (type) {
       case DaoFactoryConstans.POEDITOR:
         return new DaoPOEditor();
-
-      default:
-        break;
     }
   }
 }
