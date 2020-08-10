@@ -48,18 +48,12 @@ export class WarehouseRepository extends Repository<Warehouse> {
     id: number,
     newWarehouse: UpdateWarehouseDto,
   ): Promise<any> {
-    if (!newWarehouse.place) {
-      const warehouse = {
-        name: newWarehouse.name,
-      };
-      this.update(id, warehouse);
-    } else {
-      const warehouse = {
-        name: newWarehouse.name,
-        place: newWarehouse.place,
-      };
-      this.update(id, warehouse);
-    }
+    const warehouse = {
+      name: newWarehouse.name,
+      place: newWarehouse.place,
+    };
+    this.update(id, warehouse);
+
     return { response: 'Warehouse has been updated sucessfully' };
   }
 

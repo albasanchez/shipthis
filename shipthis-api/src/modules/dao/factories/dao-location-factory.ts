@@ -7,9 +7,6 @@ export class DaoLocationFactory implements IDaoFactory {
     switch (type) {
       case DaoFactoryConstans.LOCATIONIQ:
         return new DaoLocationIq();
-
-      default:
-        break;
     }
   }
 }
