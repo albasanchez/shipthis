@@ -16,6 +16,7 @@ import {
 import { LanguageType } from '../constants/language.enum';
 import { UserdataStatus } from '../constants/user-status.enum';
 import { BadRequestException } from '@nestjs/common';
+import { ModifyPasswordDTO } from '../dto/modify-password.dto';
 
 
 describe('UserdataService', () => {
@@ -54,7 +55,7 @@ describe('UserdataService', () => {
                      def_language: LanguageType.ENGLISH, picture_url: null,  
                      receive_notifications: true};
 
-  const newPassword = { user_id: 1, actual_password: 'test', new_password:'testPassword' };
+  const newPassword: ModifyPasswordDTO = { user_id: 1, actual_password: 'hola123', new_password:'testPassword' };
   const newPasswordFail = { user_id: 1, actual_password: 'testFail', new_password:'testPassword' };
 
    beforeEach(async () => {
@@ -185,14 +186,14 @@ describe('UserdataService', () => {
   });
 
   describe('modifyPassword', () => {
-   /* it('should change the user password', async () => {
+    it('should change the user password', async () => {
       userdataRepository.findOne = mockUserdataRepository.findOne(true, false);
       userdataRepository.save = mockUserdataRepository.save();
       const response = await service.modifyPassword(newPassword);
       expect(userdataRepository.findOne).toHaveBeenCalled();
       expect(userdataRepository.save).toHaveBeenCalled();
       expect(response).toEqual({ response: 'Password change successful' });
-    });*/
+    });
     it('should not change the user password', async () => {
       userdataRepository.findOne = mockUserdataRepository.findOne(false, false);
       userdataRepository.save = mockUserdataRepository.save();
@@ -216,7 +217,6 @@ describe('UserdataService', () => {
       }
     });
   });
-
 
   describe('modifyUserdata', () => {
        it('should change the user information', async () => {
