@@ -1,12 +1,12 @@
 import { CheckPoint } from './../ordersheet/entities/check-point.entity';
-import { Trajectory } from 'src/modules/ordersheet/entities/trajectory.entity';
+import { Trajectory } from '../ordersheet/entities/trajectory.entity';
 import { Pickup } from './../commercial-ally/entities/pickup.entity';
 import { OrdersheetRepository } from './../ordersheet/repositories/ordersheet.repository';
 import { PickupRepository } from './../commercial-ally/repositories/pickup.repository';
 import { Configuration } from './../../config/config.keys';
 import { ConfigService } from './../../config/config.service';
 import { HttpService, Injectable, OnModuleInit } from '@nestjs/common';
-import { AppLoggerService } from 'src/log/applogger.service';
+import { AppLoggerService } from '../../log/applogger.service';
 import { Ordersheet } from '../ordersheet/entities/ordersheet.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 const TelegramBot = require('node-telegram-bot-api');
