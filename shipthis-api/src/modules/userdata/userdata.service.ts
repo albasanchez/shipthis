@@ -44,7 +44,7 @@ export class UserdataService {
 
     const receiversInfo: ReceiverInfoDto[] = [];
 
-    receivers.forEach(rec => {
+    receivers.forEach((rec) => {
       receiversInfo.push(MapperReceiver.ReceiverToReceiverInfo(rec));
     });
 
@@ -64,10 +64,12 @@ export class UserdataService {
       throw new UserNotFoundException();
     }
 
-    const receiver: Receiver = await this._receiverRepository.createReceiver(
+    let receiver: Receiver = await this._receiverRepository.createReceiver(
       newReceiver,
       user,
     );
+
+    receiver = await this._receiverRepository.getReceiver(receiver.receiver_id);
 
     this._appLogger.log('New Receiver has been created sucessfully');
 
@@ -116,7 +118,7 @@ export class UserdataService {
 
     const usersInfo: UserInfoDto[] = [];
 
-    users.forEach(user => {
+    users.forEach((user) => {
       usersInfo.push(MapperUser.userdataToUserInfo(user));
     });
 
@@ -139,7 +141,7 @@ export class UserdataService {
 
   async modifyPassword(info: ModifyPasswordDTO) {
     this._appLogger.log('Handling New Request: Modify Password Service');
-    let user: Userdata = await this._userdataRepository.getUser(info.user_id);
+    const user: Userdata = await this._userdataRepository.getUser(info.user_id);
     if (!user) {
       throw new UserNotFoundException();
     }
@@ -155,7 +157,7 @@ export class UserdataService {
 
   async modifyUserdata(info: UpdateUserDataDTO) {
     this._appLogger.log('Handling New Request: Modify User Data Service');
-    let user: Userdata = await this._userdataRepository.getUserWithPerson(
+    const user: Userdata = await this._userdataRepository.getUserWithPerson(
       info.user_id,
     );
     if (!user) {
@@ -188,7 +190,7 @@ export class UserdataService {
 
   async changeUserStatus(user_id: number, status: UserdataStatus) {
     this._appLogger.log('Handling New Request: Change User Status Service');
-    let user: Userdata = await this._userdataRepository.getUserActiveOrBloked(
+    const user: Userdata = await this._userdataRepository.getUserActiveOrBloked(
       user_id,
     );
     if (!user) {

@@ -7,6 +7,7 @@ import { DiscountController } from './discount.controller';
 import { DiscountRepository } from './repositories/discount.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EmailModule } from '../email/email.module';
+import { EncriptionModule } from '../encription/encription.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { EmailModule } from '../email/email.module';
     ]),
     AppLoggerModule,
     EmailModule,
+    EncriptionModule
   ],
   providers: [DiscountService],
   controllers: [DiscountController],
