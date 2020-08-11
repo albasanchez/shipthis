@@ -3,8 +3,16 @@ import Vuex from "vuex";
 import jwt from "../common/jwt.service";
 import createPersistedState from "vuex-persistedstate";
 import modules from "./modules";
+import LogRocket from "logrocket";
 
+import createPlugin from "logrocket-vuex";
+const logrocketPlugin = createPlugin(LogRocket);
 Vue.use(Vuex);
+LogRocket.init(process.env.VUE_APP_LOGROCKET, {
+  dom: {
+    inputSanitizer: true,
+  },
+});
 
 export default new Vuex.Store({
   modules, //all modules are automatically imported
@@ -34,5 +42,5 @@ export default new Vuex.Store({
     },
   },
   getters: {},
-  plugins: [createPersistedState({ paths: ["users"] })],
+  plugins: [createPersistedState({ paths: ["users"] }), logrocketPlugin],
 });
