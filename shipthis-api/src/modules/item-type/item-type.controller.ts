@@ -22,7 +22,7 @@ export class ItemTypeController {
     return this._itemTypeServ.getCurrentItemPrice();
   }
 
-  @Get('active-characteristics')
+  @Get('active-characteristics') 
   async getACurrentActiveCharacteristics() {
     return this._itemTypeServ.getACurrentActiveCharacteristics();
   }

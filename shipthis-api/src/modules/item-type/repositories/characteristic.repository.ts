@@ -1,7 +1,7 @@
 import { Repository, EntityRepository } from 'typeorm';
 import { Characteristic } from '../entities/characteristic.entity';
 import { CharacteristicStatus } from '../constants/characteristic-status.enum';
-
+ 
 @EntityRepository(Characteristic)
 export class CharacteristicRepository extends Repository<Characteristic> {
   getAllCharacteristics(): Promise<Characteristic[]> {
@@ -15,3 +15,4 @@ export class CharacteristicRepository extends Repository<Characteristic> {
     return this.findOne({ where: { characteristic_id: id } });
   }
 }
+ 

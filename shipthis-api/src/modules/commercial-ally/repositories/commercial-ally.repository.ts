@@ -9,7 +9,7 @@ import { WarehouseRepository } from '../repositories/warehouse.repository';
 import { CommercialAllyStatus } from '../constants/commercial-ally-status.enum';
 import { MapperWarehouse} from '../../../mapper/mapper-warehouse';
 import { UpdateCommercialAllyDto } from '../dto/update-commercial-ally.dto';
-
+  
 @EntityRepository(CommercialAlly)
 export class CommercialAllyRepository extends Repository<CommercialAlly> {
 
