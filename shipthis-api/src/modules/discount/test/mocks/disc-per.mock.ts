@@ -91,7 +91,5 @@ export class DiscPerMock {
     insert: jest.fn().mockReturnThis(),
     into: jest.fn().mockReturnThis(),
     values: jest.fn().mockReturnThis(),
-    execute: jest.fn().mockReturnValue([
-      {}
-    ]),
+    execute: jest.fn()
   };

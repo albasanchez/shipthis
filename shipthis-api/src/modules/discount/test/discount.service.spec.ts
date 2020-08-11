@@ -9,18 +9,18 @@ import {
 import {
   discountMockModuleMetadata,
   DiscountMock,
-  createQueryBuilder,
 } from './mocks/discount.mock';
 import {
   discPerMockModuleMetadata,
   DiscPerMock,
   fetchAssignedDiscoustCreateQueryBuilder,
   validateDiscountCreateQueryBuilder,
-  assignDiscountsCreateQueryBuilder
+  assignDiscountsCreateQueryBuilder,
 } from './mocks/disc-per.mock';
 import {
   UserdataMock,
   userdataMockModuleMetadata,
+  getLatestUsersCreateQueryBuilder,
 } from '../../userdata/test/mocks/userdata.mock';
 import { UserDataRepository } from '../../userdata/repositories/userdata.repository';
 import { DiscPerRepository } from '../repositories/disc-per.repository';
@@ -257,6 +257,114 @@ describe('DiscountService', () => {
       });
     });
 
-    
+    describe('assignDiscounts', () => {
+      it('should assign discounts to a group of users ', async () => {
+        discountRepository.findOne = mockDiscountRepository.findOne('Summer');
+        userdataRepository.query = mockUserdataRepository.query('more');
+        userdataRepository.find = mockUserdataRepository.find(true);
+        jest
+        .spyOn(discPerRepository, 'createQueryBuilder')
+        .mockImplementation(() => assignDiscountsCreateQueryBuilder);
+        const info = { option: 1, discount_id: 2}
+        const response = await service.assignDiscounts(info);
+        expect(discountRepository.findOne).toHaveBeenCalled();
+        expect(userdataRepository.query).toHaveBeenCalled();
+        expect(userdataRepository.find).toHaveBeenCalled();
+        expect(discPerRepository.createQueryBuilder).toHaveBeenCalled();
+        expect(response).toEqual({ response: 'Discounts assigned successfully'});
+      });
+      it('should assign discounts to a group of users ', async () => {
+        discountRepository.findOne = mockDiscountRepository.findOne('Summer');
+        userdataRepository.query = mockUserdataRepository.query('less');
+        userdataRepository.find = mockUserdataRepository.find(true);
+        jest
+        .spyOn(discPerRepository, 'createQueryBuilder')
+        .mockImplementation(() => assignDiscountsCreateQueryBuilder);
+        const info = { option: 2, discount_id: 2}
+        const response = await service.assignDiscounts(info);
+        expect(discountRepository.findOne).toHaveBeenCalled();
+        expect(userdataRepository.query).toHaveBeenCalled();
+        expect(userdataRepository.find).toHaveBeenCalled();
+        expect(discPerRepository.createQueryBuilder).toHaveBeenCalled();
+        expect(response).toEqual({ response: 'Discounts assigned successfully'});
+      });
+      it('should assign discounts to a group of users ', async () => {
+        discountRepository.findOne = mockDiscountRepository.findOne('Summer');
+        userdataRepository.find = mockUserdataRepository.find(true);
+        jest
+        .spyOn(discPerRepository, 'createQueryBuilder')
+        .mockImplementation(() => assignDiscountsCreateQueryBuilder);
+        const info = { option: 3, discount_id: 2}
+        const response = await service.assignDiscounts(info);
+        expect(discountRepository.findOne).toHaveBeenCalled();
+        expect(discPerRepository.createQueryBuilder).toHaveBeenCalled();
+        expect(response).toEqual({ response: 'Discounts assigned successfully'});
+      });
+      it('should assign discounts to a group of users ', async () => {
+        discountRepository.findOne = mockDiscountRepository.findOne('Summer');;
+        userdataRepository.find = mockUserdataRepository.find(true);
+        jest
+        .spyOn(userdataRepository, 'createQueryBuilder')
+        .mockImplementation(() => getLatestUsersCreateQueryBuilder);
+        jest
+        .spyOn(discPerRepository, 'createQueryBuilder')
+        .mockImplementation(() => assignDiscountsCreateQueryBuilder);
+        const info = { option: 4, discount_id: 2}
+        const response = await service.assignDiscounts(info);
+        expect(discountRepository.findOne).toHaveBeenCalled();
+        expect(userdataRepository.createQueryBuilder).toHaveBeenCalled();
+        expect(userdataRepository.find).toHaveBeenCalled();
+        expect(discPerRepository.createQueryBuilder).toHaveBeenCalled();
+        expect(response).toEqual({ response: 'Discounts assigned successfully'});
+      });
+      it('should not assign discounts to a group of users ', async () => {
+        discountRepository.findOne = mockDiscountRepository.findOne('');
+        userdataRepository.query = mockUserdataRepository.query('more');
+        userdataRepository.find = mockUserdataRepository.find(true);
+        jest
+        .spyOn(discPerRepository, 'createQueryBuilder')
+        .mockImplementation(() => assignDiscountsCreateQueryBuilder);
+        const info = { option: 1, discount_id: 2}
 
+        try {
+          const response = await service.assignDiscounts(info);
+       } catch (e) {
+         expect(discountRepository.findOne).toHaveBeenCalled();
+        expect(userdataRepository.query).not.toHaveBeenCalled();
+        expect(userdataRepository.find).not.toHaveBeenCalled();
+        expect(discPerRepository.createQueryBuilder).not.toHaveBeenCalled();
+         expect(e).toBeInstanceOf(DiscountNotRegisteredException);
+       } 
+      });
+      it('should not assign discounts to a group of users ', async () => {
+        discountRepository.findOne = mockDiscountRepository.findOne('Deleted');
+        userdataRepository.query = mockUserdataRepository.query('more');
+        userdataRepository.find = mockUserdataRepository.find(true);
+        jest
+        .spyOn(discPerRepository, 'createQueryBuilder')
+        .mockImplementation(() => assignDiscountsCreateQueryBuilder);
+        const info = { option: 1, discount_id: 2}
+
+        try {
+          const response = await service.assignDiscounts(info);
+       } catch (e) {
+         expect(discountRepository.findOne).toHaveBeenCalled();
+        expect(userdataRepository.query).not.toHaveBeenCalled();
+        expect(userdataRepository.find).not.toHaveBeenCalled();
+        expect(discPerRepository.createQueryBuilder).not.toHaveBeenCalled();
+         expect(e).toBeInstanceOf(DiscountDeletedException);
+       } 
+      });
+      it('should not assign discounts to a group of users ', async () => {
+        discountRepository.findOne = mockDiscountRepository.findOne('Summer');
+        userdataRepository.query = mockUserdataRepository.query('more');
+        userdataRepository.find = mockUserdataRepository.find(true);
+        jest
+        .spyOn(discPerRepository, 'createQueryBuilder')
+        .mockImplementation(() => assignDiscountsCreateQueryBuilder);
+        const info = { option: 5, discount_id: 2}
+        const response = await service.assignDiscounts(info);
+        expect(discountRepository.findOne).toHaveBeenCalled();
+      });
+    });
 });
