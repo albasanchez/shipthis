@@ -9,7 +9,7 @@ import { CommercialAllyRepository } from './repositories/commercial-ally.reposit
 import { PickupRepository } from './repositories/pickup.repository';
 import { WarehouseRepository } from './repositories/warehouse.repository';
 import { PlaceRepository } from '../ordersheet/repositories/place.repository';
-import { AppLoggerModule } from 'src/log/applogger.module';
+import { AppLoggerModule } from '../../log/applogger.module';
 
 @Module({
   imports: [

@@ -5,7 +5,7 @@ import { UserdataController } from './userdata.controller';
 import { UserdataService } from './userdata.service';
 import { PersonRepository } from './repositories/person.repository';
 import { ReceiverRepository } from './repositories/receiver.repository';
-import { AppLoggerModule } from 'src/log/applogger.module';
+import { AppLoggerModule } from '../../log/applogger.module';
 
 @Module({
   imports: [

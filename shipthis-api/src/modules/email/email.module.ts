@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { SendGridModule } from '@anchan828/nest-sendgrid';
 import { EmailService } from './email.service';
-import { AppLoggerModule } from 'src/log/applogger.module';
+import { AppLoggerModule } from '../../log/applogger.module';
 import { ConfigModule } from '../../config/config.module';
 import { Configuration } from '../../config/config.keys';
 import { ConfigService } from '../../config/config.service';

@@ -4,13 +4,13 @@ import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from 'src/config/config.module';
+import { ConfigModule } from '../../config/config.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigService } from 'src/config/config.service';
-import { Configuration } from 'src/config/config.keys';
-import { AppLoggerModule } from 'src/log/applogger.module';
+import { ConfigService } from '../../config/config.service';
+import { Configuration } from '../../config/config.keys';
+import { AppLoggerModule } from '../../log/applogger.module';
 import { EmailModule } from '../email/email.module';
 
 @Module({

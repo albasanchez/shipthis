@@ -9,7 +9,7 @@ import { RolName } from '../rol/constants/rol-name.enum';
 import { IJwtPayload } from './payloads/jwt-payload.interace';
 import { Userdata } from '../userdata/entities/userdata.entity';
 import { Discount } from '../discount/entities/discount.entity';
-import { AppLoggerService } from 'src/log/applogger.service';
+import { AppLoggerService } from '../../log/applogger.service';
 import { UserdataStatus } from '../userdata/constants/user-status.enum';
 import {
   UserFederatedException,
@@ -20,7 +20,7 @@ import {
   UserAlreadyRegisteredException,
   WrongCredentialsException,
   UserNotFoundException,
-} from 'src/common/exceptions';
+} from '../../common/exceptions';
 import { genSalt, hash, compare } from 'bcryptjs';
 import { EmailService } from '../email/email.service';
 

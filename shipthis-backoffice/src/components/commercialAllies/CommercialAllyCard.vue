@@ -182,13 +182,14 @@
           :search="searchPickups"
           :items-per-page="5"
           :loading="loadingPickups"
+          :sort-by="creation_date"
           loading-text="Loading pickups"
           no-data-text="There are no pickups registered"
           no-results-text="There are no pickups with the search parameters"
           class="header-color"
         >
-          <template v-slot:item.actions="{ item }">
-            <v-icon small class="mr-2" @click="viewTrackingInformation(item.id)">mdi-magnify</v-icon>
+          <template v-slot:item.creation_date="{ item }">
+            <p @click="viewTrackingInformation(item.id)">{{formatdate(item.creation_date)}}</p>
           </template>
         </v-data-table>
       </v-col>
@@ -202,8 +203,8 @@
 <script>
 import WarehouseModal from "./WarehouseModal";
 import Repository from "@/services/repositories/repositoryFactory";
+import moment from "moment";
 const CommercialAlliesRepository = Repository.get("commercialAlly");
-
 export default {
   name: "CommercialAllyCard",
   components: {
@@ -273,7 +274,10 @@ export default {
     goBack() {
       this.$store.dispatch("commercialAlly/setCommercialAlly", null);
       this.$router.push({ name: "CommercialAlliesView" });
-    }
+    },
+    formatdate(date){
+      return moment(date).format('YYYY-MM-DD HH:mm:ss')
+    },
   },
   computed: {
     warehousesHeaders() {
@@ -333,6 +337,11 @@ export default {
           align: "center"
         },
         {
+          text: "Receiver Last Name",
+          value: "rec_last_name",
+          align: "center"
+        },
+        {
           text: "Origin Warehouse",
           value: "origin_warehouse_name",
           align: "center"
@@ -342,7 +351,6 @@ export default {
           value: "items.length",
           align: "center"
         },
-
         {
           text: "Creation Date",
           value: "creation_date",
@@ -351,12 +359,6 @@ export default {
         {
           text: "Status",
           value: "pickup_status",
-          align: "center"
-        },
-        {
-          text: "Actions",
-          value: "actions",
-          sortable: false,
           align: "center"
         }
       ];
@@ -390,11 +392,9 @@ export default {
   background-color: white !important;
   min-width: 300px !important;
 }
-
 .title-commercial-ally-info {
   min-width: 300px !important;
 }
-
 .header-commercial-ally-info {
   background-color: #1c1954 !important;
   color: white !important;

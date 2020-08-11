@@ -2,9 +2,9 @@ import { CheckPoint } from './../../ordersheet/entities/check-point.entity';
 import { Trajectory } from './../../ordersheet/entities/trajectory.entity';
 import { Place } from './../../ordersheet/entities/place.entity';
 import { isArray } from 'util';
-import { Configuration } from 'src/config/config.keys';
-import { AppLoggerService } from 'src/log/applogger.service';
-import { ConfigService } from 'src/config/config.service';
+import { Configuration } from '../../../config/config.keys';
+import { AppLoggerService } from '../../../log/applogger.service';
+import { ConfigService } from '../../../config/config.service';
 import { IDaoLocation } from './../interfaces/dao-location.interface';
 import axios from 'axios';
 export class DaoLocationIq implements IDaoLocation {
