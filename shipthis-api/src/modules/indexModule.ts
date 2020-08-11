@@ -12,6 +12,8 @@ import { UserdataModule } from './userdata/userdata.module';
 import { AuthModule } from './auth/auth.module';
 import { TelegramModule } from './telegram/telegram.module';
 import { EmailModule } from './email/email.module';
+import { EncriptionModule } from './encription/encription.module';
+import { RequestContextModule } from './request-context/request-context.module';
 
 export const indexModules = [
   AuthModule,
@@ -28,4 +30,6 @@ export const indexModules = [
   UserdataModule,
   EmailModule,
   InternationalizationModule,
+  EncriptionModule,
+  RequestContextModule
 ];

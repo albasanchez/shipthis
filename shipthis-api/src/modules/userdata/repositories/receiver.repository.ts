@@ -42,7 +42,7 @@ export class ReceiverRepository extends Repository<Receiver> {
     id: number,
     newReceiver: UpdateReceiverDto,
   ): Promise<any> {
-    this.update(id, newReceiver);
+    this.save({ receiver_id: id, ...newReceiver });
 
     return { response: 'Receiver has been updated sucessfully' };
   }

@@ -13,7 +13,7 @@ import { Pickup } from '../entities/pickup.entity';
 export class PickupSubscriber implements EntitySubscriberInterface<Pickup> {
   constructor(
     @InjectConnection() readonly connection: Connection,
-    private encriptionsService: EncriptionService,
+    private readonly _encriptionsService: EncriptionService,
   ) {
     connection.subscribers.push(this);
   }
@@ -23,14 +23,14 @@ export class PickupSubscriber implements EntitySubscriberInterface<Pickup> {
   }
 
   beforeInsert(event: InsertEvent<Pickup>): void {
-    this.encriptionsService.encriptObject(event.entity);
+    this._encriptionsService.encriptObject(event.entity);
   }
 
   public afterLoad(entity: Pickup) {
-    this.encriptionsService.decriptObject(entity);
+    this._encriptionsService.decriptObject(entity);
   }
 
   beforeUpdate(event: UpdateEvent<Pickup>): void {
-    this.encriptionsService.encriptObject(event.entity);
+    this._encriptionsService.encriptObject(event.entity);
   }
 }

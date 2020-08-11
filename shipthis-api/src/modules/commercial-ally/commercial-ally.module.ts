@@ -13,6 +13,7 @@ import { AppLoggerModule } from '../../log/applogger.module';
 import { EncriptionModule } from '../encription/encription.module';
 import { CommercialAllySubscriber } from './subscribers/commercial-ally-subscriber.service';
 import { PickupSubscriber } from './subscribers/pickup-subscriber.service';
+import { AuditModule } from '../audit/audit.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { PickupSubscriber } from './subscribers/pickup-subscriber.service';
     AppLoggerModule,
     EmailModule,
     EncriptionModule,
+    AuditModule,
   ],
   providers: [
     CommercialAllyService,

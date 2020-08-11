@@ -13,7 +13,7 @@ import { Place } from '../entities/place.entity';
 export class PlaceSubscriber implements EntitySubscriberInterface<Place> {
   constructor(
     @InjectConnection() readonly connection: Connection,
-    private encriptionsService: EncriptionService,
+    private readonly _encriptionsService: EncriptionService,
   ) {
     connection.subscribers.push(this);
   }
@@ -23,14 +23,14 @@ export class PlaceSubscriber implements EntitySubscriberInterface<Place> {
   }
 
   beforeInsert(event: InsertEvent<Place>): void {
-    this.encriptionsService.encriptObject(event.entity);
+    this._encriptionsService.encriptObject(event.entity);
   }
 
   public afterLoad(entity: Place) {
-    this.encriptionsService.decriptObject(entity);
+    this._encriptionsService.decriptObject(entity);
   }
 
   beforeUpdate(event: UpdateEvent<Place>): void {
-    this.encriptionsService.encriptObject(event.entity);
+    this._encriptionsService.encriptObject(event.entity);
   }
 }

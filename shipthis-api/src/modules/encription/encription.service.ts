@@ -1,7 +1,11 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '../../config/config.service';
 import { Configuration } from '../../config/config.keys';
 import { AppLoggerService } from '../../log/applogger.service';
+import {
+  propertyIsValid,
+  propertyTypeIsValid,
+} from 'src/config/verify-properties.functions';
 const crypto = require('crypto');
 
 @Injectable()
@@ -17,24 +21,8 @@ export class EncriptionService {
     this._appLogger.log(`Starting encription before inserting`);
 
     for (const key in content) {
-      if (
-        typeof content[key] != 'object' &&
-        typeof content[key] != 'boolean' &&
-        typeof content[key] != 'number' &&
-        typeof content[key] != 'function'
-      ) {
-        if (
-          !key.includes('type') &&
-          !key.includes('status') &&
-          !key.includes('_id') &&
-          !key.includes('date') &&
-          !key.includes('language') &&
-          !key.includes('gender') &&
-          !key.includes('password') &&
-          !key.includes('fk') &&
-          !key.includes('position') &&
-          !key.includes('amount')
-        ) {
+      if (propertyTypeIsValid(content[key])) {
+        if (propertyIsValid(key)) {
           const cipher = crypto.createCipheriv(
             'aes-256-cbc',
             Buffer.from(cryptoKey, 'hex'),
@@ -54,24 +42,8 @@ export class EncriptionService {
     this._appLogger.log(`Starting decription after load`);
 
     for (const key in content) {
-      if (
-        typeof content[key] != 'object' &&
-        typeof content[key] != 'boolean' &&
-        typeof content[key] != 'number' &&
-        typeof content[key] != 'function'
-      ) {
-        if (
-          !key.includes('type') &&
-          !key.includes('status') &&
-          !key.includes('_id') &&
-          !key.includes('date') &&
-          !key.includes('language') &&
-          !key.includes('gender') &&
-          !key.includes('password') &&
-          !key.includes('fk') &&
-          !key.includes('position') &&
-          !key.includes('amount')
-        ) {
+      if (propertyTypeIsValid(content[key])) {
+        if (propertyIsValid(key)) {
           const encryptedText = Buffer.from(content[key], 'base64');
           const decipher = crypto.createDecipheriv(
             'aes-256-cbc',
