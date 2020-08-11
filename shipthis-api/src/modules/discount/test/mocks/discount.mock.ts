@@ -5,17 +5,20 @@ import { AppLoggerModule } from '../../../../log/applogger.module';
 import { DiscountService } from '../../discount.service';
 import { DiscountRepository } from '../../repositories/discount.repository';
 import { ConfigService } from '../../../../config/config.service';
+import { UserDataRepository } from '../../../userdata/repositories/userdata.repository';
 
 export const discountMockModuleMetadata: ModuleMetadata = {
   providers: [
     DiscountService,
     DiscountRepository,
     DiscPerRepository, 
+    UserDataRepository,
     {
       provide: EmailService,
       useFactory() {
         return {
           generateInvoice: jest.fn(),
+          sendDiscountEmail: jest.fn()
         };
       },
     },
@@ -32,12 +35,29 @@ export const discountMockModuleMetadata: ModuleMetadata = {
 };
 
 export class DiscountMock {
-  findOne(successful: string) {
-    if (successful == 'Active') {
-      return jest.fn().mockResolvedValue(1);
-    } else if (successful == 'Deleted') {
-      return jest.fn().mockResolvedValue(2);
-    } else {
+  findOne(option: string) {
+    if (option == 'Welcome') {
+      return jest.fn().mockResolvedValue({
+      discount_id: 1,
+      name: 'WELCOME',
+      percentage: 10,
+      status: 'ACTIVE'
+      });
+    } else if (option == 'Summer') {
+      return jest.fn().mockResolvedValue({
+        discount_id: 2,
+        name: 'SUMMER',
+        percentage: 20,
+        status: 'ACTIVE'
+        });
+    } else if (option == 'Deleted') {
+      return jest.fn().mockResolvedValue({
+        discount_id: 2,
+        name: 'SUMMER',
+        percentage: 20,
+        status: 'DELETED'
+        }); }
+    else {
       return jest.fn().mockResolvedValue(null);
     }
   }
@@ -45,7 +65,18 @@ export class DiscountMock {
     return jest.fn();
   }
   find() {
-    return jest.fn().mockResolvedValue(1);
+    return jest.fn().mockResolvedValue([{
+      discount_id: 1,
+      name: 'WELCOME',
+      percentage: 10,
+      status: 'ACTIVE'
+      },
+      {
+        discount_id: 2,
+        name: 'SUMMER',
+        percentage: 20,
+        status: 'ACTIVE'
+        }]);
   }
   update() {
     return jest.fn();

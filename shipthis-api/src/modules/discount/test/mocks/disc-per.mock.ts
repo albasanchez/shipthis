@@ -34,39 +34,64 @@ export class DiscPerMock {
   }
 }
 
-export const createQueryBuilder: any = {
-  innerJoinAndSelect: jest.fn().mockReturnThis(),
-  where: jest.fn().mockReturnThis(),
-  getMany: jest.fn().mockReturnValue([
+  export const fetchAssignedDiscoustCreateQueryBuilder: any = {
+    innerJoinAndSelect: jest.fn().mockReturnThis(),
+    leftJoinAndSelect: jest.fn().mockReturnThis(),
+    where: jest.fn().mockReturnThis(),
+    getMany: jest.fn().mockReturnValue([
     {
-      characteristic_id: 1,
-      name: 'Flammable',
-      status: 'ACTIVE',
-      char_price_hists: [
-        {
-          char_price_hist_id: 1,
-          starting_date: '2020-08-01',
-          ending_date: '2021-08-01',
-          tax: 0.8,
-          characteristic: {},
-          char_items: [],
+      disc_per_id: 1,
+      expiration_date: '10/10/2020',
+      discount: {
+        discount_id: 1,
+        name: 'WELCOME',
+        percentage: 10,
+        status: 'ACTIVE'
         },
-      ],
-    },
-    {
-      characteristic_id: 2,
-      name: 'Animal',
-      status: 'ACTIVE',
-      char_price_hists: [
-        {
-          char_price_hist_id: 2,
-          starting_date: '2020-08-01',
-          ending_date: '2021-08-01',
-          tax: 0.7,
-          characteristic: {},
-          char_items: [],
+      user: { 
+        user_id: 1,  
+        email: 'luisa@gmail.com', 
+        status: 'ACTIVE',
+        password: 'test',
+        registration_date: new Date(),
+        registration_type: 'REGULAR',
         },
-      ],
-    },
-  ]),
+      ordersheet: null },
+      {
+        disc_per_id: 2,
+        expiration_date: '01/01/2020',
+        discount: {
+          discount_id: 1,
+          name: 'SUMMER',
+          percentage: 20,
+          status: 'ACTIVE'
+          },
+        user: { 
+          user_id: 1,  
+          email: 'luisa@gmail.com', 
+          status: 'ACTIVE',
+          password: 'test',
+          registration_date: new Date(),
+          registration_type: 'REGULAR',
+          },
+        ordersheet: null }
+  ]),  
 };
+
+  export const validateDiscountCreateQueryBuilder: any = {
+    innerJoinAndSelect: jest.fn().mockReturnThis(),
+    leftJoinAndSelect: jest.fn().mockReturnThis(),
+    where: jest.fn().mockReturnThis(),
+    getMany: jest.fn().mockReturnValue([
+      {}
+    ]),
+  };
+
+  export const assignDiscountsCreateQueryBuilder: any = {
+    insert: jest.fn().mockReturnThis(),
+    into: jest.fn().mockReturnThis(),
+    values: jest.fn().mockReturnThis(),
+    execute: jest.fn().mockReturnValue([
+      {}
+    ]),
+  };
