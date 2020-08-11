@@ -37,7 +37,7 @@ import {
 } from './mocks/constants';
 import { PlaceRepository } from '../../../modules/ordersheet/repositories/place.repository';
 
-describe('CommercialAllyService', () => {
+describe('CommercialAllyService', () => { 
   let service: CommercialAllyService;
   let allyRepository: CommercialAllyRepository;
   let warehouseRepository: WarehouseRepository;
