@@ -33,7 +33,7 @@ export class AuthService {
     private readonly _appLogger: AppLoggerService,
     private readonly _emailService: EmailService,
     private readonly _discountServ: DiscountService,
-  ) {}
+  ) { }
 
   async googleLogin(
     signup: SignupDto,
