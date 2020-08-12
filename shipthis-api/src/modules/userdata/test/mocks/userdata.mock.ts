@@ -125,4 +125,47 @@ export class UserdataMock {
   update() {
     return jest.fn();
   }
+
+  query(condition: string) {
+    if(condition == 'more'){
+    return jest.fn().mockResolvedValue([{ user_id:1, first_name: 'Luisa', 
+    middle_name: 'Maria', last_name: 'Contreras', 
+    second_last_name: 'Lara', phone_number:'+1 (654) 562 5698', 
+    def_language: LanguageType.ENGLISH, picture_url: null,  
+    receive_notifications: true},
+    { user_id:2, first_name: 'Mary', 
+    middle_name: 'Matilda', last_name: 'Contreras', 
+    second_last_name: 'Pereira', phone_number:'+1 (654) 562 5698', 
+    def_language: LanguageType.ENGLISH, picture_url: null,  
+    receive_notifications: true}]);
+  } else {
+    
+    return jest.fn().mockResolvedValue([{ user_id:3, first_name: 'Luisa', 
+    middle_name: 'Maria', last_name: 'Contreras', 
+    second_last_name: 'Lara', phone_number:'+1 (654) 562 5698', 
+    def_language: LanguageType.ENGLISH, picture_url: null,  
+    receive_notifications: true},
+    { user_id:4, first_name: 'Mary', 
+    middle_name: 'Matilda', last_name: 'Contreras', 
+    second_last_name: 'Pereira', phone_number:'+1 (654) 562 5698', 
+    def_language: LanguageType.ENGLISH, picture_url: null,  
+    receive_notifications: true}]);
+   }
+  }
+
 }
+
+export const getLatestUsersCreateQueryBuilder: any = {
+  orderBy: jest.fn().mockReturnThis(),
+  limit: jest.fn().mockReturnThis(),
+  getMany: jest.fn().mockReturnValue([{ user_id:1, first_name: 'Luisa', 
+  middle_name: 'Maria', last_name: 'Contreras', 
+  second_last_name: 'Lara', phone_number:'+1 (654) 562 5698', 
+  def_language: LanguageType.ENGLISH, picture_url: null,  
+  receive_notifications: true},
+  { user_id:2, first_name: 'Mary', 
+  middle_name: 'Matilda', last_name: 'Contreras', 
+  second_last_name: 'Pereira', phone_number:'+1 (654) 562 5698', 
+  def_language: LanguageType.ENGLISH, picture_url: null,  
+  receive_notifications: true}]),
+};
