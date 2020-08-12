@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import { parse } from 'dotenv';
-import { AppLoggerService } from 'src/log/applogger.service';
+import { AppLoggerService } from '../log/applogger.service';
 
 export class ConfigService {
   private readonly envConfig: { [key: string]: string };
@@ -45,6 +45,8 @@ export class ConfigService {
         FRONTEND_URL: process.env.FRONTEND_URL,
         SEND_GRID_RECOVERY_TEMPLATE: process.env.SEND_GRID_RECOVERY_TEMPLATE,
         LOCATION_IQ_DELAY: process.env.LOCATION_IQ_DELAY,
+        ENCRIPTION_KEY1: process.env.ENCRIPTION_KEY1,
+        ENCRIPTION_KEY2: process.env.ENCRIPTION_KEY2,
       };
     }
   }

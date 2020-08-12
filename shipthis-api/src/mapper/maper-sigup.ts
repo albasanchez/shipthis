@@ -1,5 +1,5 @@
 import { GenderType } from './../modules/userdata/constants/gender.enum';
-import { SocialNetDto, SignupDto } from 'src/modules/auth/dto';
+import { SocialNetDto, SignupDto } from '../modules/auth/dto';
 
 export class MapperSignupDto {
   static SignuoDtoFromSocialNetDto(socialData: SocialNetDto): SignupDto {

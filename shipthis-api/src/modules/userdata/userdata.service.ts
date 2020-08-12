@@ -10,10 +10,10 @@ import { CreateReceiverDto } from './dto/create-receiver.dto';
 import { ModifyPasswordDTO } from './dto/modify-password.dto';
 import { UpdateUserDataDTO } from './dto/update-userdata.dto';
 import { UserInfoDto } from './dto/user-info.dto';
-import { ReceiverNotFoundException } from 'src/common/exceptions/receiver-not-found.exception';
-import { UserNotFoundException } from 'src/common/exceptions/user-not-found.exception';
-import { WrongCredentialsException } from 'src/common/exceptions/wrong-credentials.exception';
-import { AppLoggerService } from 'src/log/applogger.service';
+import { ReceiverNotFoundException } from '../../common/exceptions/receiver-not-found.exception';
+import { UserNotFoundException } from '../../common/exceptions/user-not-found.exception';
+import { WrongCredentialsException } from '../../common/exceptions/wrong-credentials.exception';
+import { AppLoggerService } from '../../log/applogger.service';
 import { ReceiverStatus } from './constants/receiver-status.enum';
 import { UserdataStatus } from './constants/user-status.enum';
 import { MapperReceiver } from '../../mapper/mapper-receiver';
@@ -44,7 +44,7 @@ export class UserdataService {
 
     const receiversInfo: ReceiverInfoDto[] = [];
 
-    receivers.forEach(rec => {
+    receivers.forEach((rec) => {
       receiversInfo.push(MapperReceiver.ReceiverToReceiverInfo(rec));
     });
 
@@ -64,10 +64,12 @@ export class UserdataService {
       throw new UserNotFoundException();
     }
 
-    const receiver: Receiver = await this._receiverRepository.createReceiver(
+    let receiver: Receiver = await this._receiverRepository.createReceiver(
       newReceiver,
       user,
     );
+
+    receiver = await this._receiverRepository.getReceiver(receiver.receiver_id);
 
     this._appLogger.log('New Receiver has been created sucessfully');
 
@@ -102,7 +104,13 @@ export class UserdataService {
       throw new ReceiverNotFoundException();
     }
 
-    const response = this._receiverRepository.deleteReceiver(id);
+    receiver.email = 'deletedreceiver@gmail.com';
+    receiver.name = 'name';
+    receiver.last_name = 'last name';
+    receiver.phone_number = '+1 (000) 000000';
+    receiver.status = ReceiverStatus.DELETED;
+
+    const response = this._receiverRepository.deleteReceiver(receiver);
 
     this._appLogger.log('Receiver has been deleted sucessfully');
 
@@ -116,7 +124,7 @@ export class UserdataService {
 
     const usersInfo: UserInfoDto[] = [];
 
-    users.forEach(user => {
+    users.forEach((user) => {
       usersInfo.push(MapperUser.userdataToUserInfo(user));
     });
 
@@ -127,19 +135,40 @@ export class UserdataService {
 
   async deleteUser(id: number): Promise<any> {
     this._appLogger.log('Handling New Request: Delete User Service');
-    const user: Userdata = await this._userdataRepository.getUser(id);
+    let user: Userdata = await this._userdataRepository.getUser(id);
     if (!user) {
       throw new UserNotFoundException();
     }
+    const receivers: Receiver[] = await this._receiverRepository.getReceiverByIdAndStatus(
+      user.user_id,
+      ReceiverStatus.ACTIVE,
+    );
+    user = await this._userdataRepository.getUserWithPerson(id);
+
     user.status = UserdataStatus.DELETED;
-    this._userdataRepository.save(user);
+    user.person.document = '000000000';
+    user.person.first_name = 'name';
+    user.person.last_name = 'last name';
+    user.person.middle_name = null;
+    user.person.phone_number = '+1 (000) 000000';
+    user.person.picture_url = null;
+    user.person.second_last_name = null;
+
+    receivers.forEach(async (rec) => {
+      await this.deleteReceiver(rec.receiver_id);
+    });
+
+    await this._userdataRepository.save(user);
+    
+    user.email = `user${id}@gmail.com`;
+    await this._userdataRepository.update({ user_id: id }, user);
     this._appLogger.log('User has been deleted sucessfully');
     return { response: 'User has been deleted sucessfully' };
   }
 
   async modifyPassword(info: ModifyPasswordDTO) {
     this._appLogger.log('Handling New Request: Modify Password Service');
-    let user: Userdata = await this._userdataRepository.getUser(info.user_id);
+    const user: Userdata = await this._userdataRepository.getUser(info.user_id);
     if (!user) {
       throw new UserNotFoundException();
     }
@@ -155,7 +184,7 @@ export class UserdataService {
 
   async modifyUserdata(info: UpdateUserDataDTO) {
     this._appLogger.log('Handling New Request: Modify User Data Service');
-    let user: Userdata = await this._userdataRepository.getUserWithPerson(
+    const user: Userdata = await this._userdataRepository.getUserWithPerson(
       info.user_id,
     );
     if (!user) {
@@ -188,7 +217,7 @@ export class UserdataService {
 
   async changeUserStatus(user_id: number, status: UserdataStatus) {
     this._appLogger.log('Handling New Request: Change User Status Service');
-    let user: Userdata = await this._userdataRepository.getUserActiveOrBloked(
+    const user: Userdata = await this._userdataRepository.getUserActiveOrBloked(
       user_id,
     );
     if (!user) {

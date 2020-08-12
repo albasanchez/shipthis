@@ -8,10 +8,10 @@ import { NewItemHistDto } from './dto/item-price-history.dto';
 import { CharPriceInfoDto } from './dto/char-price-info.dto';
 import { CharPriceHistRepository } from './repositories/char-price-hist.repository';
 import { NewCharPriceDto } from './dto/new-char-price.dto';
-import { CharacteristicNotFoundException } from 'src/common/exceptions/characteristic-not-found.exception';
-import { AppLoggerService } from 'src/log/applogger.service';
+import { CharacteristicNotFoundException } from '../../common/exceptions/characteristic-not-found.exception';
+import { AppLoggerService } from '../../log/applogger.service';
 
-@Injectable()
+@Injectable() 
 export class ItemTypeService {
   constructor(
     @InjectRepository(ItemPriceHistRepository)
@@ -26,7 +26,7 @@ export class ItemTypeService {
   async getCurrentItemPrice(): Promise<ItemPriceHist> {
     this._appLogger.log(
       'Handling New Request: Consulting Current Item Price History Service',
-    );
+    ); 
 
     const currentPrice: ItemPriceHist = await this._itemPriceRepo.getCurrentPrice();
 
@@ -89,7 +89,7 @@ export class ItemTypeService {
     if (!characteristic) {
       throw new CharacteristicNotFoundException();
     }
-
+ 
     const newPriceRegister = this._characHistRepo.updateHistory(
       newRegister,
       characteristic,

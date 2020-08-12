@@ -4,8 +4,8 @@ import { CommentBoxRepository } from './repositories/comment-box.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateCommentBoxDto } from './dto/create-comment-box.dto';
 import { UpdateReviewedDTO } from './dto/update-reviewed.dto';
-import { AppLoggerService } from 'src/log/applogger.service';
-import { CommentNotFoundException } from 'src/common/exceptions/comment-not-found.exception';
+import { AppLoggerService } from '../../log/applogger.service';
+import { CommentNotFoundException } from '../../common/exceptions/comment-not-found.exception';
 
 @Injectable()
 export class CommentBoxService {

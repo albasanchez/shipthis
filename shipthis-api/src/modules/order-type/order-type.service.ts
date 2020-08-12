@@ -3,9 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { OrderType } from './entities/order-type.entity';
 import { OrderTypeRepository } from './repositories/order-type.repository';
 import { OrderPriceHistRepository } from './repositories/order-price-hist.repository';
-import { AppLoggerService } from 'src/log/applogger.service';
+import { AppLoggerService } from '../../log/applogger.service';
 import { UpdateOrderTypeHistDto } from './dto/update-order-type-hist.dto';
-import { OrderTypeNotFoundException } from 'src/common/exceptions/order-type-not-found.exception';
+import { OrderTypeNotFoundException } from '../../common/exceptions/order-type-not-found.exception';
 
 @Injectable()
 export class OrderTypeService {

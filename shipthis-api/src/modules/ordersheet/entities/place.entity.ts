@@ -26,7 +26,7 @@ export class Place extends BaseEntity {
   @Column({ type: 'numeric', nullable: true, name: 'position_long' })
   position_long: number;
 
-  @Column({ type: 'varchar', length: 10, nullable: true, name: 'zip_code' })
+  @Column({ type: 'varchar', nullable: true, name: 'zip_code' })
   zip_code: string;
 
   @OneToMany(

@@ -19,7 +19,7 @@ export class CharPriceHistRepository extends Repository<CharPriceHist> {
         characteristicsInfo.push(MapperCharInfo.charHistToCharInfo(char_hist));
       }
     });
-
+ 
     return characteristicsInfo;
   }
 

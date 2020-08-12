@@ -13,7 +13,7 @@ import { Characteristic } from './../item-type/entities/characteristic.entity';
 import { Item } from './../ordersheet/entities/item.entity';
 import { CreatePickupDto } from './dto/create-pickup.dto';
 import { Injectable } from '@nestjs/common';
-import { AppLoggerService } from 'src/log/applogger.service';
+import { AppLoggerService } from '../../log/applogger.service';
 import { CommercialAllyRepository } from './repositories/commercial-ally.repository';
 import { WarehouseRepository } from './repositories/warehouse.repository';
 import { PickupRepository } from './repositories/pickup.repository';
@@ -45,11 +45,10 @@ import {
   LocatorConectionException,
   BadItemStructureException,
   PickupNotFoundException,
-} from 'src/common/exceptions';
+} from '../../common/exceptions';
 import { DaoFactoryConstans } from '../dao/factories/constants/dao-factory-constants.enum';
 import { UpdateWarehouseDto } from './dto/update-warehouse.dto';
 import { WarehouseStatus } from './constants/warehouse-status.enum';
-import { isArray } from 'util';
 
 @Injectable()
 export class CommercialAllyService {
@@ -84,7 +83,10 @@ export class CommercialAllyService {
     const new_pickup: Pickup = await this.validatePickupCreation(pickup);
     this.setPricesOnPickup(new_pickup);
     const saved_pickup = await this._pickupRepo.registerPickup(new_pickup);
-    const bill = this.generateBill(saved_pickup);
+    const saved_pickup2 = await this._pickupRepo.fetchPickup(
+      saved_pickup.pickup_id as any,
+    );
+    const bill = this.generateBill(saved_pickup2);
     this._emailService.generateInvoice(bill, res, 'pickup');
     return bill;
   }
@@ -115,7 +117,7 @@ export class CommercialAllyService {
 
     let pick_base_cost = 0;
 
-    pickup.items.map(item => {
+    pickup.items.map((item) => {
       let item_total_tax = 0;
       for (const char of item.characteristics) {
         item_total_tax += Number(char.tax);
@@ -132,7 +134,7 @@ export class CommercialAllyService {
     });
 
     pickup.facturation_amount = pick_base_cost;
-    pickup.facturation_amount = Number(pickup.facturation_amount.toFixed(2));
+    pickup.facturation_amount = pickup.facturation_amount;
   }
 
   private getDimensionalWeight(item: Item): number {
@@ -264,33 +266,29 @@ export class CommercialAllyService {
       newItem.characteristics = [];
       let new_characteristic: Characteristic;
       if (item.characteristics) {
-        if (isArray(item.characteristics)) {
-          for (const char of item.characteristics) {
-            if (!char.characteristic_id) {
-              throw new BadItemStructureException();
-            }
-            new_characteristic = null;
-            new_characteristic = active_charateristics.find(
-              e => e.characteristic_id === char.characteristic_id,
-            );
-            if (!new_characteristic) {
-              throw new BadItemStructureException();
-            }
-            const posible_char = newItem.characteristics.find(
-              e =>
-                e.char_price_hist_id ===
-                new_characteristic.char_price_hists[0].char_price_hist_id,
-            );
-            if (!posible_char) {
-              const char_to_inset: CharPriceHist =
-                new_characteristic.char_price_hists[0];
-              const { char_price_hists, ...char_info } = new_characteristic;
-              char_to_inset.characteristic = char_info as Characteristic;
-              newItem.characteristics.push(char_to_inset);
-            }
+        for (const char of item.characteristics) {
+          if (!char.characteristic_id) {
+            throw new BadItemStructureException();
           }
-        } else {
-          throw new BadItemStructureException();
+          new_characteristic = null;
+          new_characteristic = active_charateristics.find(
+            (e) => e.characteristic_id === char.characteristic_id,
+          );
+          if (!new_characteristic) {
+            throw new BadItemStructureException();
+          }
+          const posible_char = newItem.characteristics.find(
+            (e) =>
+              e.char_price_hist_id ===
+              new_characteristic.char_price_hists[0].char_price_hist_id,
+          );
+          if (!posible_char) {
+            const char_to_inset: CharPriceHist =
+              new_characteristic.char_price_hists[0];
+            const { char_price_hists, ...char_info } = new_characteristic;
+            char_to_inset.characteristic = char_info as Characteristic;
+            newItem.characteristics.push(char_to_inset);
+          }
         }
       }
 
@@ -314,7 +312,6 @@ export class CommercialAllyService {
       id,
       commercial_ally,
     );
-    if (!warehouse) console.log('no hay warehouse :>> ');
     if (!warehouse) throw new WarehouseNotFoundException();
     if (warehouse.status === WarehouseStatus.DELETED)
       throw new WarehouseDeletedException();
@@ -332,9 +329,13 @@ export class CommercialAllyService {
       newCommercialAlly.warehouses,
     );
 
-    const commercial_ally: CommercialAlly = await this._commercialAllyRepo.createNewCommercialAlly(
+    let commercial_ally: CommercialAlly = await this._commercialAllyRepo.createNewCommercialAlly(
       newCommercialAlly,
       warehouses,
+    );
+
+    commercial_ally = await this._commercialAllyRepo.getCommercialAllyById(
+      commercial_ally.commercial_ally_id,
     );
 
     this._appLogger.log('New Commercial Ally has been created sucessfully');
@@ -394,7 +395,7 @@ export class CommercialAllyService {
 
     const commercialAlliesInfo: CommercialAllyInfoDto[] = [];
 
-    commercialAllies.forEach(ally => {
+    commercialAllies.forEach((ally) => {
       commercialAlliesInfo.push(
         MapperCommercialAlly.commercialAllyToCommercialAllyInfo(ally),
       );
@@ -464,7 +465,7 @@ export class CommercialAllyService {
 
     const warehousesInfo: WarehousesInfoDto[] = [];
 
-    warehouses.forEach(wh => {
+    warehouses.forEach((wh) => {
       warehousesInfo.push(MapperWarehouse.warehouseToWarehousesInfo(wh));
     });
 
@@ -486,7 +487,7 @@ export class CommercialAllyService {
       commercial_ally_key,
     );
     const wrh: number[] = [];
-    warehouses.map(warehouse => wrh.push(warehouse.warehouse_id));
+    warehouses.map((warehouse) => wrh.push(warehouse.warehouse_id));
 
     const pickupsInfo: PickupsInfoDto[] = [];
 
@@ -494,7 +495,7 @@ export class CommercialAllyService {
       wrh,
     );
 
-    pickups.map(pickup =>
+    pickups.map((pickup) =>
       pickupsInfo.push(MapperPickup.pickupToPickupsInfo(pickup)),
     );
 

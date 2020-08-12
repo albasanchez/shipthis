@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { SendGridService } from '@anchan828/nest-sendgrid';
-import { AppLoggerService } from 'src/log/applogger.service';
+import { AppLoggerService } from '../../log/applogger.service';
 import { GenerateTemplate } from './generate-template';
 import { BillDto } from '../ordersheet/dto/bill.dto';
-import { ConfigService } from 'src/config/config.service';
+import { ConfigService } from '../../config/config.service';
 import { Configuration } from '../../config/config.keys';
 import { Response } from 'express';
 import qrcode = require('qrcode');

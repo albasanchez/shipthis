@@ -126,7 +126,7 @@ export class TelegramService implements OnModuleInit {
         if (order) {
           messages.push(this.createFirsMesaggeForTracking(username));
           messages.push(this.createCreationOrderMessage(order.creation_date));
-          if (order.delivery_date){
+          if (order.delivery_date) {
             messages.push(
               this.createDeliveryOrderMessage(
                 order.delivery_date,
@@ -136,8 +136,7 @@ export class TelegramService implements OnModuleInit {
                   : order.destination_place.address,
               ),
             );
-          }
-          else{
+          } else {
             this.insertCheckpointsMessages(messages, order.trajectories);
           }
           bot.sendMessage(user, messages.join('\n\n'), {
@@ -149,8 +148,8 @@ export class TelegramService implements OnModuleInit {
             messages.push(this.createFirsMesaggeForTracking(username));
             messages.push(
               this.createCreationOrderMessage(pickup.creation_date),
-            )
-            if (pickup.delivery_date){
+            );
+            if (pickup.delivery_date) {
               messages.push(
                 this.createDeliveryOrderMessage(
                   pickup.delivery_date,
@@ -158,8 +157,7 @@ export class TelegramService implements OnModuleInit {
                   pickup.destination_place.address,
                 ),
               );
-            }
-            else{
+            } else {
               this.insertCheckpointsMessages(messages, pickup.trajectories);
             }
             bot.sendMessage(user, messages.join('\n\n'), {

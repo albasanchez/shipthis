@@ -205,7 +205,6 @@ import WarehouseModal from "./WarehouseModal";
 import Repository from "@/services/repositories/repositoryFactory";
 import moment from "moment";
 const CommercialAlliesRepository = Repository.get("commercialAlly");
-
 export default {
   name: "CommercialAllyCard",
   components: {
@@ -276,7 +275,6 @@ export default {
       this.$store.dispatch("commercialAlly/setCommercialAlly", null);
       this.$router.push({ name: "CommercialAlliesView" });
     },
-
     formatdate(date){
       return moment(date).format('YYYY-MM-DD HH:mm:ss')
     },
@@ -353,7 +351,6 @@ export default {
           value: "items.length",
           align: "center"
         },
-
         {
           text: "Creation Date",
           value: "creation_date",
@@ -395,11 +392,9 @@ export default {
   background-color: white !important;
   min-width: 300px !important;
 }
-
 .title-commercial-ally-info {
   min-width: 300px !important;
 }
-
 .header-commercial-ally-info {
   background-color: #1c1954 !important;
   color: white !important;

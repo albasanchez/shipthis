@@ -13,9 +13,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrdersheetRepository } from './repositories/ordersheet.repository';
 import { OrdersheetController } from './ordersheet.controller';
 import { OrdersheetService } from './ordersheet.service';
-import { AppLoggerModule } from 'src/log/applogger.module';
+import { AppLoggerModule } from '../../log/applogger.module';
 import { ItemPriceHistRepository } from '../item-type/repositories/item-price-hist.repository';
 import { EmailModule } from '../email/email.module';
+import { EncriptionModule } from '../encription/encription.module';
+import { PlaceSubscriber } from './subscribers/place-subscriber.service';
 
 @Module({
   imports: [
@@ -35,8 +37,9 @@ import { EmailModule } from '../email/email.module';
     ]),
     AppLoggerModule,
     EmailModule,
+    EncriptionModule,
   ],
   controllers: [OrdersheetController],
-  providers: [OrdersheetService],
+  providers: [OrdersheetService, PlaceSubscriber],
 })
 export class OrdersheetModule {}
