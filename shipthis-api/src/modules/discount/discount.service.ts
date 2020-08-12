@@ -21,6 +21,7 @@ import { EmailService } from '../email/email.service';
 import { DiscountStatus } from './../discount/constants/discount-status.enum';
 import { AssignDiscountsDto } from './dto/assign-discounts.dto';
 import { Option } from './../discount/constants/option.enum';
+import { EncriptionService } from '../encription/encription.service';
 
 @Injectable()
 export class DiscountService {
@@ -33,6 +34,7 @@ export class DiscountService {
     private readonly _userRepo: UserDataRepository,
     private readonly _emailService: EmailService,
     private readonly _appLogger: AppLoggerService,
+    private readonly _encriptionServ: EncriptionService,
   ) {}
 
   async assignWelcomeDiscount(user: Userdata): Promise<Discount> {
@@ -48,7 +50,7 @@ export class DiscountService {
       user.user_id,
     );
     const avaliable_discounts: Discount[] = [];
-    discPers.map(disc => {
+    discPers.map((disc) => {
       if (
         !disc.ordersheet &&
         new Date(disc.expiration_date).getTime() > new Date().getTime()
@@ -60,7 +62,9 @@ export class DiscountService {
   }
 
   private async validateUser(useremail: string): Promise<Userdata> {
-    const user: Userdata = await this._userRepo.fetchUser(useremail);
+    const user: Userdata = await this._userRepo.fetchUser(
+      this._encriptionServ.encriptString(useremail),
+    );
     if (!user) throw new UserNotFoundException();
     return user;
   }
@@ -86,7 +90,7 @@ export class DiscountService {
 
     const discountsInfo: DiscountBasicInfoDto[] = [];
 
-    discounts.forEach(discount => {
+    discounts.forEach((discount) => {
       discountsInfo.push(MapperDiscount.discountToDiscountBasicInfo(discount));
     });
 
@@ -104,7 +108,7 @@ export class DiscountService {
 
     const discountsInfo: DiscountInfoDto[] = [];
 
-    discounts.forEach(discount => {
+    discounts.forEach((discount) => {
       discountsInfo.push(MapperDiscount.discountToDiscountInfo(discount));
     });
 
@@ -179,8 +183,8 @@ export class DiscountService {
 
     const discount = await this.validateDiscount(optionInfo.discount_id);
 
-    var users: Userdata[] = [];
-    var users_info: any[] = [];
+    let users: Userdata[] = [];
+    let users_info: any[] = [];
 
     switch (optionInfo.option) {
       case Option.MORE_ACTIVE_USERS: {
@@ -206,7 +210,7 @@ export class DiscountService {
     if (!(users_info.length == 0)) {
       const users_id: number[] = [];
 
-      users_info.forEach(user => {
+      users_info.forEach((user) => {
         users_id.push(user.user_id);
       });
       users = await this._userRepo.getUsers(users_id);

@@ -42,13 +42,13 @@ export class ReceiverRepository extends Repository<Receiver> {
     id: number,
     newReceiver: UpdateReceiverDto,
   ): Promise<any> {
-    this.update(id, newReceiver);
+    this.save({ receiver_id: id, ...newReceiver });
 
     return { response: 'Receiver has been updated sucessfully' };
   }
 
-  async deleteReceiver(id: number): Promise<any> {
-    this.update(id, { status: ReceiverStatus.DELETED });
+  async deleteReceiver(receiver: Receiver): Promise<any> {
+    this.save(receiver);
 
     return { response: 'Receiver has been deleted sucessfully' };
   }

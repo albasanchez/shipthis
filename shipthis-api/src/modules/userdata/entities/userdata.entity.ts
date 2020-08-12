@@ -16,6 +16,7 @@ import { UserdataRegistrationType } from './../constants/user-registration.enum'
 import { UserdataStatus } from './../constants/user-status.enum';
 import { Person } from './person.entity';
 import { Ordersheet } from './../../ordersheet/entities/ordersheet.entity';
+import { Audit } from '../../audit/entities/audit.entity';
 
 @Entity('userdata')
 @Check(`registration_type IN ('REGULAR','FACEBOOK','GOOGLE')`)
@@ -24,17 +25,13 @@ export class Userdata extends BaseEntity {
   @PrimaryGeneratedColumn()
   user_id: number;
 
-  @OneToOne(
-    type => Person,
-    person => person.user,
-    {
-      nullable: false,
-      primary: false,
-      onDelete: 'CASCADE',
-      cascade: true,
-      eager: true,
-    },
-  )
+  @OneToOne((type) => Person, (person) => person.user, {
+    nullable: false,
+    primary: false,
+    onDelete: 'CASCADE',
+    cascade: true,
+    eager: true,
+  })
   @JoinColumn({ name: 'person_fk', referencedColumnName: 'person_id' })
   person: Person;
 
@@ -70,30 +67,24 @@ export class Userdata extends BaseEntity {
   })
   status: string;
 
-  @ManyToOne(
-    type => Rol,
-    rol => rol.users,
-    { nullable: false, eager: true, cascade: true, onDelete: 'CASCADE' },
-  )
+  @ManyToOne((type) => Rol, (rol) => rol.users, {
+    nullable: false,
+    eager: true,
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'rol_fk', referencedColumnName: 'rol_id' })
   rol: Rol;
 
-  @OneToMany(
-    type => Ordersheet,
-    ordersheet => ordersheet.user,
-  )
+  @OneToMany((type) => Ordersheet, (ordersheet) => ordersheet.user)
   ordersheets: Ordersheet[];
 
-  @OneToMany(
-    type => Receiver,
-    reveiver => reveiver.user,
-    { cascade: true },
-  )
+  @OneToMany((type) => Receiver, (reveiver) => reveiver.user, { cascade: true })
   receivers: Receiver[];
 
-  @OneToMany(
-    type => DiscPer,
-    disc_per => disc_per.user,
-  )
+  @OneToMany((type) => DiscPer, (disc_per) => disc_per.user)
   discounts: DiscPer[];
+
+  @OneToMany((type) => Audit, (audit) => audit.user)
+  audit: Audit[];
 }

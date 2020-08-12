@@ -60,19 +60,19 @@ VALUES
 INSERT INTO place
     (place_address, position_lat, position_long, zip_code)
 VALUES
-    ('199-101 Williams Ave. Minotola, NJ. USA', 39.514865 , -74.948866, '08341'),
-    ('8000-8098 Jamesway Ln. Greenwood, DE. USA', 38.799898 , -75.613486, '19950'),
-    ('401 S 16th St. Philadelphia, PA. USA', 39.945754 , -75.168330, '19146'),
-    ('290-312 Garden St. Wethersfield, CT. USA', 41.715707 , -72.659929, '06109'),
-    ('44-2 Polo St. Pawtucket, RI. USA', 41.867037 , -71.366997, '02860'),
-    ('68 Stockton St. Boston, MA . USA', 42.282270 , -71.075619, '02124'),
-    ('11 Woodville St. Everett, MA. USA', 42.414005 , -71.064397, '02149'),
-    ('483-583 Somerville St. Manchester, NH. USA', 42.976454 , -71.450433, '03103'),
-    ('199-145 W Brighton Ave. Syracuse, NY . USA', 43.020441 , -76.145704, '13205'),
-    ('159-109 Sumpter St. Brooklyn, NY. USA', 40.680038 , -73.919799, '11233'),
-    ('181-175 Orville Dr. Bohemia, NY . USA', 40.771644 , -73.101440, '11716'),
-    ('200-230 W Church St. Somerset, PA. USA', 40.006727, -79.081517, '15501'),
-    ('New Jersey Turnpike Newark Bay Extension, Oak Island Junction, Newark, Essex County, New Jersey, 07114, USA', 40.7027585,	-74.1421899, null);
+    ('tAsmRXdNNI8Nb0eGLTKmaZ6TkSVH8SHT7yCVxGVmn0J73K5816TclX4c1ZeLTs32', 39.514865 , -74.948866, 'SlGhyehXks7mB+gL+DeeaQ=='),
+    ('x00gMNuOdQQw/KA4r9Ys2xq/jFuhH3nNAGZr4q/TDOLxxKMUtkjhw6aBNb7r1+m1', 38.799898 , -75.613486, 'ntX+rOTdFKl5oA880KQ3UA=='),
+    ('fLEqipOghqzg3t/XfMaw3p1L5DMbxCw7PO65JRn0aoRYcaR/F5f4wp76MVJJw5Nm', 39.945754 , -75.168330, '3rJdxvLGQ6WRsbWjO/CoIQ=='),
+    ('WXaxAoZx0HJ0KUQlWX8Bv5DkFvnU3vDFhcdAPr9HzP/HtzXipHB8x0dgoPNwwkle', 41.715707 , -72.659929, 'qG1Xmab+XRSkPfi1TbRFcA=='),
+    ('8X1MEL+J81DNtatK608N25dWQxdQas30tGQlW+93BMftZQvyDJrp6zT6LymfD+8D', 41.867037 , -71.366997, 'LfWKj8qP0FOXhsi1M5dWMQ=='),
+    ('42MSptj3sLGkiSjZ+cp/OwSsOH40QA0juEBSmmazdkOe6GOkfTeiyqxqaB8FPtq0', 42.282270 , -71.075619, 'Unz3s53lRPlnSAQv8loR8g=='),
+    ('wGUucGka7uFNNoEZcYFWyVMKo5Mv+neRvuw/LYqnzG9yBge4n0RLKbBUPgmFinl6', 42.414005 , -71.064397, 'hwL+qyrbDlji5IrkgH8XIw=='),
+    ('axVxERgI40zcrcUq0k24yXyfTPbsjXXMVqWxi1nZBQDzPAI4iqbjflppnh3M7wpg', 42.976454 , -71.450433, 'PyC6UsnQ1YSKtGqUwPiMQg=='),
+    ('0txF8qPItL83lO3d0zG7wwoB2UnrsfrcW0kZ7bPpDDsTDgRK2J0TGvHHZAlSKB+A', 43.020441 , -76.145704, 'mb3SJwGUZJFRVYXs7sf74A=='),
+    ('cSTuk6ce62TdoPOt79lVTidUtnPciJWcAtvBUjEsZDejAjtiD2HgddH2PgVPaClt', 40.680038 , -73.919799, 'uhS+tU5LAc+BkDB/V4FCyA=='),
+    ('fs2uukrnTiGqcxTLtl22IUpPovm5nOLmawudM029Cyq/JmeEjALDgcO0wXq+FUIg', 40.771644 , -73.101440, '1+Dhb5bHDSP6h+4oq7I/AA=='),
+    ('mr+L1a5ienRzlfnKzPGf2sx4+FZqiWHBV9PUDgFa6H/a7dk5qUd/I2QDOi3QQtWv', 40.006727, -79.081517, 'Rsc0HlAsrpfvJHuzN+8Lsw=='),
+    ('B2uDvwOm0fP/rqKA9YXQ099tihrIaOHoLX9BTOx9vw4f2DyPZ91HLn6dK3VFOAQB24A6R1Yvo6duPlNbD0iQ5F3kraOGBARn0kBnrd8QsbzGkBWI+OUIiEVKLyJqGomxtTJqB0h5vQ92zXf/7Q1JqQ==', 40.7027585,	-74.1421899, null);
 
 /*Offices*/
 INSERT INTO office
@@ -106,13 +106,13 @@ VALUES
 /*Usuario administrador del BO*/
 INSERT INTO PERSON (
 	document, first_name, middle_name, last_name, second_last_name, gender, phone_number, date_of_birth, def_language, picture_url, receive_notifications)
-	VALUES ('111111111', 'John', null, 'Doe', null, 'M', '+1 (222) 222-2222', '1995-07-06', 'EN', null, false);
+	VALUES ('zCttyOeNN1kdiOSLI5Qgxw==', 'gKxVviFhfPvPvXquprKfSA==', null, 'NMQNE6PUrDpvPa7s3IGo4g==', null, 'M', '1UL47ztekwel+OkzObvJcYwrxbK3feh7IgwrhBX1wDw=', '1995-07-06', 'EN', null, false);
 
 INSERT INTO USERDATA (user_email, user_password, registration_date, registration_type, user_status, person_fk, rol_fk)
-VALUES ('admin@gmail.com', '$2a$10$pyqO/LPmeR98I8nUtKey/Oq2PeMmMnc.BlnbWA5sr8Fz18f/42NAu', '2020-07-06', 'REGULAR', 'ACTIVE', 1, 2);
+VALUES ('/Kn0WPj4TPeUK6NNcsZLbw==', '$2a$10$pyqO/LPmeR98I8nUtKey/Oq2PeMmMnc.BlnbWA5sr8Fz18f/42NAu', '2020-07-06', 'REGULAR', 'ACTIVE', 1, 2);
 
 /*Commercial ally*/
 INSERT INTO COMMERCIAL_ALLY (COMMERCIAL_ALLY_ID, NAME, EMAIL, PHONE_NUMBER, MANAGER_NAME, MANAGER_LAST_NAME, DESCRIPTION, STATUS)
-VALUES ('de514f87-4f91-4de4-92ea-5799731338e3', 'Buhocenter', 'buhocenter@gmail.com', '+1 (123) 456-7890', 'John', 'Doe', 'Online shopping site', 'ACTIVE');
+VALUES ('de514f87-4f91-4de4-92ea-5799731338e3', 'wkouPpkT005+Ep85aWXR4A==', 'UMsEsb6BHZYNltgwprkVNK/YUFyXoL20RQPtx3WxBDg=', 'Krcly+RjTkiFbXGFR4oAj1/UlhyotONjUCzgarDu8Jk=', 'gKxVviFhfPvPvXquprKfSA==', 'NMQNE6PUrDpvPa7s3IGo4g==', 'xeFgnqh5cmgAZNlfP9dCFrixtcMKioQpnQjzFkUXSNI=', 'ACTIVE');
 INSERT INTO WAREHOUSE (NAME, STATUS, COMMERCIAL_ALLY_FK, PLACE_FK)
 VALUES ('Main Warehouse', 'ACTIVE', 'de514f87-4f91-4de4-92ea-5799731338e3', 13);

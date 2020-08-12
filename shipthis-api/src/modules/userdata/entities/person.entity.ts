@@ -46,7 +46,7 @@ export class Person extends BaseEntity {
   })
   gender: string;
 
-  @Column({ type: 'varchar', length: 20, nullable: true, name: 'phone_number' })
+  @Column({ type: 'varchar', nullable: true, name: 'phone_number' })
   phone_number: string;
 
   @Column({ type: 'date', nullable: true, name: 'date_of_birth' })

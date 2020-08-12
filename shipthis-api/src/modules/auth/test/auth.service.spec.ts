@@ -4,7 +4,7 @@ import { AuthRepository } from '../repositories/auth.repository';
 import {
     AuthMock,
     authMockModuleMetadata,
-    createQueryBuilder
+    createQueryBuilder,
 } from './mocks/auth.mock';
 import { RoleMock } from './mocks/role.mock';
 import { DiscountMock } from './mocks/discount.mock';
@@ -21,7 +21,15 @@ import { getConnection, Connection } from 'typeorm';
 
 import { RolRepository } from '../../../modules/rol/repositories/rol.repository';
 import { RolName } from '../../../modules/rol/constants/rol-name.enum';
-import { UserAlreadyRegisteredException, BlockedUserException, UserNotFoundException, UserFederatedException, WrongCredentialsException, WrongRoleTypeAccessException, WrongRecoveryCredentialsException } from '../../../common/exceptions';
+import {
+    UserAlreadyRegisteredException,
+    BlockedUserException,
+    UserNotFoundException,
+    UserFederatedException,
+    WrongCredentialsException,
+    WrongRoleTypeAccessException,
+    WrongRecoveryCredentialsException,
+} from '../../../common/exceptions';
 
 describe('AuthService', () => {
     let authService: AuthService;
@@ -36,7 +44,7 @@ describe('AuthService', () => {
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule(
-            authMockModuleMetadata
+            authMockModuleMetadata,
         ).compile();
 
         authService = module.get<AuthService>(AuthService);
@@ -65,13 +73,11 @@ describe('AuthService', () => {
             };
             authRepository.findOne = mockAuthRepository.findOne('google', 'login');
             const response = await authService.googleLogin(user);
-            expect(response).toStrictEqual(
-                {
-                    newUser: expect.any(Boolean),
-                    token: undefined,
-                    userdata: expect.anything(),
-                }
-            );
+            expect(response).toStrictEqual({
+                newUser: expect.any(Boolean),
+                token: undefined,
+                userdata: expect.anything(),
+            });
         });
         it('should signup with google', async () => {
             const user = {
@@ -90,25 +96,32 @@ describe('AuthService', () => {
                 receive_notifications: true,
             };
             roleRepository.findOne = mockRolRepository.findOne(RolName.CLIENT);
-            jest
-                .spyOn(typeorm, 'getConnection')
-                .mockImplementation(() => ({
-                    isConnected: true,
-                    getRepository: function () {
-                        return roleRepository;
-                    }
-                }) as any);
+            jest.spyOn(typeorm, 'getConnection').mockImplementation(
+                () =>
+                    ({
+                        isConnected: true,
+                        getRepository: function () {
+                            return roleRepository;
+                        },
+                    } as any),
+            );
             authRepository.save = mockAuthRepository.save();
+            authRepository.find = jest.fn().mockResolvedValue([
+                {
+                    user_id: 1,
+                    email: 'email@email.com',
+                    status: 'ACTIVE',
+                    rol: { name: RolName.CLIENT },
+                },
+            ]);
             authRepository.findOne = mockAuthRepository.findOne('google', 'signUp');
             discService.assignWelcomeDiscount = mockDiscountRepository.assignWelcomeDiscount();
             const response = await authService.googleLogin(user);
-            expect(response).toStrictEqual(
-                {
-                    newUser: expect.any(Boolean),
-                    token: undefined,
-                    userdata: expect.anything(),
-                }
-            );
+            expect(response).toStrictEqual({
+                newUser: expect.any(Boolean),
+                token: undefined,
+                userdata: expect.anything(),
+            });
         });
         it('should not signup or login with google', async () => {
             const user = {
@@ -127,7 +140,10 @@ describe('AuthService', () => {
                 receive_notifications: true,
             };
             try {
-                authRepository.findOne = mockAuthRepository.findOne('google', 'notActive');
+                authRepository.findOne = mockAuthRepository.findOne(
+                    'google',
+                    'notActive',
+                );
                 await authService.googleLogin(user);
             } catch (e) {
                 expect(e).toBeInstanceOf(UserNotActiveException);
@@ -154,13 +170,11 @@ describe('AuthService', () => {
             };
             authRepository.findOne = mockAuthRepository.findOne('facebook', 'login');
             const response = await authService.facebookLogin(user);
-            expect(response).toStrictEqual(
-                {
-                    newUser: expect.any(Boolean),
-                    token: undefined,
-                    userdata: expect.anything(),
-                }
-            );
+            expect(response).toStrictEqual({
+                newUser: expect.any(Boolean),
+                token: undefined,
+                userdata: expect.anything(),
+            });
         });
         it('should signup with facebook', async () => {
             const user = {
@@ -179,25 +193,32 @@ describe('AuthService', () => {
                 receive_notifications: true,
             };
             roleRepository.findOne = mockRolRepository.findOne(RolName.CLIENT);
-            jest
-                .spyOn(typeorm, 'getConnection')
-                .mockImplementation(() => ({
-                    isConnected: true,
-                    getRepository: function () {
-                        return roleRepository;
-                    }
-                }) as any);
+            jest.spyOn(typeorm, 'getConnection').mockImplementation(
+                () =>
+                    ({
+                        isConnected: true,
+                        getRepository: function () {
+                            return roleRepository;
+                        },
+                    } as any),
+            );
             authRepository.save = mockAuthRepository.save();
+            authRepository.find = jest.fn().mockResolvedValue([
+                {
+                    user_id: 1,
+                    email: 'email@email.com',
+                    status: 'ACTIVE',
+                    rol: { name: RolName.CLIENT },
+                },
+            ]);
             authRepository.findOne = mockAuthRepository.findOne('google', 'signUp');
             discService.assignWelcomeDiscount = mockDiscountRepository.assignWelcomeDiscount();
             const response = await authService.facebookLogin(user);
-            expect(response).toStrictEqual(
-                {
-                    newUser: expect.any(Boolean),
-                    token: undefined,
-                    userdata: expect.anything(),
-                }
-            );
+            expect(response).toStrictEqual({
+                newUser: expect.any(Boolean),
+                token: undefined,
+                userdata: expect.anything(),
+            });
         });
         it('should not signup or login with facebook', async () => {
             const user = {
@@ -216,7 +237,10 @@ describe('AuthService', () => {
                 receive_notifications: true,
             };
             try {
-                authRepository.findOne = mockAuthRepository.findOne('facebook', 'notActive');
+                authRepository.findOne = mockAuthRepository.findOne(
+                    'facebook',
+                    'notActive',
+                );
                 await authService.facebookLogin(user);
             } catch (e) {
                 expect(e).toBeInstanceOf(UserNotActiveException);
@@ -242,32 +266,37 @@ describe('AuthService', () => {
                 receive_notifications: true,
             };
             authRepository.findOne = mockAuthRepository.findOne('regular', 'signUp');
-            jest
-                .spyOn(bcryptjs, 'genSalt')
-                .mockImplementation(() => ('pS039wd1lxXq'));
+            jest.spyOn(bcryptjs, 'genSalt').mockImplementation(() => 'pS039wd1lxXq');
             jest
                 .spyOn(bcryptjs, 'hash')
-                .mockImplementation(() => ('contrasenahasheada'));
+                .mockImplementation(() => 'contrasenahasheada');
             roleRepository.findOne = mockRolRepository.findOne(RolName.CLIENT);
-            jest
-                .spyOn(typeorm, 'getConnection')
-                .mockImplementation(() => ({
-                    isConnected: true,
-                    getRepository: function () {
-                        return roleRepository;
-                    }
-                }) as any);
+            jest.spyOn(typeorm, 'getConnection').mockImplementation(
+                () =>
+                    ({
+                        isConnected: true,
+                        getRepository: function () {
+                            return roleRepository;
+                        },
+                    } as any),
+            );
             authRepository.save = mockAuthRepository.save();
+            authRepository.find = jest.fn().mockResolvedValue([
+                {
+                    user_id: 1,
+                    email: 'email@email.com',
+                    status: 'ACTIVE',
+                    rol: { name: RolName.CLIENT },
+                },
+            ]);
             authRepository.findOne = mockAuthRepository.findOne('regular', 'signUp');
             discService.assignWelcomeDiscount = mockDiscountRepository.assignWelcomeDiscount();
             const response = await authService.clientSignup(user);
-            expect(response).toStrictEqual(
-                {
-                    newUser: expect.any(Boolean),
-                    token: undefined,
-                    userdata: expect.anything(),
-                }
-            );
+            expect(response).toStrictEqual({
+                newUser: expect.any(Boolean),
+                token: undefined,
+                userdata: expect.anything(),
+            });
         });
         it('should signup being an admin', async () => {
             const user = {
@@ -286,32 +315,37 @@ describe('AuthService', () => {
                 receive_notifications: true,
             };
             authRepository.findOne = mockAuthRepository.findOne('regular', 'signUp');
-            jest
-                .spyOn(bcryptjs, 'genSalt')
-                .mockImplementation(() => ('pS039wd1lxXq'));
+            jest.spyOn(bcryptjs, 'genSalt').mockImplementation(() => 'pS039wd1lxXq');
             jest
                 .spyOn(bcryptjs, 'hash')
-                .mockImplementation(() => ('contrasenahasheada'));
+                .mockImplementation(() => 'contrasenahasheada');
             roleRepository.findOne = mockRolRepository.findOne(RolName.ADMIN);
-            jest
-                .spyOn(typeorm, 'getConnection')
-                .mockImplementation(() => ({
-                    isConnected: true,
-                    getRepository: function () {
-                        return roleRepository;
-                    }
-                }) as any);
+            jest.spyOn(typeorm, 'getConnection').mockImplementation(
+                () =>
+                    ({
+                        isConnected: true,
+                        getRepository: function () {
+                            return roleRepository;
+                        },
+                    } as any),
+            );
             authRepository.save = mockAuthRepository.save();
+            authRepository.find = jest.fn().mockResolvedValue([
+                {
+                    user_id: 1,
+                    email: 'email@email.com',
+                    status: 'ACTIVE',
+                    rol: { name: RolName.CLIENT },
+                },
+            ]);
             authRepository.findOne = mockAuthRepository.findOne('regular', 'signUp');
             discService.assignWelcomeDiscount = mockDiscountRepository.assignWelcomeDiscount();
             const response = await authService.adminSignup(user);
-            expect(response).toStrictEqual(
-                {
-                    newUser: expect.any(Boolean),
-                    token: undefined,
-                    userdata: expect.anything(),
-                }
-            );
+            expect(response).toStrictEqual({
+                newUser: expect.any(Boolean),
+                token: undefined,
+                userdata: expect.anything(),
+            });
         });
         it('should not signup', async () => {
             const user = {
@@ -330,7 +364,10 @@ describe('AuthService', () => {
                 receive_notifications: true,
             };
             try {
-                authRepository.findOne = mockAuthRepository.findOne('regular', 'signUpFailed');
+                authRepository.findOne = mockAuthRepository.findOne(
+                    'regular',
+                    'signUpFailed',
+                );
                 await authService.clientSignup(user);
             } catch (e) {
                 expect(e).toBeInstanceOf(UserAlreadyRegisteredException);
@@ -344,18 +381,17 @@ describe('AuthService', () => {
                 useremail: 'loginEmail@email.com',
                 password: '12345678',
             };
-            jest
-                .spyOn(bcryptjs, 'compare')
-                .mockImplementation(() => (true));
-            authRepository.findOne = mockAuthRepository.findOne('regular', 'clientLogin');
-            const response = await authService.clientLogin(user);
-            expect(response).toStrictEqual(
-                {
-                    newUser: expect.any(Boolean),
-                    token: undefined,
-                    userdata: expect.anything(),
-                }
+            jest.spyOn(bcryptjs, 'compare').mockImplementation(() => true);
+            authRepository.findOne = mockAuthRepository.findOne(
+                'regular',
+                'clientLogin',
             );
+            const response = await authService.clientLogin(user);
+            expect(response).toStrictEqual({
+                newUser: expect.any(Boolean),
+                token: undefined,
+                userdata: expect.anything(),
+            });
         });
         it('should login being an admin', async () => {
             const user = {
@@ -363,18 +399,17 @@ describe('AuthService', () => {
                 useremail: 'loginEmail@email.com',
                 password: '12345678',
             };
-            jest
-                .spyOn(bcryptjs, 'compare')
-                .mockImplementation(() => (true));
-            authRepository.findOne = mockAuthRepository.findOne('regular', 'adminLogin');
-            const response = await authService.adminLogin(user);
-            expect(response).toStrictEqual(
-                {
-                    newUser: expect.any(Boolean),
-                    token: undefined,
-                    userdata: expect.anything(),
-                }
+            jest.spyOn(bcryptjs, 'compare').mockImplementation(() => true);
+            authRepository.findOne = mockAuthRepository.findOne(
+                'regular',
+                'adminLogin',
             );
+            const response = await authService.adminLogin(user);
+            expect(response).toStrictEqual({
+                newUser: expect.any(Boolean),
+                token: undefined,
+                userdata: expect.anything(),
+            });
         });
         it('should not login because user passwords dont match', async () => {
             const user = {
@@ -383,10 +418,11 @@ describe('AuthService', () => {
                 password: '12345678',
             };
             try {
-                jest
-                    .spyOn(bcryptjs, 'compare')
-                    .mockImplementation(() => (false));
-                authRepository.findOne = mockAuthRepository.findOne('regular', 'clientLogin');
+                jest.spyOn(bcryptjs, 'compare').mockImplementation(() => false);
+                authRepository.findOne = mockAuthRepository.findOne(
+                    'regular',
+                    'clientLogin',
+                );
                 await authService.clientLogin(user);
             } catch (e) {
                 expect(e).toBeInstanceOf(WrongCredentialsException);
@@ -399,7 +435,9 @@ describe('AuthService', () => {
                 password: '12345678',
             };
             try {
-                authRepository.findOne = mockAuthRepository.findOne('recoverFailedNotRegistered');
+                authRepository.findOne = mockAuthRepository.findOne(
+                    'recoverFailedNotRegistered',
+                );
                 await authService.clientLogin(user);
             } catch (e) {
                 expect(e).toBeInstanceOf(UserNotFoundException);
@@ -412,10 +450,11 @@ describe('AuthService', () => {
                 password: '12345678',
             };
             try {
-                jest
-                    .spyOn(bcryptjs, 'compare')
-                    .mockImplementation(() => (true));
-                authRepository.findOne = mockAuthRepository.findOne('regular', 'notActive');
+                jest.spyOn(bcryptjs, 'compare').mockImplementation(() => true);
+                authRepository.findOne = mockAuthRepository.findOne(
+                    'regular',
+                    'notActive',
+                );
                 await authService.clientLogin(user);
             } catch (e) {
                 expect(e).toBeInstanceOf(UserNotActiveException);
@@ -428,10 +467,11 @@ describe('AuthService', () => {
                 password: '12345678',
             };
             try {
-                jest
-                    .spyOn(bcryptjs, 'compare')
-                    .mockImplementation(() => (true));
-                authRepository.findOne = mockAuthRepository.findOne('regular', 'loginFailedRoleDontMatch');
+                jest.spyOn(bcryptjs, 'compare').mockImplementation(() => true);
+                authRepository.findOne = mockAuthRepository.findOne(
+                    'regular',
+                    'loginFailedRoleDontMatch',
+                );
                 await authService.clientLogin(user);
             } catch (e) {
                 expect(e).toBeInstanceOf(WrongRoleTypeAccessException);
@@ -445,21 +485,17 @@ describe('AuthService', () => {
                 password: '12345678',
             };
             authRepository.findOne = mockAuthRepository.findOne('recover');
-            jest
-                .spyOn(bcryptjs, 'genSalt')
-                .mockImplementation(() => ('pS039wd1lxXq'));
+            jest.spyOn(bcryptjs, 'genSalt').mockImplementation(() => 'pS039wd1lxXq');
             jest
                 .spyOn(bcryptjs, 'hash')
-                .mockImplementation(() => ('contrasenahasheada'));
+                .mockImplementation(() => 'contrasenahasheada');
             jest
                 .spyOn(authRepository, 'createQueryBuilder')
                 .mockImplementation(() => createQueryBuilder);
             const response = await authService.recoverUser(user);
-            expect(response).toStrictEqual(
-                {
-                    response: 'New password set on user successfully',
-                }
-            );
+            expect(response).toStrictEqual({
+                response: 'New password set on user successfully',
+            });
         });
         it('should not recover user because is not registered', async () => {
             const user = {
@@ -467,7 +503,9 @@ describe('AuthService', () => {
                 password: '12345678',
             };
             try {
-                authRepository.findOne = mockAuthRepository.findOne('recoverFailedNotRegistered');
+                authRepository.findOne = mockAuthRepository.findOne(
+                    'recoverFailedNotRegistered',
+                );
                 await authService.recoverUser(user);
             } catch (e) {
                 expect(e).toBeInstanceOf(UserNotFoundException);
@@ -481,11 +519,9 @@ describe('AuthService', () => {
             authRepository.findOne = mockAuthRepository.findOne('recover');
             jwtService.sign = mockAuthRepository.jwtSign();
             const response = await authService.attendRecoveryRequest(user);
-            expect(response).toStrictEqual(
-                {
-                    response: 'Recovery email sent successfully',
-                }
-            );
+            expect(response).toStrictEqual({
+                response: 'Recovery email sent successfully',
+            });
         });
         it('should not attend recovery request because user is blocked', async () => {
             const user = {
@@ -493,7 +529,9 @@ describe('AuthService', () => {
                 document: '12345678',
             };
             try {
-                authRepository.findOne = mockAuthRepository.findOne('recoverFailedBlocked');
+                authRepository.findOne = mockAuthRepository.findOne(
+                    'recoverFailedBlocked',
+                );
                 await authService.attendRecoveryRequest(user);
             } catch (e) {
                 expect(e).toBeInstanceOf(BlockedUserException);
@@ -505,7 +543,9 @@ describe('AuthService', () => {
                 document: '12345678',
             };
             try {
-                authRepository.findOne = mockAuthRepository.findOne('recoverFailedNotRegistered');
+                authRepository.findOne = mockAuthRepository.findOne(
+                    'recoverFailedNotRegistered',
+                );
                 await authService.attendRecoveryRequest(user);
             } catch (e) {
                 expect(e).toBeInstanceOf(UserNotFoundException);
@@ -517,7 +557,9 @@ describe('AuthService', () => {
                 document: '12345678',
             };
             try {
-                authRepository.findOne = mockAuthRepository.findOne('recoverFailedFederated');
+                authRepository.findOne = mockAuthRepository.findOne(
+                    'recoverFailedFederated',
+                );
                 await authService.attendRecoveryRequest(user);
             } catch (e) {
                 expect(e).toBeInstanceOf(UserFederatedException);
@@ -529,7 +571,9 @@ describe('AuthService', () => {
                 document: '12345678',
             };
             try {
-                // authRepository.findOne = mockAuthRepository.findOne('recoverFailedDocumentsDontMatch');
+                // authRepository.findOne = mockAuthRepository.findOne(
+                //     'recoverFailedDocumentsDontMatch',
+                // );
                 await authService.attendRecoveryRequest(user);
             } catch (e) {
                 expect(e).toBeInstanceOf(WrongRecoveryCredentialsException);
