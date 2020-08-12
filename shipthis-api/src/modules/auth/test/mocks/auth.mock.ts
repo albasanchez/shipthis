@@ -165,6 +165,10 @@ export class AuthMock {
                 });
             } else if (way === 'signUp') {
                 return jest.fn().mockResolvedValue(undefined);
+            } else if (way === 'signUpFailed') {
+                return jest.fn().mockResolvedValue({
+                    user_id: 1,
+                });
             } else if (way === 'notActive') {
                 return jest.fn().mockResolvedValue({
                     user_id: 1,
@@ -180,6 +184,21 @@ export class AuthMock {
                     discounts: [new Discount, new Discount],
                 });
             }
+            if (way === 'loginFailedRoleDontMatch') {
+                return jest.fn().mockResolvedValue({
+                    user_id: 1,
+                    person: person,
+                    email: 'loginEmail@email.com',
+                    password: 'contrasenahasheada',
+                    registration_date: '2020-08-01',
+                    registration_type: UserdataRegistrationType.REGULAR,
+                    status: UserdataStatus.ACTIVE,
+                    rol: { name: 'ADMIN' },
+                    ordersheets: [new Ordersheet, new Ordersheet],
+                    receivers: [new Receiver, new Receiver],
+                    discounts: [new Discount, new Discount],
+                });
+            }
         } else if (type === 'recover') {
             return jest.fn().mockResolvedValue({
                 user_id: 1,
@@ -189,6 +208,54 @@ export class AuthMock {
                 registration_date: '2020-08-01',
                 registration_type: UserdataRegistrationType.REGULAR,
                 status: UserdataStatus.DELETED,
+                rol: rol,
+                ordersheets: [new Ordersheet, new Ordersheet],
+                receivers: [new Receiver, new Receiver],
+                discounts: [new Discount, new Discount],
+            });
+        }
+        else if (type === 'recoverFailedBlocked') {
+            return jest.fn().mockResolvedValue({
+                user_id: 1,
+                person: { document: '12345678' },
+                email: 'email@email.com',
+                password: '12345678',
+                registration_date: '2020-08-01',
+                registration_type: UserdataRegistrationType.REGULAR,
+                status: UserdataStatus.BLOCKED,
+                rol: rol,
+                ordersheets: [new Ordersheet, new Ordersheet],
+                receivers: [new Receiver, new Receiver],
+                discounts: [new Discount, new Discount],
+            });
+        }
+        else if (type === 'recoverFailedNotRegistered') {
+            return jest.fn().mockResolvedValue(undefined);
+        }
+        else if (type === 'recoverFailedFederated') {
+            return jest.fn().mockResolvedValue({
+                user_id: 1,
+                person: { document: '12345678' },
+                email: 'email@email.com',
+                password: '12345678',
+                registration_date: '2020-08-01',
+                registration_type: UserdataRegistrationType.FACEBOOK,
+                status: UserdataStatus.ACTIVE,
+                rol: rol,
+                ordersheets: [new Ordersheet, new Ordersheet],
+                receivers: [new Receiver, new Receiver],
+                discounts: [new Discount, new Discount],
+            });
+        }
+        else if (type === 'recoverFailedDocumentsDontMatch') {
+            return jest.fn().mockResolvedValue({
+                user_id: 1,
+                person: { document: '12347895' },
+                email: 'email@email.com',
+                password: '123456789',
+                registration_date: '2020-08-01',
+                registration_type: UserdataRegistrationType.REGULAR,
+                status: UserdataStatus.ACTIVE,
                 rol: rol,
                 ordersheets: [new Ordersheet, new Ordersheet],
                 receivers: [new Receiver, new Receiver],

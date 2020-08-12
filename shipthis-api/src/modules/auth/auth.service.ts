@@ -241,18 +241,6 @@ export class AuthService {
     return user;
   }
 
-  private async generatePassword(): Promise<{
-    newPassword: string;
-    saltedPassword: string;
-  }> {
-    const newPassword = Math.random()
-      .toString(36)
-      .slice(-10);
-    const salt = await genSalt(10);
-    const saltedPassword = await hash(newPassword, salt);
-    return { newPassword, saltedPassword };
-  }
-
   private documentsDontMatch(user: Userdata, document: string): boolean {
     return user.person.document !== document;
   }

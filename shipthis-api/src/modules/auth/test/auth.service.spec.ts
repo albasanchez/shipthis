@@ -21,6 +21,7 @@ import { getConnection, Connection } from 'typeorm';
 
 import { RolRepository } from '../../../modules/rol/repositories/rol.repository';
 import { RolName } from '../../../modules/rol/constants/rol-name.enum';
+import { UserAlreadyRegisteredException, BlockedUserException, UserNotFoundException, UserFederatedException, WrongCredentialsException, WrongRoleTypeAccessException, WrongRecoveryCredentialsException } from '../../../common/exceptions';
 
 describe('AuthService', () => {
     let authService: AuthService;
@@ -303,7 +304,7 @@ describe('AuthService', () => {
             authRepository.save = mockAuthRepository.save();
             authRepository.findOne = mockAuthRepository.findOne('regular', 'signUp');
             discService.assignWelcomeDiscount = mockDiscountRepository.assignWelcomeDiscount();
-            const response = await authService.clientSignup(user);
+            const response = await authService.adminSignup(user);
             expect(response).toStrictEqual(
                 {
                     newUser: expect.any(Boolean),
@@ -311,6 +312,29 @@ describe('AuthService', () => {
                     userdata: expect.anything(),
                 }
             );
+        });
+        it('should not signup', async () => {
+            const user = {
+                useremail: 'email@email.com',
+                password: '12345678',
+                document: '123456789',
+                first_name: 'Petronilo',
+                middle_name: 'Petronilito',
+                last_name: 'Sanchez',
+                second_last_name: 'Perez',
+                gender: 'O',
+                phone_number: '7554234578',
+                date_of_birth: '02/05/1990',
+                def_language: 'en',
+                picture_url: 'https://pic',
+                receive_notifications: true,
+            };
+            try {
+                authRepository.findOne = mockAuthRepository.findOne('regular', 'signUpFailed');
+                await authService.clientSignup(user);
+            } catch (e) {
+                expect(e).toBeInstanceOf(UserAlreadyRegisteredException);
+            }
         });
     });
     describe('regularLogin', () => {
@@ -352,6 +376,67 @@ describe('AuthService', () => {
                 }
             );
         });
+        it('should not login because user passwords dont match', async () => {
+            const user = {
+                username: 'Pruebito',
+                useremail: 'loginEmail@email.com',
+                password: '12345678',
+            };
+            try {
+                jest
+                    .spyOn(bcryptjs, 'compare')
+                    .mockImplementation(() => (false));
+                authRepository.findOne = mockAuthRepository.findOne('regular', 'clientLogin');
+                await authService.clientLogin(user);
+            } catch (e) {
+                expect(e).toBeInstanceOf(WrongCredentialsException);
+            }
+        });
+        it('should not login because user is not registered', async () => {
+            const user = {
+                username: 'Pruebito',
+                useremail: 'loginEmail@email.com',
+                password: '12345678',
+            };
+            try {
+                authRepository.findOne = mockAuthRepository.findOne('recoverFailedNotRegistered');
+                await authService.clientLogin(user);
+            } catch (e) {
+                expect(e).toBeInstanceOf(UserNotFoundException);
+            }
+        });
+        it('should not login because user is not active', async () => {
+            const user = {
+                username: 'Pruebito',
+                useremail: 'loginEmail@email.com',
+                password: '12345678',
+            };
+            try {
+                jest
+                    .spyOn(bcryptjs, 'compare')
+                    .mockImplementation(() => (true));
+                authRepository.findOne = mockAuthRepository.findOne('regular', 'notActive');
+                await authService.clientLogin(user);
+            } catch (e) {
+                expect(e).toBeInstanceOf(UserNotActiveException);
+            }
+        });
+        it('should not login because user role dont match', async () => {
+            const user = {
+                username: 'Pruebito',
+                useremail: 'loginEmail@email.com',
+                password: '12345678',
+            };
+            try {
+                jest
+                    .spyOn(bcryptjs, 'compare')
+                    .mockImplementation(() => (true));
+                authRepository.findOne = mockAuthRepository.findOne('regular', 'loginFailedRoleDontMatch');
+                await authService.clientLogin(user);
+            } catch (e) {
+                expect(e).toBeInstanceOf(WrongRoleTypeAccessException);
+            }
+        });
     });
     describe('recover', () => {
         it('should recover user', async () => {
@@ -376,6 +461,18 @@ describe('AuthService', () => {
                 }
             );
         });
+        it('should not recover user because is not registered', async () => {
+            const user = {
+                useremail: 'loginEmail@email.com',
+                password: '12345678',
+            };
+            try {
+                authRepository.findOne = mockAuthRepository.findOne('recoverFailedNotRegistered');
+                await authService.recoverUser(user);
+            } catch (e) {
+                expect(e).toBeInstanceOf(UserNotFoundException);
+            }
+        });
         it('should attend recovery request', async () => {
             const user = {
                 useremail: 'loginEmail@email.com',
@@ -389,6 +486,54 @@ describe('AuthService', () => {
                     response: 'Recovery email sent successfully',
                 }
             );
+        });
+        it('should not attend recovery request because user is blocked', async () => {
+            const user = {
+                useremail: 'loginEmail@email.com',
+                document: '12345678',
+            };
+            try {
+                authRepository.findOne = mockAuthRepository.findOne('recoverFailedBlocked');
+                await authService.attendRecoveryRequest(user);
+            } catch (e) {
+                expect(e).toBeInstanceOf(BlockedUserException);
+            }
+        });
+        it('should not attend recovery request because user is not registered', async () => {
+            const user = {
+                useremail: 'loginEmail@email.com',
+                document: '12345678',
+            };
+            try {
+                authRepository.findOne = mockAuthRepository.findOne('recoverFailedNotRegistered');
+                await authService.attendRecoveryRequest(user);
+            } catch (e) {
+                expect(e).toBeInstanceOf(UserNotFoundException);
+            }
+        });
+        it('should not attend recovery request because user did federated sign up', async () => {
+            const user = {
+                useremail: 'loginEmail@email.com',
+                document: '12345678',
+            };
+            try {
+                authRepository.findOne = mockAuthRepository.findOne('recoverFailedFederated');
+                await authService.attendRecoveryRequest(user);
+            } catch (e) {
+                expect(e).toBeInstanceOf(UserFederatedException);
+            }
+        });
+        it('should not attend recovery request because user documents dont match', async () => {
+            const user = {
+                useremail: 'loginEmail@email.com',
+                document: '12345678',
+            };
+            try {
+                authRepository.findOne = mockAuthRepository.findOne('recoverFailedDocumentsDontMatch');
+                await authService.attendRecoveryRequest(user);
+            } catch (e) {
+                expect(e).toBeInstanceOf(WrongRecoveryCredentialsException);
+            }
         });
     });
 });
