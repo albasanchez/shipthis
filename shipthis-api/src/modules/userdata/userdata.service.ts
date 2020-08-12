@@ -136,14 +136,14 @@ export class UserdataService {
   async deleteUser(id: number): Promise<any> {
     this._appLogger.log('Handling New Request: Delete User Service');
     let user: Userdata = await this._userdataRepository.getUser(id);
+    if (!user) {
+      throw new UserNotFoundException();
+    }
     const receivers: Receiver[] = await this._receiverRepository.getReceiverByIdAndStatus(
       user.user_id,
       ReceiverStatus.ACTIVE,
     );
     user = await this._userdataRepository.getUserWithPerson(id);
-    if (!user) {
-      throw new UserNotFoundException();
-    }
 
     user.status = UserdataStatus.DELETED;
     user.person.document = '000000000';

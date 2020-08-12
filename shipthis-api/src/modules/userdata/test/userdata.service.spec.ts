@@ -2,9 +2,11 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UserdataService } from '../userdata.service';
 import { ReceiverRepository } from '../repositories/receiver.repository';
 import { UserDataRepository } from '../repositories/userdata.repository';
-import { ReceiverNotFoundException, 
-         UserNotFoundException,
-         WrongCredentialsException } from '../../../common/exceptions';
+import {
+  ReceiverNotFoundException,
+  UserNotFoundException,
+  WrongCredentialsException,
+} from '../../../common/exceptions';
 import {
   UserdataMock,
   userdataMockModuleMetadata,
@@ -18,7 +20,6 @@ import { UserdataStatus } from '../constants/user-status.enum';
 import { BadRequestException } from '@nestjs/common';
 import { ModifyPasswordDTO } from '../dto/modify-password.dto';
 
-
 describe('UserdataService', () => {
   let service: UserdataService;
   let userdataRepository: UserDataRepository;
@@ -26,44 +27,75 @@ describe('UserdataService', () => {
   const mockUserdataRepository: UserdataMock = new UserdataMock();
   const mockReceiverRepository: ReceiverMock = new ReceiverMock();
 
-  const receivers = [{ name: 'Ana', 
-                     last_name: 'Lopez',
-                     phone_number:'+1 (654) 562 5698', 
-                     email: 'analopez1998@gmail.com',
-                     user_fk: 1 },
-                    
-                     { name: 'Paola', 
-                     last_name: 'Lopez',
-                     phone_number:'+1 (654) 135 5698', 
-                     email: 'paolopez1998@gmail.com',
-                     user_fk: 1 }];
+  const receivers = [
+    {
+      name: 'Ana',
+      last_name: 'Lopez',
+      phone_number: '+1 (654) 562 5698',
+      email: 'analopez1998@gmail.com',
+      user_fk: 1,
+    },
 
-  const newReceiver = { name: 'Laura', 
-                     last_name: 'Ledezma',
-                     phone_number:'+1 (654) 562 5698', 
-                     email: 'laura1998@gmail.com',
-                     user_fk: 1 }
+    {
+      name: 'Paola',
+      last_name: 'Lopez',
+      phone_number: '+1 (654) 135 5698',
+      email: 'paolopez1998@gmail.com',
+      user_fk: 1,
+    },
+  ];
 
-  const receiverUpdated = { name: 'Laura', 
-                     last_name: 'Torres',
-                     phone_number:'+1 (654) 562 5698', 
-                     email: 'laura1998@gmail.com'}
+  const newReceiver = {
+    name: 'Laura',
+    last_name: 'Ledezma',
+    phone_number: '+1 (654) 562 5698',
+    email: 'laura1998@gmail.com',
+    user_fk: 1,
+  };
 
-  const user =    { user_id:1, first_name: 'Luisa', 
-                     middle_name: 'Maria', last_name: 'Contreras', 
-                     second_last_name: 'Lara', phone_number:'+1 (654) 562 5698', 
-                     def_language: LanguageType.ENGLISH, picture_url: null,  
-                     receive_notifications: true};
+  const receiverUpdated = {
+    name: 'Laura',
+    last_name: 'Torres',
+    phone_number: '+1 (654) 562 5698',
+    email: 'laura1998@gmail.com',
+  };
 
-   const user_second_test =    { user_id:3, first_name: 'Luisa', last_name: 'Contreras',
-                                middle_name: undefined, second_last_name: undefined, 
-                                phone_number:'+1 (654) 562 5698',  def_language: LanguageType.ENGLISH, picture_url: null,  
-                                 receive_notifications: true};
+  const user = {
+    user_id: 1,
+    first_name: 'Luisa',
+    middle_name: 'Maria',
+    last_name: 'Contreras',
+    second_last_name: 'Lara',
+    phone_number: '+1 (654) 562 5698',
+    def_language: LanguageType.ENGLISH,
+    picture_url: null,
+    receive_notifications: true,
+  };
 
-  const newPassword: ModifyPasswordDTO = { user_id: 1, actual_password: 'hola123', new_password:'testPassword' };
-  const newPasswordFail = { user_id: 1, actual_password: 'testFail', new_password:'testPassword' };
+  const user_second_test = {
+    user_id: 3,
+    first_name: 'Luisa',
+    last_name: 'Contreras',
+    middle_name: undefined,
+    second_last_name: undefined,
+    phone_number: '+1 (654) 562 5698',
+    def_language: LanguageType.ENGLISH,
+    picture_url: null,
+    receive_notifications: true,
+  };
 
-   beforeEach(async () => {
+  const newPassword: ModifyPasswordDTO = {
+    user_id: 1,
+    actual_password: 'hola123',
+    new_password: 'testPassword',
+  };
+  const newPasswordFail = {
+    user_id: 1,
+    actual_password: 'testFail',
+    new_password: 'testPassword',
+  };
+
+  beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule(
       userdataMockModuleMetadata,
     ).compile();
@@ -82,7 +114,7 @@ describe('UserdataService', () => {
   describe('getReceivers', () => {
     it('should get all the receivers by user', async () => {
       receiverRepository.find = mockReceiverRepository.find();
-      service.getReceivers(user.user_id);
+      await service.getReceivers(user.user_id);
       expect(receiverRepository.find).toHaveBeenCalled();
     });
     it('should not get all the receivers by user', async () => {
@@ -90,7 +122,7 @@ describe('UserdataService', () => {
       try {
         await service.getReceivers(null);
       } catch (e) {
-        expect(receiverRepository.find).not.toHaveBeenCalled( );
+        expect(receiverRepository.find).not.toHaveBeenCalled();
         expect(e).toBeInstanceOf(BadRequestException);
       }
     });
@@ -100,6 +132,7 @@ describe('UserdataService', () => {
     it('should save a new receiver in the database', async () => {
       receiverRepository.save = mockReceiverRepository.save();
       userdataRepository.findOne = mockUserdataRepository.findOne(true, false);
+      receiverRepository.findOne = mockReceiverRepository.findOne('Active')
       await service.createReceiver(newReceiver);
       expect(receiverRepository.save).toHaveBeenCalled();
     });
@@ -109,7 +142,7 @@ describe('UserdataService', () => {
       try {
         await service.createReceiver(newReceiver);
       } catch (e) {
-        expect(userdataRepository.findOne).toHaveBeenCalled( );
+        expect(userdataRepository.findOne).toHaveBeenCalled();
         expect(receiverRepository.save).not.toHaveBeenCalled();
         expect(e).toBeInstanceOf(UserNotFoundException);
       }
@@ -119,11 +152,13 @@ describe('UserdataService', () => {
   describe('updateReceiver', () => {
     it('should update a receiver', async () => {
       receiverRepository.findOne = mockReceiverRepository.findOne('Active');
-      receiverRepository.update = mockReceiverRepository.update();
+      receiverRepository.save = mockReceiverRepository.save();
       const response = await service.updateReceiver(1, receiverUpdated);
       expect(receiverRepository.findOne).toHaveBeenCalled();
-      expect(receiverRepository.update).toHaveBeenCalled();
-      expect(response).toEqual({ response: 'Receiver has been updated sucessfully' });
+      expect(receiverRepository.save).toHaveBeenCalled();
+      expect(response).toEqual({
+        response: 'Receiver has been updated sucessfully',
+      });
     });
     it('should not update a receiver', async () => {
       receiverRepository.findOne = mockReceiverRepository.findOne(null);
@@ -131,7 +166,7 @@ describe('UserdataService', () => {
       try {
         await service.updateReceiver(2, receiverUpdated);
       } catch (e) {
-        expect(receiverRepository.findOne).toHaveBeenCalled( );
+        expect(receiverRepository.findOne).toHaveBeenCalled();
         expect(receiverRepository.update).not.toHaveBeenCalled();
         expect(e).toBeInstanceOf(ReceiverNotFoundException);
       }
@@ -141,11 +176,12 @@ describe('UserdataService', () => {
   describe('deleteReceiver', () => {
     it('should delete a receiver', async () => {
       receiverRepository.findOne = mockReceiverRepository.findOne('Active');
-      receiverRepository.update = mockReceiverRepository.update();
+      receiverRepository.save = mockReceiverRepository.save();
       const response = await service.deleteReceiver(1);
       expect(receiverRepository.findOne).toHaveBeenCalled();
-      expect(receiverRepository.update).toHaveBeenCalled();
-      expect(response).toEqual({ response: 'Receiver has been deleted sucessfully' });
+      expect(response).toEqual({
+        response: 'Receiver has been deleted sucessfully',
+      });
     });
     it('should not delete a receiver', async () => {
       receiverRepository.findOne = mockReceiverRepository.findOne(null);
@@ -153,8 +189,7 @@ describe('UserdataService', () => {
       try {
         await service.deleteReceiver(2);
       } catch (e) {
-        expect(receiverRepository.findOne).toHaveBeenCalled( );
-        expect(receiverRepository.update).not.toHaveBeenCalled();
+        expect(receiverRepository.findOne).toHaveBeenCalled();
         expect(e).toBeInstanceOf(ReceiverNotFoundException);
       }
     });
@@ -170,20 +205,27 @@ describe('UserdataService', () => {
 
   describe('deleteUser', () => {
     it('should delete an user', async () => {
-      userdataRepository.findOne = mockUserdataRepository.findOne(true, false);
+      userdataRepository.findOne = mockUserdataRepository.findOne(false, true);
       userdataRepository.save = mockUserdataRepository.save();
+      receiverRepository.find = mockReceiverRepository.find();
+      receiverRepository.findOne = mockReceiverRepository.findOne('Active');
+      receiverRepository.save = mockReceiverRepository.save();
+      userdataRepository.update = mockUserdataRepository.update();
       const response = await service.deleteUser(1);
       expect(userdataRepository.findOne).toHaveBeenCalled();
       expect(userdataRepository.save).toHaveBeenCalled();
-      expect(response).toEqual({ response: 'User has been deleted sucessfully' });
+      expect(response).toEqual({
+        response: 'User has been deleted sucessfully',
+      });
     });
     it('should not delete an user', async () => {
       userdataRepository.findOne = mockUserdataRepository.findOne(false, false);
       userdataRepository.save = mockUserdataRepository.save();
+      receiverRepository.find = mockReceiverRepository.find();
       try {
         await service.deleteUser(2);
       } catch (e) {
-        expect(userdataRepository.findOne).toHaveBeenCalled( );
+        expect(userdataRepository.findOne).toHaveBeenCalled();
         expect(userdataRepository.save).not.toHaveBeenCalled();
         expect(e).toBeInstanceOf(UserNotFoundException);
       }
@@ -205,7 +247,7 @@ describe('UserdataService', () => {
       try {
         await service.modifyPassword(newPassword);
       } catch (e) {
-        expect(userdataRepository.findOne).toHaveBeenCalled( );
+        expect(userdataRepository.findOne).toHaveBeenCalled();
         expect(userdataRepository.save).not.toHaveBeenCalled();
         expect(e).toBeInstanceOf(UserNotFoundException);
       }
@@ -216,7 +258,7 @@ describe('UserdataService', () => {
       try {
         await service.modifyPassword(newPasswordFail);
       } catch (e) {
-        expect(userdataRepository.findOne).toHaveBeenCalled( );
+        expect(userdataRepository.findOne).toHaveBeenCalled();
         expect(userdataRepository.save).not.toHaveBeenCalled();
         expect(e).toBeInstanceOf(WrongCredentialsException);
       }
@@ -224,52 +266,51 @@ describe('UserdataService', () => {
   });
 
   describe('modifyUserdata', () => {
-       it('should change the user information', async () => {
-       userdataRepository.findOne = mockUserdataRepository.findOne( false,true);
-       userdataRepository.save = mockUserdataRepository.save();
-       await service.modifyUserdata(user);
-       expect(userdataRepository.findOne).toHaveBeenCalled();
-       expect(userdataRepository.save).toHaveBeenCalled();
-     });
-     it('should change the user information', async () => {
-      userdataRepository.findOne = mockUserdataRepository.findOne( false,true);
+    it('should change the user information', async () => {
+      userdataRepository.findOne = mockUserdataRepository.findOne(false, true);
+      userdataRepository.save = mockUserdataRepository.save();
+      await service.modifyUserdata(user);
+      expect(userdataRepository.findOne).toHaveBeenCalled();
+      expect(userdataRepository.save).toHaveBeenCalled();
+    });
+    it('should change the user information', async () => {
+      userdataRepository.findOne = mockUserdataRepository.findOne(false, true);
       userdataRepository.save = mockUserdataRepository.save();
       await service.modifyUserdata(user_second_test);
       expect(userdataRepository.findOne).toHaveBeenCalled();
       expect(userdataRepository.save).toHaveBeenCalled();
     });
-     it('should not change the user information', async () => {
-       userdataRepository.findOne = mockUserdataRepository.findOne(false, false);
-       userdataRepository.save = mockUserdataRepository.save();
-       try {
-         await service.modifyUserdata(user);
-       } catch (e) {
-         expect(userdataRepository.findOne).toHaveBeenCalled( );
-         expect(userdataRepository.save).not.toHaveBeenCalled();
-         expect(e).toBeInstanceOf(UserNotFoundException);
-       }
-     });
-   });
+    it('should not change the user information', async () => {
+      userdataRepository.findOne = mockUserdataRepository.findOne(false, false);
+      userdataRepository.save = mockUserdataRepository.save();
+      try {
+        await service.modifyUserdata(user);
+      } catch (e) {
+        expect(userdataRepository.findOne).toHaveBeenCalled();
+        expect(userdataRepository.save).not.toHaveBeenCalled();
+        expect(e).toBeInstanceOf(UserNotFoundException);
+      }
+    });
+  });
 
-   describe('changeUserStatus', () => {
+  describe('changeUserStatus', () => {
     it('should change the user status', async () => {
-    userdataRepository.findOne = mockUserdataRepository.findOne( false,true);
-    userdataRepository.save = mockUserdataRepository.save();
-    await service.changeUserStatus(1,UserdataStatus.BLOCKED);
-    expect(userdataRepository.findOne).toHaveBeenCalled();
-    expect(userdataRepository.save).toHaveBeenCalled();
+      userdataRepository.findOne = mockUserdataRepository.findOne(false, true);
+      userdataRepository.save = mockUserdataRepository.save();
+      await service.changeUserStatus(1, UserdataStatus.BLOCKED);
+      expect(userdataRepository.findOne).toHaveBeenCalled();
+      expect(userdataRepository.save).toHaveBeenCalled();
+    });
+    it('should not change the user status', async () => {
+      userdataRepository.findOne = mockUserdataRepository.findOne(false, false);
+      userdataRepository.save = mockUserdataRepository.save();
+      try {
+        await service.changeUserStatus(2, UserdataStatus.BLOCKED);
+      } catch (e) {
+        expect(userdataRepository.findOne).toHaveBeenCalled();
+        expect(userdataRepository.save).not.toHaveBeenCalled();
+        expect(e).toBeInstanceOf(UserNotFoundException);
+      }
+    });
   });
-  it('should not change the user status', async () => {
-    userdataRepository.findOne = mockUserdataRepository.findOne(false, false);
-    userdataRepository.save = mockUserdataRepository.save();
-    try {
-      await service.changeUserStatus(2,UserdataStatus.BLOCKED);
-    } catch (e) {
-      expect(userdataRepository.findOne).toHaveBeenCalled( );
-      expect(userdataRepository.save).not.toHaveBeenCalled();
-      expect(e).toBeInstanceOf(UserNotFoundException);
-    }
-  });
-});
-
 });
