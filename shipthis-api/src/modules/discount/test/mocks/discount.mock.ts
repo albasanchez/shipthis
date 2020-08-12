@@ -6,19 +6,26 @@ import { DiscountService } from '../../discount.service';
 import { DiscountRepository } from '../../repositories/discount.repository';
 import { ConfigService } from '../../../../config/config.service';
 import { UserDataRepository } from '../../../userdata/repositories/userdata.repository';
+import { EncriptionService } from '../../../encription/encription.service';
 
 export const discountMockModuleMetadata: ModuleMetadata = {
   providers: [
     DiscountService,
     DiscountRepository,
-    DiscPerRepository, 
+    DiscPerRepository,
     UserDataRepository,
+    {
+      provide: EncriptionService,
+      useFactory() {
+        return { encriptString: jest.fn().mockResolvedValue('string') };
+      },
+    },
     {
       provide: EmailService,
       useFactory() {
         return {
           generateInvoice: jest.fn(),
-          sendDiscountEmail: jest.fn()
+          sendDiscountEmail: jest.fn(),
         };
       },
     },
@@ -38,26 +45,26 @@ export class DiscountMock {
   findOne(option: string) {
     if (option == 'Welcome') {
       return jest.fn().mockResolvedValue({
-      discount_id: 1,
-      name: 'WELCOME',
-      percentage: 10,
-      status: 'ACTIVE'
+        discount_id: 1,
+        name: 'WELCOME',
+        percentage: 10,
+        status: 'ACTIVE',
       });
     } else if (option == 'Summer') {
       return jest.fn().mockResolvedValue({
         discount_id: 2,
         name: 'SUMMER',
         percentage: 20,
-        status: 'ACTIVE'
-        });
+        status: 'ACTIVE',
+      });
     } else if (option == 'Deleted') {
       return jest.fn().mockResolvedValue({
         discount_id: 2,
         name: 'SUMMER',
         percentage: 20,
-        status: 'DELETED'
-        }); }
-    else {
+        status: 'DELETED',
+      });
+    } else {
       return jest.fn().mockResolvedValue(null);
     }
   }
@@ -65,18 +72,20 @@ export class DiscountMock {
     return jest.fn();
   }
   find() {
-    return jest.fn().mockResolvedValue([{
-      discount_id: 1,
-      name: 'WELCOME',
-      percentage: 10,
-      status: 'ACTIVE'
+    return jest.fn().mockResolvedValue([
+      {
+        discount_id: 1,
+        name: 'WELCOME',
+        percentage: 10,
+        status: 'ACTIVE',
       },
       {
         discount_id: 2,
         name: 'SUMMER',
         percentage: 20,
-        status: 'ACTIVE'
-        }]);
+        status: 'ACTIVE',
+      },
+    ]);
   }
   update() {
     return jest.fn();

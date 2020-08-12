@@ -5,7 +5,7 @@ import { AppLoggerService } from '../../log/applogger.service';
 import {
   propertyIsValid,
   propertyTypeIsValid,
-} from 'src/config/verify-properties.functions';
+} from '../../config/verify-properties.functions';
 const crypto = require('crypto');
 
 @Injectable()
