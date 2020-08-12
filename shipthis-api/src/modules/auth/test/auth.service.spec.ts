@@ -99,6 +99,7 @@ describe('AuthService', () => {
                     }
                 }) as any);
             authRepository.save = mockAuthRepository.save();
+            authRepository.fetchUser = mockAuthRepository.fetchUser();
             authRepository.findOne = mockAuthRepository.findOne('google', 'signUp');
             discService.assignWelcomeDiscount = mockDiscountRepository.assignWelcomeDiscount();
             const response = await authService.googleLogin(user);
@@ -188,6 +189,7 @@ describe('AuthService', () => {
                     }
                 }) as any);
             authRepository.save = mockAuthRepository.save();
+            authRepository.fetchUser = mockAuthRepository.fetchUser();
             authRepository.findOne = mockAuthRepository.findOne('google', 'signUp');
             discService.assignWelcomeDiscount = mockDiscountRepository.assignWelcomeDiscount();
             const response = await authService.facebookLogin(user);
