@@ -104,7 +104,13 @@ export class UserdataService {
       throw new ReceiverNotFoundException();
     }
 
-    const response = this._receiverRepository.deleteReceiver(id);
+    receiver.email = 'deletedreceiver@gmail.com';
+    receiver.name = 'name';
+    receiver.last_name = 'last name';
+    receiver.phone_number = '+1 (000) 000000';
+    receiver.status = ReceiverStatus.DELETED;
+
+    const response = this._receiverRepository.deleteReceiver(receiver);
 
     this._appLogger.log('Receiver has been deleted sucessfully');
 
@@ -129,12 +135,33 @@ export class UserdataService {
 
   async deleteUser(id: number): Promise<any> {
     this._appLogger.log('Handling New Request: Delete User Service');
-    const user: Userdata = await this._userdataRepository.getUser(id);
+    let user: Userdata = await this._userdataRepository.getUser(id);
+    const receivers: Receiver[] = await this._receiverRepository.getReceiverByIdAndStatus(
+      user.user_id,
+      ReceiverStatus.ACTIVE,
+    );
+    user = await this._userdataRepository.getUserWithPerson(id);
     if (!user) {
       throw new UserNotFoundException();
     }
+
     user.status = UserdataStatus.DELETED;
-    this._userdataRepository.save(user);
+    user.person.document = '000000000';
+    user.person.first_name = 'name';
+    user.person.last_name = 'last name';
+    user.person.middle_name = null;
+    user.person.phone_number = '+1 (000) 000000';
+    user.person.picture_url = null;
+    user.person.second_last_name = null;
+
+    receivers.forEach(async (rec) => {
+      await this.deleteReceiver(rec.receiver_id);
+    });
+
+    await this._userdataRepository.save(user);
+    
+    user.email = `user${id}@gmail.com`;
+    await this._userdataRepository.update({ user_id: id }, user);
     this._appLogger.log('User has been deleted sucessfully');
     return { response: 'User has been deleted sucessfully' };
   }

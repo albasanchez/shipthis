@@ -47,8 +47,8 @@ export class ReceiverRepository extends Repository<Receiver> {
     return { response: 'Receiver has been updated sucessfully' };
   }
 
-  async deleteReceiver(id: number): Promise<any> {
-    this.update(id, { status: ReceiverStatus.DELETED });
+  async deleteReceiver(receiver: Receiver): Promise<any> {
+    this.save(receiver);
 
     return { response: 'Receiver has been deleted sucessfully' };
   }

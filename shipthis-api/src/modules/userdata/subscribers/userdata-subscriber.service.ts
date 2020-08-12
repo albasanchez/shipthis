@@ -37,25 +37,4 @@ export class UserdataSubscriber implements EntitySubscriberInterface<Userdata> {
   beforeUpdate(event: UpdateEvent<Userdata>): void {
     this._encriptionsService.encriptObject(event.entity);
   }
-
-  async afterUpdate(event: UpdateEvent<any>): Promise<any> {
-    this._encriptionsService.decriptObject(event.entity);
-    for await (const key of Object.keys(event.entity)) {
-      const oldValue: any = event.databaseEntity[key];
-      const newValue: any = event.entity[key];
-
-      if (typeof oldValue !== 'object' && typeof newValue !== 'object') {
-        if (propertyIsValid(key) && oldValue != newValue) {
-          await this._auditService.save({
-            action: AuditActions.UPDATE,
-            row: event.entity.user_id,
-            old_value: oldValue,
-            new_value: newValue,
-            attribute: key as string,
-            table: event.metadata.tableName,
-          });
-        }
-      }
-    }
-  }
 }
