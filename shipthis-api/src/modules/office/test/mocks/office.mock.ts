@@ -12,4 +12,9 @@ export class OfficeMock {
   find() {
     return jest.fn();
   }
+  findOne() {
+    return jest
+      .fn()
+      .mockResolvedValue({ place: { position_long: 1, position_lat: 2 } });
+  }
 }
