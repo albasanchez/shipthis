@@ -529,7 +529,7 @@ describe('AuthService', () => {
                 document: '12345678',
             };
             try {
-                authRepository.findOne = mockAuthRepository.findOne('recoverFailedDocumentsDontMatch');
+                // authRepository.findOne = mockAuthRepository.findOne('recoverFailedDocumentsDontMatch');
                 await authService.attendRecoveryRequest(user);
             } catch (e) {
                 expect(e).toBeInstanceOf(WrongRecoveryCredentialsException);
