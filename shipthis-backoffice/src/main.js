@@ -7,7 +7,11 @@ import messages from "./plugins/i18n";
 import VueI18n from "vue-i18n";
 import Vuelidate from 'vuelidate';
 import VueTheMask from 'vue-the-mask'
-
+import LogRocket from "logrocket";
+LogRocket.init(process.env.VUE_APP_LOGROCKET);
+LogRocket.identify(store.getters["users/getUser"].user_id, {
+  email: store.getters["users/getUser"].email,
+});
 Vue.use(VueTheMask)
 Vue.use(Vuelidate);
 Vue.use(VueI18n);

@@ -9,3 +9,4 @@ export class CreateCommentBoxDto {
   @IsIn(['EN', 'ES'])
   language: string;
 }
+ 

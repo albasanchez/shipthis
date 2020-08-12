@@ -10,6 +10,7 @@ export const databaseProviders = [
     inject: [ConfigService],
     async useFactory(config: ConfigService) {
       return {
+        //ssl: false,
         ssl: true,
         extra: {
           ssl: {
