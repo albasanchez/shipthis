@@ -10,6 +10,10 @@ import { PickupRepository } from './repositories/pickup.repository';
 import { WarehouseRepository } from './repositories/warehouse.repository';
 import { PlaceRepository } from '../ordersheet/repositories/place.repository';
 import { AppLoggerModule } from '../../log/applogger.module';
+import { EncriptionModule } from '../encription/encription.module';
+import { CommercialAllySubscriber } from './subscribers/commercial-ally-subscriber.service';
+import { PickupSubscriber } from './subscribers/pickup-subscriber.service';
+import { AuditModule } from '../audit/audit.module';
 
 @Module({
   imports: [
@@ -23,8 +27,14 @@ import { AppLoggerModule } from '../../log/applogger.module';
     ]),
     AppLoggerModule,
     EmailModule,
+    EncriptionModule,
+    AuditModule,
   ],
-  providers: [CommercialAllyService],
+  providers: [
+    CommercialAllyService,
+    CommercialAllySubscriber,
+    PickupSubscriber,
+  ],
   controllers: [CommercialAllyController],
 })
 export class CommercialAllyModule {}

@@ -10,6 +10,11 @@ import VueTheMask from "vue-the-mask";
 import i18n from "./plugins/i18n";
 import Vuesax from "vuesax"; //import dependency
 import "vuesax/dist/vuesax.css"; // import css style
+import LogRocket from "logrocket";
+LogRocket.init(process.env.VUE_APP_LOGROCKET);
+LogRocket.identify(store.getters["users/getUser"].user_id, {
+  email: store.getters["users/getUser"].email,
+});
 
 Vue.use(Vuesax); // implement Vuesax throughout the application
 
@@ -18,6 +23,7 @@ export const EventBus = new Vue();
 Vue.use(Vuelidate);
 
 Vue.config.productionTip = false;
+
 Vue.use(VueTheMask);
 new Vue({
   router,

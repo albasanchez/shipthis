@@ -56,7 +56,7 @@ export class CommercialAllyMock {
     }
   }
   save() {
-    return jest.fn();
+    return jest.fn().mockResolvedValue(ally);
   }
   find() {
     return jest.fn().mockResolvedValue([ally]);

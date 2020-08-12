@@ -23,6 +23,7 @@ import {
 } from '../../common/exceptions';
 import { genSalt, hash, compare } from 'bcryptjs';
 import { EmailService } from '../email/email.service';
+import { EncriptionService } from '../encription/encription.service';
 
 @Injectable()
 export class AuthService {
@@ -33,6 +34,7 @@ export class AuthService {
     private readonly _appLogger: AppLoggerService,
     private readonly _emailService: EmailService,
     private readonly _discountServ: DiscountService,
+    private readonly _encriptionServ: EncriptionService,
   ) {}
 
   async googleLogin(
@@ -56,7 +58,7 @@ export class AuthService {
     //validating email no registeres
     const { useremail } = signup;
     const posibleUser: Userdata = await this._authRepository.fetchUser(
-      useremail,
+      this._encriptionServ.encriptString(useremail),
     );
 
     let user: Userdata;
@@ -92,7 +94,9 @@ export class AuthService {
     //validating email no registeres
     const { useremail } = signup;
 
-    const posibleUser = await this._authRepository.fetchUser(useremail);
+    const posibleUser = await this._authRepository.fetchUser(
+      this._encriptionServ.encriptString(useremail),
+    );
 
     let user: Userdata;
 
@@ -131,7 +135,7 @@ export class AuthService {
     const { useremail, password: pwd } = logindata;
 
     const user: Userdata = await this._authRepository.fetchRegularUser(
-      useremail,
+      this._encriptionServ.encriptString(useremail),
     );
 
     if (this.userIsNotRegistered(user)) {
@@ -155,13 +159,18 @@ export class AuthService {
   async recoverUser(recoverData: RecoverUserDto): Promise<any> {
     this._appLogger.log('Handling New Request: User Recovery Request Service');
     const { useremail, password } = recoverData;
-    const user: Userdata = await this._authRepository.fetchUser(useremail);
+    const user: Userdata = await this._authRepository.fetchUser(
+      this._encriptionServ.encriptString(useremail),
+    );
 
     if (this.userIsNotRegistered(user)) {
       throw new UserNotFoundException();
     }
 
-    await this._authRepository.recoverUSer(useremail, password);
+    await this._authRepository.recoverUSer(
+      this._encriptionServ.encriptString(useremail),
+      password,
+    );
 
     return { response: 'New password set on user successfully' };
   }
@@ -170,7 +179,9 @@ export class AuthService {
     this._appLogger.log('Handling New Request: User Recovery Request Service');
     const { useremail, document } = recoverData;
 
-    const user: Userdata = await this._authRepository.fetchUser(useremail);
+    const user: Userdata = await this._authRepository.fetchUser(
+      this._encriptionServ.encriptString(useremail),
+    );
 
     if (this.userIsNotRegistered(user)) {
       throw new UserNotFoundException();
@@ -191,7 +202,7 @@ export class AuthService {
     /* SEND EMAIL HERE */
     const payload: IJwtPayload = {
       id: user.user_id,
-      email: user.email,
+      email: this._encriptionServ.encriptString(user.email),
       rol: user.rol.name as RolName,
     };
     const token: string = await this._jwtService.sign(payload);
@@ -203,11 +214,11 @@ export class AuthService {
 
   private async returnUser(
     user: Userdata,
-    isNew: boolean = false,
+    isNew = false,
   ): Promise<{ token: string; userdata: any; newUser: boolean }> {
     const payload: IJwtPayload = {
       id: user.user_id,
-      email: user.email,
+      email: this._encriptionServ.encriptString(user.email),
       rol: user.rol.name as RolName,
     };
     const token = await this._jwtService.sign(payload);
@@ -224,11 +235,13 @@ export class AuthService {
     this._appLogger.log(
       `Registering new user. Registration type : ${registrationType}`,
     );
-    const user: Userdata = await this._authRepository.signup(
+    let user: Userdata = await this._authRepository.signup(
       signup,
       registrationType,
       role,
     );
+
+    const user2 = await this._authRepository.find({ user_id: user.user_id });
 
     if (this.userIsClient(user)) {
       const welcomeDiscount: Discount = await this._discountServ.assignWelcomeDiscount(
@@ -238,19 +251,7 @@ export class AuthService {
     }
 
     this._appLogger.log(`NEW ${role} registered successfully`);
-    return user;
-  }
-
-  private async generatePassword(): Promise<{
-    newPassword: string;
-    saltedPassword: string;
-  }> {
-    const newPassword = Math.random()
-      .toString(36)
-      .slice(-10);
-    const salt = await genSalt(10);
-    const saltedPassword = await hash(newPassword, salt);
-    return { newPassword, saltedPassword };
+    return user2[0];
   }
 
   private documentsDontMatch(user: Userdata, document: string): boolean {

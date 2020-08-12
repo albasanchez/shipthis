@@ -9,7 +9,7 @@ import { WarehouseRepository } from '../repositories/warehouse.repository';
 import { CommercialAllyStatus } from '../constants/commercial-ally-status.enum';
 import { MapperWarehouse} from '../../../mapper/mapper-warehouse';
 import { UpdateCommercialAllyDto } from '../dto/update-commercial-ally.dto';
-
+  
 @EntityRepository(CommercialAlly)
 export class CommercialAllyRepository extends Repository<CommercialAlly> {
 
@@ -42,15 +42,16 @@ export class CommercialAllyRepository extends Repository<CommercialAlly> {
     async updateCommercialAlly(newCommercialAlly: UpdateCommercialAllyDto): Promise<any> {
        
       const commercial_ally = {
+        commercial_ally_id: newCommercialAlly.commercial_ally_key,
         name: newCommercialAlly.name,
         email: newCommercialAlly.email,
         phone_number: newCommercialAlly.phone_number,
         manager_name: newCommercialAlly.manager_name,
         manager_last_name: newCommercialAlly.manager_last_name,
         description: newCommercialAlly.description,
-      }
+      };
 
-      this.update(newCommercialAlly.commercial_ally_key, commercial_ally)
+      this.save(commercial_ally)
 
       return  { response: 'Commercial Ally has been updated sucessfully' };
    }

@@ -62,7 +62,7 @@ export class MapperOrderResume {
     order_resume.order_type = 'Standard';
     order_resume.ignore_holidays = false;
     order_resume.discount = 0;
-    order_resume.facturation_amount = Number(pickup.facturation_amount);
+    order_resume.facturation_amount = pickup.facturation_amount;
     order_resume.discount = Number(order_resume.discount.toFixed(2));
     order_resume.subtotal = pickup.items.reduce((acc, item) => {
       return acc + Number(item.item_cost);

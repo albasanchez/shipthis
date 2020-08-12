@@ -81,6 +81,7 @@ describe('CommercialAllyService', () => {
     ],
   };
   const ally = {
+    commercial_ally_id: 'b902ff4b-9ee2-4ea8-9d61-83e035eccb26',
     commercial_ally_key: 'b902ff4b-9ee2-4ea8-9d61-83e035eccb26',
     name: 'CommercialAlly',
     email: 'ally@gmail.com',
@@ -157,6 +158,7 @@ describe('CommercialAllyService', () => {
         .mockImplementation(() => createQueryBuilder);
       axios.get = locationMock.get();
       itemPriceRepository.findOne = mockItemPriceRepository.findOne();
+      pickupRepository.findOne = mockPickupRepository.findOne(true);
       pickupRepository.save = mockPickupRepository.save();
 
       await service.registerPickup(pickup, response);
@@ -180,6 +182,7 @@ describe('CommercialAllyService', () => {
       ally.warehouses[0].place.address = 'Berry Street';
       axios.get = locationMock.get();
       allyRepository.save = mockAllyRepository.save();
+      allyRepository.findOne = mockAllyRepository.findOne('Active');
       await service.createCommercialAlly(ally);
       expect(allyRepository.save).toHaveBeenCalled();
     });
@@ -191,6 +194,7 @@ describe('CommercialAllyService', () => {
     it('should update a commercial ally', async () => {
       allyRepository.findOne = mockAllyRepository.findOne('Active');
       allyRepository.update = mockAllyRepository.update();
+      allyRepository.save = mockAllyRepository.save();
       await service.updateCommercialAlly(ally);
       expect(allyRepository.findOne).toHaveBeenCalled();
     });

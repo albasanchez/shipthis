@@ -12,6 +12,7 @@ import { ConfigService } from '../../config/config.service';
 import { Configuration } from '../../config/config.keys';
 import { AppLoggerModule } from '../../log/applogger.module';
 import { EmailModule } from '../email/email.module';
+import { EncriptionModule } from '../encription/encription.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { EmailModule } from '../email/email.module';
     AppLoggerModule,
     EmailModule,
     DiscountModule,
+    EncriptionModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
