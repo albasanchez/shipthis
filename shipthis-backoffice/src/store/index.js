@@ -3,7 +3,16 @@ import Vuex from "vuex";
 import jwt from "../common/jwt.service";
 import createPersistedState from "vuex-persistedstate";
 import modules from "./modules";
+import LogRocket from "logrocket";
 
+import createPlugin from "logrocket-vuex";
+const logrocketPlugin = createPlugin(LogRocket);
+Vue.use(Vuex);
+LogRocket.init(process.env.VUE_APP_LOGROCKET, {
+  dom: {
+    inputSanitizer: true,
+  },
+});
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -16,7 +25,7 @@ export default new Vuex.Store({
     login(state, { token, user }) {
       state.idToken = token;
       state.user = user;
-      jwt.saveToken(token);
+      jwt.saveToken(token); 
     },
     logout(state) {
       state.idToken = null;
@@ -34,5 +43,5 @@ export default new Vuex.Store({
     }
   },
   getters: {},
-  plugins: [createPersistedState({ paths: ["users"] })]
+  plugins: [createPersistedState({ paths: ["users"] }),logrocketPlugin]
 });
