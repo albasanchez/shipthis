@@ -11,6 +11,7 @@ import { CharacteristicRepository } from '../../../item-type/repositories/charac
 import { ReceiverRepository } from '../../../userdata/repositories/receiver.repository';
 import { DiscPerRepository } from '../../../discount/repositories/disc-per.repository';
 import { ItemPriceHistRepository } from '../../../item-type/repositories/item-price-hist.repository';
+import { EncriptionService } from '../../../encription/encription.service';
 
 export const ordersheetMockModuleMetadata: ModuleMetadata = {
   providers: [
@@ -24,6 +25,12 @@ export const ordersheetMockModuleMetadata: ModuleMetadata = {
     DiscPerRepository,
     ItemPriceHistRepository,
     DaoLocationIq,
+    {
+      provide: EncriptionService,
+      useFactory() {
+        return { encriptString: jest.fn().mockResolvedValue('string') };
+      },
+    },
     {
       provide: EmailService,
       useFactory() {

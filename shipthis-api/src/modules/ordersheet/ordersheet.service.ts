@@ -53,6 +53,7 @@ import { ItemPriceHist } from '../item-type/entities/item-price-hist.entity';
 import { MapperBill } from '../../mapper/mapper-bill';
 import { Response } from 'express';
 import { EmailService } from '../email/email.service';
+import { EncriptionService } from '../encription/encription.service';
 
 @Injectable()
 export class OrdersheetService {
@@ -75,6 +76,7 @@ export class OrdersheetService {
     private readonly _itemPriceRepo: ItemPriceHistRepository,
     private readonly _appLogger: AppLoggerService,
     private readonly _emailService: EmailService,
+    private readonly _encriptionServ: EncriptionService,
   ) {}
 
   async addressConfirmation(address: string): Promise<Place> {
@@ -94,7 +96,8 @@ export class OrdersheetService {
     const new_order: Ordersheet = await this.validateOrder(order);
     this.setPricesOnOrder(new_order);
     const saved_order = await this._ordersheetRepo.registerOrder(new_order);
-    const bill = this.generateBill(saved_order);
+    const saved_order2 = await this._ordersheetRepo.fetchOrder(saved_order.ordersheet_id as any)
+    const bill = this.generateBill(saved_order2);
     this._emailService.generateInvoice(bill, res, 'order');
     return bill;
   }
@@ -129,7 +132,7 @@ export class OrdersheetService {
 
     let order_base_cost = 0;
 
-    order.items.map(item => {
+    order.items.map((item) => {
       let item_total_tax = 0;
       for (const char of item.characteristics) {
         item_total_tax += Number(char.tax);
@@ -247,7 +250,7 @@ export class OrdersheetService {
       user,
     );
     const order_history: OrderResumeDto[] = [];
-    generated_orders.map(order => {
+    generated_orders.map((order) => {
       const order_resume = MapperOrderResume.generateOrderResumeFromOrdersheet(
         order,
       );
@@ -265,7 +268,7 @@ export class OrdersheetService {
       user,
     );
 
-    order_history.map(a => {
+    order_history.map((a) => {
       delete a.user;
       delete a.trajectories.check_points;
       delete a.receiver.user;
@@ -278,7 +281,7 @@ export class OrdersheetService {
     const orders: Ordersheet[] = await this._ordersheetRepo.getAllOrders();
     const ordersInfo: OrdersDetailsDto[] = [];
 
-    orders.forEach(order => {
+    orders.forEach((order) => {
       ordersInfo.push(MapperOrder.ordersheetToOrderDetails(order));
     });
 
@@ -291,7 +294,7 @@ export class OrdersheetService {
     const ordersInTransitTotal: Ordersheet[] = [];
     const ordersDeliveredTotal: Ordersheet[] = [];
 
-    ordersTotal.forEach(order => {
+    ordersTotal.forEach((order) => {
       if (order.status == OrdersheetStatus.DELIVERY) {
         ordersDeliveryTotal.push(order);
       } else if (order.status == OrdersheetStatus.TRANSIT) {
@@ -329,7 +332,9 @@ export class OrdersheetService {
   }
 
   private async validateUser(useremail: string): Promise<Userdata> {
-    const user: Userdata = await this._userRepo.fetchUser(useremail);
+    const user: Userdata = await this._userRepo.fetchUser(
+      this._encriptionServ.encriptString(useremail),
+    );
     if (!user) throw new UserNotFoundException();
     return user;
   }
@@ -440,13 +445,13 @@ export class OrdersheetService {
             }
             new_characteristic = null;
             new_characteristic = active_charateristics.find(
-              e => e.characteristic_id === char.characteristic_id,
+              (e) => e.characteristic_id === char.characteristic_id,
             );
             if (!new_characteristic) {
               throw new BadItemStructureException();
             }
             const posible_char = newItem.characteristics.find(
-              e =>
+              (e) =>
                 e.char_price_hist_id ===
                 new_characteristic.char_price_hists[0].char_price_hist_id,
             );

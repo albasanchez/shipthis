@@ -81,21 +81,19 @@ export class UserdataMock {
 
   findOne(successful: boolean, person: boolean) {
     if (successful) {
-      return jest
-        .fn()
-        .mockResolvedValue({
-          user_id: 1,
-          first_name: 'Luisa',
-          middle_name: 'Maria',
-          last_name: 'Contreras',
-          second_last_name: 'Lara',
-          phone_number: '+1 (654) 562 5698',
-          def_language: LanguageType.ENGLISH,
-          picture_url: null,
-          receive_notifications: true,
-          password:
-            '$2a$10$BvTbn6JsYqeziS4FfJ0FKOZ4GXA3wTye5uItQ4uhkcQjopPOAOSgG',
-        });
+      return jest.fn().mockResolvedValue({
+        user_id: 1,
+        first_name: 'Luisa',
+        middle_name: 'Maria',
+        last_name: 'Contreras',
+        second_last_name: 'Lara',
+        phone_number: '+1 (654) 562 5698',
+        def_language: LanguageType.ENGLISH,
+        picture_url: null,
+        receive_notifications: true,
+        password:
+          '$2a$10$BvTbn6JsYqeziS4FfJ0FKOZ4GXA3wTye5uItQ4uhkcQjopPOAOSgG',
+      });
     } else if (person) {
       return jest.fn().mockResolvedValue({
         user_id: 1,

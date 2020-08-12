@@ -5,7 +5,9 @@ import { AppModule } from './app/app.module';
 import { AllExceptionsFilter } from './common/ExceptionFilter/all-exceptions.filter';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppLoggerService } from './log/applogger.service';
+import * as rTracer from 'cls-rtracer';
 import * as helmet from 'helmet';
+import * as contextService from 'request-context';
 import { join } from 'path';
 
 async function bootstrap() {
@@ -23,7 +25,9 @@ async function bootstrap() {
 
   app.useLogger(new AppLoggerService());
 
+  app.use(rTracer.expressMiddleware());
   app.use(helmet());
+  app.use(contextService.middleware('request'));
   app.enableCors();
 
   app.setGlobalPrefix('shipthisapi/v1');

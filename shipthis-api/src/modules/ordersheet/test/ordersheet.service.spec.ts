@@ -76,7 +76,7 @@ describe('OrdersheetService', () => {
     jest
       .spyOn(charRepo, 'createQueryBuilder')
       .mockImplementation(() => createQueryBuilder);
-    itemRepo.findOne = itemPriceRepoMock.findOne()
+    itemRepo.findOne = itemPriceRepoMock.findOne();
     axios.get = locationMock.get();
     await service.calculateOrder(order);
   });
@@ -100,6 +100,7 @@ describe('OrdersheetService', () => {
     itemRepo.findOne = itemPriceRepoMock.findOne();
     axios.get = locationMock.get();
     ordersheetRepo.save = jest.fn().mockResolvedValue(registeredOrder);
+    ordersheetRepo.findOne = jest.fn().mockResolvedValue(registeredOrder);
     await service.registerOrder(order, response);
   });
 

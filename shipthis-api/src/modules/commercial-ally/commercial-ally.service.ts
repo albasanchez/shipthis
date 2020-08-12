@@ -83,7 +83,10 @@ export class CommercialAllyService {
     const new_pickup: Pickup = await this.validatePickupCreation(pickup);
     this.setPricesOnPickup(new_pickup);
     const saved_pickup = await this._pickupRepo.registerPickup(new_pickup);
-    const bill = this.generateBill(saved_pickup);
+    const saved_pickup2 = await this._pickupRepo.fetchPickup(
+      saved_pickup.pickup_id as any,
+    );
+    const bill = this.generateBill(saved_pickup2);
     this._emailService.generateInvoice(bill, res, 'pickup');
     return bill;
   }
@@ -131,7 +134,7 @@ export class CommercialAllyService {
     });
 
     pickup.facturation_amount = pick_base_cost;
-    pickup.facturation_amount = Number(pickup.facturation_amount.toFixed(2));
+    pickup.facturation_amount = pickup.facturation_amount;
   }
 
   private getDimensionalWeight(item: Item): number {
@@ -326,9 +329,13 @@ export class CommercialAllyService {
       newCommercialAlly.warehouses,
     );
 
-    const commercial_ally: CommercialAlly = await this._commercialAllyRepo.createNewCommercialAlly(
+    let commercial_ally: CommercialAlly = await this._commercialAllyRepo.createNewCommercialAlly(
       newCommercialAlly,
       warehouses,
+    );
+
+    commercial_ally = await this._commercialAllyRepo.getCommercialAllyById(
+      commercial_ally.commercial_ally_id,
     );
 
     this._appLogger.log('New Commercial Ally has been created sucessfully');

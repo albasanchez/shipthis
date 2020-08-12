@@ -45,6 +45,8 @@ export class ConfigService {
         FRONTEND_URL: process.env.FRONTEND_URL,
         SEND_GRID_RECOVERY_TEMPLATE: process.env.SEND_GRID_RECOVERY_TEMPLATE,
         LOCATION_IQ_DELAY: process.env.LOCATION_IQ_DELAY,
+        ENCRIPTION_KEY1: process.env.ENCRIPTION_KEY1,
+        ENCRIPTION_KEY2: process.env.ENCRIPTION_KEY2,
       };
     }
   }

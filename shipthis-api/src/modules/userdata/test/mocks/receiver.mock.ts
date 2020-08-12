@@ -9,7 +9,15 @@ export const receiverMockModuleMetadata: ModuleMetadata = {
 
 export class ReceiverMock {
   save() {
-    return jest.fn();
+    return jest
+      .fn()
+      .mockResolvedValue({
+        name: 'Ana',
+        last_name: 'Lopez',
+        phone_number: '+1 (654) 562 5698',
+        email: 'analopez1998@gmail.com',
+        user_fk: 1,
+      });
   }
   find() {
     return jest.fn().mockResolvedValue([
