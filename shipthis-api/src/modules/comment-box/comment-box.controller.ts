@@ -17,7 +17,7 @@ import { UpdateReviewedDTO } from './dto/update-reviewed.dto';
 export class CommentBoxController {
   constructor(private readonly _comBoxServ: CommentBoxService) {}
 
-  @Post('savecomment')
+  @Post('savecomment') 
   @UsePipes(ValidationPipe)
   saveComment(@Body() comment: CreateCommentBoxDto) {
     return this._comBoxServ.createComment(comment);

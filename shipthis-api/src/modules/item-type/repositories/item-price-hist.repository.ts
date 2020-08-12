@@ -11,7 +11,7 @@ export class ItemPriceHistRepository extends Repository<ItemPriceHist> {
   async updateHistory(newRegister: NewItemHistDto): Promise<any> {
     const oldRegister: ItemPriceHist = await this.findOne({
       where: { ending_date: null },
-    });
+    }); 
     oldRegister.ending_date = new Date();
 
     this.update(oldRegister.item_price_hist_id, oldRegister);
