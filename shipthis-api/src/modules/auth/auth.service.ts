@@ -241,9 +241,7 @@ export class AuthService {
       role,
     );
 
-    user = await this._authRepository.fetchUser(
-      this._encriptionServ.encriptString(signup.useremail),
-    );
+    const user2 = await this._authRepository.find({ user_id: user.user_id });
 
     if (this.userIsClient(user)) {
       const welcomeDiscount: Discount = await this._discountServ.assignWelcomeDiscount(
@@ -253,7 +251,7 @@ export class AuthService {
     }
 
     this._appLogger.log(`NEW ${role} registered successfully`);
-    return user;
+    return user2[0];
   }
 
   private documentsDontMatch(user: Userdata, document: string): boolean {
