@@ -125,8 +125,7 @@
                 <span class="font-weight-bold"
                   >{{ $t("newOrder.price") }}:</span
                 >
-                <br v-if="$vuetify.breakpoint.xsOnly" />
-                ${{ item.cost }}
+                <input v-model.lazy="item.cost" v-money="money" />
               </p>
             </v-expansion-panel-content>
           </v-expansion-panel>
@@ -154,6 +153,7 @@
 </template>
 
 <script>
+import { VMoney } from "v-money";
 export default {
   name: "ShippingDialog",
   props: {
@@ -161,11 +161,27 @@ export default {
     track: Boolean,
     ship: Object,
   },
+  data: () => ({
+    money: {
+      decimal: ".",
+      thousands: ",",
+      prefix: "$ ",
+      suffix: "",
+      precision: 2,
+      masked: false /* doesn't work with directive */,
+    },
+    price: 0,
+  }),
   methods: {
     goTracking(id) {
       this.$router.push("./tracking/" + id);
     },
+
+    price(item) {
+      this.price = parseFloat(item.cost);
+    },
   },
+  directives: { money: VMoney },
 };
 </script>
 
