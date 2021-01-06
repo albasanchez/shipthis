@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@mdi/font": "^5.3.45",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "express": "^4.17.1",
     "logrocket": "^1.0.10",
