@@ -56,7 +56,7 @@
     "hbs": "^4.1.1",
     "helmet": "^3.22.0",
     "hogan.js": "^3.0.2",
-    "html-pdf": "^2.2.0",
+    "html-pdf": "^3.0.1",
     "node-telegram-bot-api": "^0.50.0",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
